@@ -11,6 +11,7 @@ class Route
     private static $specificRoutes = [
         'login' => 'User',
         'register' => 'User',
+        'index' => 'Book',
        ];
 
     public static function start()
@@ -58,7 +59,7 @@ class Route
             // URL - [контроллер, функция, аргумент]
             $urlAsArray = explode('/', $url);
             // получение контроллера
-            $controller_name = !empty($url) ? ucfirst($urlAsArray[0]) : 'main';
+            $controller_name = !empty($url) ? ucfirst($urlAsArray[0]) : 'book';
             // получение функции
             if (count($urlAsArray) > 1) {
                 $action = self::convertName($urlAsArray[1]);
@@ -70,22 +71,7 @@ class Route
                 $funcArgs['id'] = $urlAsArray[2];
             }
         }
-
         $controller_name = self::convertName($controller_name);
-
-        // авторизация сохраняется в куки и сессии. Если авторизация есть, то / -> /article
-        if ($controller_name === 'Main'
-            && (isset($_SESSION['auth']) || isset($_COOKIE['auth']))
-            && !isset($_GET['logout'])
-        ) {
-            $controller_name = 'Article';
-        }
-        // редирект /article без авторизации -> /
-        if (($controller_name === 'Article')
-            && !(isset($_SESSION['auth']) || isset($_COOKIE['auth']))
-        ) {
-            $controller_name = 'Main';
-        }
 
         // создаем контроллер
         $controller_name .= 'Controller';
