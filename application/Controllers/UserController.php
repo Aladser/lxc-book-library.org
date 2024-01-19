@@ -83,11 +83,10 @@ class UserController extends Controller
         ];
 
         $this->view->generate(
-            page_name: "{$this->site_name} - регистрация пользователя",
+            page_name: "{$this->site_name} - регистрация",
             template_view: 'template_view.php',
             content_view: 'users/register_view.php',
             data: $args,
-            content_css: 'form.css',
             routes: $routes
         );
     }

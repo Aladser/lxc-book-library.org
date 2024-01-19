@@ -3,8 +3,8 @@
         <h3>Авторизация</h3>
 
         <!-- логин-пароль -->
-        <form method="POST" class='w-75 mx-auto' action='/'>
-            <input type='text' class='d-block w-100 mb-2 p-3' name='db_login' placeholder="Логин" required>
+        <form method="POST" class='w-75 mx-auto' action="<?php echo $routes['auth']; ?>">
+            <input type='text' class='d-block w-100 mb-2 p-3' name='login' placeholder="Логин" required>
             <input type="password" class='d-block w-100 mb-2 p-3' name='password' placeholder="Пароль" required>
             <input type='submit' value='Войти' class="button-basic theme-border d-block mx-auto mb-2 w-100">
             <a href="<?php echo $routes['register']; ?>" class="button-basic theme-border d-block mx-auto mb-2 w-100">Регистрация</a>
