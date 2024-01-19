@@ -16,7 +16,6 @@ class BookController extends Controller
         $this->csrf = Controller::createCSRFToken();
     }
 
-    // индексная страница
     public function index(mixed $args): void
     {
         $this->view->generate(

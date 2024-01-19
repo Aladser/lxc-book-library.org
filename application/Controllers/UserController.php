@@ -12,22 +12,24 @@ class UserController extends Controller
 {
     private User $userModel;
     private string $csrf;
+    private string $register_url;
+    private string $home_url;
+    private string $login_url;
 
     public function __construct()
     {
         parent::__construct();
         $this->userModel = new User();
         $this->csrf = Controller::createCSRFToken();
+        $this->register_url = route('register');
+        $this->home_url = route('home');
+        $this->login_url = route('login');
     }
 
     // форма регистрации
     public function register(mixed $args): void
     {
         $args['csrf'] = $this->csrf;
-        $routes = [
-            'home' => route('home'),
-            'store' => route('store'),
-        ];
         // ошибки регистрации
         if (isset($args['error'])) {
             if ($args['error'] == 'usrexsts') {
@@ -43,6 +45,11 @@ class UserController extends Controller
             $args['error'] = '';
             $args['user'] = '';
         }
+
+        $routes = [
+            'home' => $this->home_url,
+            'store' => route('store'),
+        ];
 
         $this->view->generate(
             page_name: "{$this->site_name} - регистрация пользователя",
@@ -64,21 +71,21 @@ class UserController extends Controller
         // проверка паролей
         if ($args['password'] !== $args['password_confirm']) {
             // проверка совпадения паролей
-            header("Location: /register?error=dp&user=$email");
+            header("Location: {$this->register_url}?error=dp&user=$email");
         } elseif (strlen($password) < 3) {
             // длина пароля
-            header("Location: /register?error=sp&user=$email");
+            header("Location:{$this->register_url}?error=sp&user=$email");
         } elseif (!$this->userModel->exists($email)) {
             // проверить существование пользователя
             $isUserRegistered = $this->userModel->add($email, $password);
             if ($isUserRegistered) {
                 $this->saveAuth($email);
-                header('Location: /');
+                header("Location: {$this->home_url}");
             } else {
-                header('Location: /register?error=system_error');
+                header("Location: {$this->register_url}?error=system_error");
             }
         } else {
-            header("Location: /register?error=usrexsts&user=$email");
+            header("Location: {$this->register_url}?error=usrexsts&user=$email");
         }
     }
 
@@ -87,7 +94,7 @@ class UserController extends Controller
     {
         $args['csrf'] = $this->csrf;
         $routes = [
-            'home' => route('home'),
+            'home' => $this->home_url,
             'auth' => route('auth'),
         ];
 
@@ -123,12 +130,12 @@ class UserController extends Controller
             $isAuth = $this->userModel->is_correct_password($login, $password);
             if ($isAuth) {
                 $this->saveAuth($login);
-                header('Location: /');
+                header("Location: {$this->home_url}");
             } else {
-                header("Location: /login?user=$login&error=wp");
+                header("Location: {$this->login_url}?user=$login&error=wp");
             }
         } else {
-            header("Location: /login?user=$login&error=wu");
+            header("Location: {$this->login_url}?user=$login&error=wu");
         }
     }
 
@@ -138,10 +145,8 @@ class UserController extends Controller
      */
     private function saveAuth(string $user): void
     {
-        // сессия
         $_SESSION['auth'] = 1;
         $_SESSION['login'] = $user;
-        // куки
         setcookie('auth', 1, time() + 60 * 60 * 24, '/');
         setcookie('login', $user, time() + 60 * 60 * 24, '/');
     }
