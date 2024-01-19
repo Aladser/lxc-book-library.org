@@ -1,14 +1,14 @@
 <div class='container'>
-    <div class='p-3 mb-3 bg-light bg-gradient'>
+    <div class='p-3 mb-3 theme-border'>
         <div class='d-flex mb-3'>
             <article class='image-block mx-auto w-50'>
                 <img class='d-block mx-auto h-100 object-fit-cover' src="public/data/images/pikovaya_dama.jpeg" alt="Пиковая дама">
             </article>
             <div class='w-50'>
-                <p class='h3'>Пиковая дама</p>
-                <p class='h6'>Александр Пушкин</p>
+                <p class='h3 theme-darker-color'>Пиковая дама</p>
+                <p class='h6 theme-darker-color'>Александр Пушкин</p>
                 <p>Повесть</p>
-                <p>1834 год</p>
+                <p class="fst-italic">1834 год</p>
             </div>
         </div>
         <div class='p-2'>
@@ -20,16 +20,16 @@
         </div>
     </div>
 
-    <div class='p-3 mb-3 bg-light bg-gradient'>
+    <div class='p-3 mb-3 theme-border'>
         <div class='d-flex mb-3'>
             <article class='image-block mx-auto w-50'>
                 <img class='d-block mx-auto h-100 object-fit-cover' src="public/data/images/buduschee.jpeg" alt="Будущее">
             </article>
             <div class='w-50'>
-                <p class='h3'>Будущее</p>
-                <p class='h6'>Дмитрий Глуховский</p>
+                <p class='h3 theme-darker-color'>Будущее</p>
+                <p class='h6 theme-darker-color'>Дмитрий Глуховский</p>
                 <p>Научно-фантастический роман</p>
-                <p>2013 год</p>
+                <p class="fst-italic">2013 год</p>
             </div>
         </div>
         <div class='p-2'>
@@ -40,16 +40,16 @@
         </div>
     </div>
 
-    <div class='p-3 mb-3 bg-light bg-gradient'>
+    <div class='p-3 mb-3 theme-border'>
         <div class='d-flex mb-3'>
             <article class='image-block mx-auto w-50'>
                 <img class='d-block mx-auto h-100 object-fit-cover' src="public/data/images/zelenaya_milya.jpeg" alt="Зеленая миля">
             </article>
             <div class='w-50'>
-                <p class='h3'>Зеленая миля</p>
-                <p class='h6'>Стивен Кинг</p>
+                <p class='h3 theme-darker-color'>Зеленая миля</p>
+                <p class='h6 theme-darker-color'>Стивен Кинг</p>
                 <p>Роман</p>
-                <p>1996 год</p>
+                <p class="fst-italic">1996 год</p>
             </div>
         </div>
         <div class='p-2'>

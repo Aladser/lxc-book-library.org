@@ -3,103 +3,32 @@ a {text-decoration: none;}
 
 
 html {
-  --theme-color: #00dd00;
-  --theme-color-hover: rgb(0, 180, 0);
-  --theme-gray-color: rgba(0, 0, 0, 0.5);
-  --ref-color-hover: rgba(255, 255, 255, 0.7);
-  --error-color: rgba(158, 0, 0, 0.768);
-
+  --theme-color: #00aeff;
+  --theme-darker-color: #0080d6;
   --theme-border: 1.5px solid var(--theme-color);
-  --theme-font-weight-bold: 850;
-  --theme-button-size: 20rem;
-  --theme-content-size: 55rem;
 }
 
 
 .theme-bg-сolor {
   background-color: var(--theme-color);
 }
-.theme-bg-сolor-btn {
-  background-color: var(--theme-color);
+.theme-color {
+  color: var(--theme-color);
 }
-.theme-bg-сolor-btn:hover {
-  background-color: var(--theme-color-hover);
+.theme-darker-color {
+  color: var(--theme-darker-color);
 }
-
-.theme-color {color: var(--theme-color);}
-.theme-grey-color {color: var(--theme-gray-color);}
-.theme-red-color {color: var(--error-color);}
-
-.theme-border {border: var(--theme-border);}
-.theme-border-start {border-left: var(--theme-border);}
-.theme-border-top {border-top: var(--theme-border);}
-.theme-border-end {border-right: var(--theme-border);}
-.theme-border-bottom {border-bottom: var(--theme-border);}
-
-.theme-font-weight-bold {font-weight: var(--theme-font-weight-bold);}
-
-/* ссылки */
-.ref {
-  display: inline-block;
-  color: white;
-  padding: 0.75rem;
-  width: 8rem;
-  text-align: center;
-  font-size: 0.9rem;
-  border-radius: 5%;
-  margin-bottom: 0.5rem;
+.theme-border {
+  border: var(--theme-border);
 }
-.ref:hover {
-  color: white;
+.theme-border-start {
+  border-left: var(--theme-border);
 }
-.ref-size-8 {
-  width: 8rem;
+.theme-border-top {
+  border-top: var(--theme-border);}
+.theme-border-end {
+  border-right: var(--theme-border);
 }
-
-.h-page404 {height: 40rem;}
-.cursor-pointer {cursor: pointer;}
-.page-name-header {
-  font-size: 1.4rem;
-}
-
-/* контейнер */
-.content-width {
-  width: 55rem;
-  margin: auto;
-}
-@media (max-width: 55rem) {
-  .content-width {
-    width: 95%;
-    margin: auto;
-  }
-}
-
-.button-basic {
-  display: block;
-  color: white;
-  text-align: center;
-  border: none;
-  margin: auto;
-  width: var(--theme-button-size);
-  padding: 0.75rem;
-}
-.button-basic:hover {
-  color: white;
-}
-@media(max-width:700px) {
-  .button-basic {
-    width: 95%;
-  }
-}
-
-.button-wide {
-  font-size: 1.5rem;
-  width: 30rem;
-  padding: 1rem;
-}
-
-@media(max-width:700px) {
-  .button-wide {
-    width: 95%;
-  }
+.theme-border-bottom {
+  border-bottom: var(--theme-border);
 }

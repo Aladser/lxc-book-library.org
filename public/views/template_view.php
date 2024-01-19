@@ -27,7 +27,7 @@
 <body>
 
 <header class='mb-4'>
-    <div class='theme-bg-сolor text-center text-white d-flex justify-content-between'>
+    <div class='text-center d-flex justify-content-between theme-border theme-color'>
         <h3 class='p-3 w-100'><?php echo $page_name; ?></h3>
     </div>
 </header>
