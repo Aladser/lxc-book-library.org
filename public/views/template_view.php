@@ -27,8 +27,11 @@
 <body>
 
 <header class='mb-4'>
-    <div class='text-center d-flex justify-content-between theme-border theme-color'>
-        <h3 class='p-3 w-100'><?php echo $page_name; ?></h3>
+    <div class='d-flex justify-content-between theme-border theme-color'>
+        <div class='d-inline-block p-3 fw-bold'><?php echo $page_name; ?></div>
+        <?php if (!empty($routes['login'])) { ?>
+            <a href="<?php echo $routes['login']; ?>" class='d-inline-block p-3 text-center header-btn theme-border-start theme-color'>Войти</a>
+        <?php } ?>
     </div>
 </header>
 

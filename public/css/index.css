@@ -1,4 +1,19 @@
 .image-block {
-    width: 20rem;
     height: 30rem;
+    width: 50%;
+}
+
+.book-content {
+    display: flex;
+}
+
+@media (max-width: 500px) {
+    .book-content {
+        display: block;
+    }
+    .image-block {
+        height: 18rem;
+        width: 100%;
+        margin-bottom: 1.5rem;
+    }
 }

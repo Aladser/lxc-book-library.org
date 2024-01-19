@@ -1,10 +1,10 @@
 <div class='container'>
     <div class='p-3 mb-3 theme-border'>
-        <div class='d-flex mb-3'>
-            <article class='image-block mx-auto w-50'>
+        <div class='book-content mb-3'>
+            <article class='image-block mx-auto'>
                 <img class='d-block mx-auto h-100 object-fit-cover' src="public/data/images/pikovaya_dama.jpeg" alt="Пиковая дама">
             </article>
-            <div class='w-50'>
+            <div class='w-50 p-1'>
                 <p class='h3 theme-darker-color'>Пиковая дама</p>
                 <p class='h6 theme-darker-color'>Александр Пушкин</p>
                 <p>Повесть</p>
@@ -21,8 +21,8 @@
     </div>
 
     <div class='p-3 mb-3 theme-border'>
-        <div class='d-flex mb-3'>
-            <article class='image-block mx-auto w-50'>
+        <div class='book-content mb-3'>
+            <article class='image-block mx-auto'>
                 <img class='d-block mx-auto h-100 object-fit-cover' src="public/data/images/buduschee.jpeg" alt="Будущее">
             </article>
             <div class='w-50'>
@@ -41,8 +41,8 @@
     </div>
 
     <div class='p-3 mb-3 theme-border'>
-        <div class='d-flex mb-3'>
-            <article class='image-block mx-auto w-50'>
+        <div class='book-content mb-3'>
+            <article class='image-block mx-auto'>
                 <img class='d-block mx-auto h-100 object-fit-cover' src="public/data/images/zelenaya_milya.jpeg" alt="Зеленая миля">
             </article>
             <div class='w-50'>

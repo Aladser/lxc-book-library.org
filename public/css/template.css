@@ -2,9 +2,19 @@
   margin: 0;
   padding: 0;
 }
+
 textarea {
   resize: none;
 }
+
 a {
   text-decoration: none;
+}
+
+.header-btn {
+  width: 10rem;
+}
+.header-btn:hover {
+  color: white;
+  background-color: var(--theme-color);
 }

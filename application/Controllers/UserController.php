@@ -113,7 +113,7 @@ class UserController extends Controller
             page_name: "{$this->site_name} - авторизация",
             template_view: 'template_view.php',
             content_view: 'users/login_view.php',
-            content_css: 'form.css',
+            content_css: 'login.css',
             data: $args,
             routes: $routes,
         );

@@ -1,0 +1,89 @@
+*{
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.loginWindow{
+    width: 32rem;
+    padding-bottom: 1rem;
+    background-color: white;
+    margin: auto;
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.loginWindow__header{
+    text-align: center;
+    padding: 0;
+}  
+
+.loginWindow__form{
+    text-align: center;
+}
+
+.loginWindow__input, .loginWindow__btn{
+    margin-bottom: 1rem;
+    width: 80%;
+}
+
+.loginWindow__input{
+    padding: 0.5rem;
+    font-size: 1.3rem;
+    text-align: center;
+}
+
+.loginWindow__saveAuth{
+    padding: 0;
+    margin: 0;
+    color:red;
+}
+
+.page-social-btn-text-delimiter{
+    color: rgb(58, 179, 249);
+}
+
+.loginWindow__btn{
+    color: rgb(58, 179, 249);
+    background-color: white;
+    cursor: default;
+    padding: 0.5rem 0;
+    border: 1px solid rgb(58, 179, 249);
+}
+.loginWindow__btn:hover:not(:disabled){
+    background-color: rgb(58, 179, 249);
+    color: white;
+    opacity: 0.75;
+    cursor: pointer;
+}
+.loginWindow__btn:active{
+    cursor: default;
+    color: rgb(58, 179, 249);
+    background-color: white;
+}
+
+.token{
+    width: 100%;
+    word-break: break-all;
+}
+
+.loginInputSection__btn-back{
+    border: 1px solid rgb(58, 179, 249);
+    color: rgb(58, 179, 249);
+    width: 8rem;
+    text-align: center;
+    padding: 0.8rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+.loginInputSection__btn-back:hover{
+    background-color: rgb(58, 179, 249);
+    color: white;
+}
+
+@media (max-width: 530px){
+    .loginWindow{
+        width: 100%;
+    }
+}
+
