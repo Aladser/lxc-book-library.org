@@ -26,6 +26,37 @@ class UserController extends Controller
         $this->login_url = route('login');
     }
 
+    // страница авторизации
+    public function login(mixed $args): void
+    {
+        $args['csrf'] = $this->csrf;
+
+        // ошибки авторизации
+        if (isset($args['error'])) {
+            if ($args['error'] == 'wp') {
+                $args['error'] = 'Неверный пароль';
+            } elseif ($args['error'] == 'wu') {
+                $args['error'] = 'Пользователь не существует';
+            }
+        } else {
+            $args['user'] = '';
+        }
+
+        $routes = [
+            'home' => $this->home_url,
+            'register' => $this->register_url,
+            'auth' => route('auth'),
+        ];
+
+        $this->view->generate(
+            page_name: "{$this->site_name} - авторизация",
+            template_view: 'template_view.php',
+            content_view: 'users/login_view.php',
+            data: $args,
+            routes: $routes,
+        );
+    }
+
     // форма регистрации
     public function register(mixed $args): void
     {
@@ -87,36 +118,6 @@ class UserController extends Controller
         } else {
             header("Location: {$this->register_url}?error=usrexsts&user=$email");
         }
-    }
-
-    // форма входа
-    public function login(mixed $args): void
-    {
-        $args['csrf'] = $this->csrf;
-        $routes = [
-            'home' => $this->home_url,
-            'auth' => route('auth'),
-        ];
-
-        // ошибки авторизации
-        if (isset($args['error'])) {
-            if ($args['error'] == 'wp') {
-                $args['error'] = 'Неверный пароль';
-            } elseif ($args['error'] == 'wu') {
-                $args['error'] = 'Пользователь не существует';
-            }
-        } else {
-            $args['user'] = '';
-        }
-
-        $this->view->generate(
-            page_name: "{$this->site_name} - авторизация",
-            template_view: 'template_view.php',
-            content_view: 'users/login_view.php',
-            content_css: 'login.css',
-            data: $args,
-            routes: $routes,
-        );
     }
 
     // авторизация

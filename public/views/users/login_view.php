@@ -1,33 +1,29 @@
-<container>
-    <section class='loginWindow'>
-        <h3 class='loginWindow__header'> Авторизация</h3>
+<div class='container'>
+    <section class='w-50 mx-auto text-center'>
+        <h3>Авторизация</h3>
 
-        <form method="POST" class='loginWindow__form' id='loginWindow__form'>
-            <input type='text' class='loginWindow__input loginWindow__loginInput' name='db_login' id='loginInput' value ='user' placeholder="Логин">
-            <br>
-            <input type="password" class='loginWindow__input loginWindow__passwordInput' name='password' id='passwordInput' value= 'user@@user' placeholder="Пароль">
-            <br>
-            <input type='submit' class='loginWindow__btn' id='loginWindow__sendBtn' value='Войти'>
-            <br>
-            <input type='button' class='loginWindow__btn' id='loginWindow__regBtn' value='Регистрация'>
-            <br>
-            <input type="checkbox" class='loginWindow__saveAuth' id="loginWindow__saveAuth" name="saveAuth" checked/>
-            <label for="loginWindow__saveAuth">Запомнить меня</label>
-            <?php // auth и токен?>
-            <input type="hidden" name="auth" value=1>
-            <input type="hidden" name="CSRF" value="<?php echo $token; ?>">
-        </form>
-
-        <div class='text-center theme-color p-2'>или войти с помощью</div>
-
-        <form method="POST" class='mx-auto' action="/engine/auth/auth_vk_check_csrf.php">
-            <input type="submit" value='VK'>
+        <!-- логин-пароль -->
+        <form method="POST" class='w-75 mx-auto' action='/'>
+            <input type='text' class='d-block w-100 mb-2 p-3' name='db_login' placeholder="Логин" required>
+            <input type="password" class='d-block w-100 mb-2 p-3' name='password' placeholder="Пароль" required>
+            <input type='submit' value='Войти' class="button-basic theme-border d-block mx-auto mb-2 w-100">
+            <a href="<?php echo $routes['register']; ?>" class="button-basic theme-border d-block mx-auto mb-2 w-100">Регистрация</a>
+            <input type="checkbox" name="save_auth" checked/> Запомнить меня
             <input type="hidden" name="CSRF" value="<?php echo $data['csrf']; ?>">
         </form>
+
+        <div class='text-center p-3'>или войти с помощью</div>
+
+        <!-- авторизация ВК -->
+        <form method="POST" class='pb-3' action="/engine/auth/auth_vk_check_csrf.php">
+            <input type="image" src='/public/images/vk-logo.png' title='Авторизация VK'>
+            <input type="hidden" name="CSRF" value="<?php echo $data['csrf']; ?>">
+        </form>
+
+        <a href="<?php echo $routes['home']; ?>" class="d-block mx-auto button-basic theme-border w-75">Назад</a>
     </section>
 
-    <a href="<?php echo $routes['home']; ?>" class="text-decoration"><p class="loginInputSection__btn-back">Назад</p></a>
     <?php if (isset($args['error'])) { ?>
         <article class='mx-auto text-center text-danger fw-bolder'><?php echo $args['error']; ?></article>
     <?php } ?>
-</container>
+</div>

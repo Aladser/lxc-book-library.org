@@ -11,10 +11,14 @@ a {
   text-decoration: none;
 }
 
-.header-btn {
+.button-basic {
+  padding: 0.75rem;
   width: 10rem;
+  text-align: center;
+  color: var(--theme-color);
+  background-color: white;
 }
-.header-btn:hover {
+.button-basic:hover {
   color: white;
   background-color: var(--theme-color);
 }

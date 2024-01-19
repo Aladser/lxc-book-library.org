@@ -30,7 +30,7 @@
     <div class='d-flex justify-content-between theme-border theme-color'>
         <div class='d-inline-block p-3 fw-bold'><?php echo $page_name; ?></div>
         <?php if (!empty($routes['login'])) { ?>
-            <a href="<?php echo $routes['login']; ?>" class='d-inline-block p-3 text-center header-btn theme-border-start theme-color'>Войти</a>
+            <a href="<?php echo $routes['login']; ?>" class='button-basic theme-border-start'>Войти</a>
         <?php } ?>
     </div>
 </header>
