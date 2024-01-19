@@ -9,7 +9,7 @@ function config($param)
     $paramList = [
         // подключение к БД
         'HOST_DB' => 'localhost',
-        'NAME_DB' => 'shedule',
+        'NAME_DB' => 'book-library2',
         'USER_DB' => 'admin',
         'PASS_DB' => '@admin@',
         // базовый адрес страницы
