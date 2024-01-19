@@ -1,0 +1,25 @@
+.comment-list__item {
+    border-top: 1px solid #ccc;
+}
+
+.comment-list__btn-remove {
+    font-size: 0.75rem;
+    background-color: white;
+}
+
+.comment-list__btn-remove:hover {background-color: var(--theme-gray-color);}
+
+.btn-send-msg {
+    border: none;
+    color:white;
+    padding: 0.25rem;
+}
+
+@media (max-width: 1000px) {
+    .btn-small {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 0.5rem;
+    }
+}

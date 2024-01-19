@@ -1,0 +1,14 @@
+{
+    "autoload": {
+      "files": ["\\application\\config.php", "\\application\\route.php"],
+      "psr-4": {
+        "App\\": "\\application"
+      }
+    },
+    "require": {
+        "friendsofphp/php-cs-fixer": "^3.47",
+      "ext-json": "*",
+      "ext-pdo": "*"
+    }
+  }
+  

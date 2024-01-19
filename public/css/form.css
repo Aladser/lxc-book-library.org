@@ -1,0 +1,35 @@
+/* форма */
+.form {
+  width: 40%;
+  font-size: 1.5rem;
+}
+.form input,
+.form a {
+  padding: 1rem;
+  width: 100%;
+}
+.form input[type="text"],
+.form input[type="password"] {
+  margin-bottom: 1rem;
+  border: var(--theme-border);
+}
+.form input:focus {
+  outline: 2px var(--theme-color) solid;
+}
+.form a {
+  display: inline-block;
+}
+.form input::placeholder {
+  color: #ccc;
+}
+
+@media (max-width: 1000px) {
+  .form {
+    width: 100%;
+  }
+}
+@media (max-width: 1200px) {
+  .form {
+    width: 80%;
+  }
+}

@@ -1,0 +1,6 @@
+application/vendor/*
+vendor/*
+tools/*
+logs/*
+composer.lock
+application/composer.lock
