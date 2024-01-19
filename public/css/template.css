@@ -1,34 +1,10 @@
-textarea {resize: none;}
-a {text-decoration: none;}
-
-
-html {
-  --theme-color: #00aeff;
-  --theme-darker-color: #0080d6;
-  --theme-border: 1.5px solid var(--theme-color);
+* {
+  margin: 0;
+  padding: 0;
 }
-
-
-.theme-bg-сolor {
-  background-color: var(--theme-color);
+textarea {
+  resize: none;
 }
-.theme-color {
-  color: var(--theme-color);
-}
-.theme-darker-color {
-  color: var(--theme-darker-color);
-}
-.theme-border {
-  border: var(--theme-border);
-}
-.theme-border-start {
-  border-left: var(--theme-border);
-}
-.theme-border-top {
-  border-top: var(--theme-border);}
-.theme-border-end {
-  border-right: var(--theme-border);
-}
-.theme-border-bottom {
-  border-bottom: var(--theme-border);
+a {
+  text-decoration: none;
 }

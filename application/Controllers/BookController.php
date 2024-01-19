@@ -7,12 +7,12 @@ use App\Core\Controller;
 class BookController extends Controller
 {
     private string $csrf;
-    private string $auth_user;
+    private string $authUser;
 
     public function __construct()
     {
         parent::__construct();
-        $this->auth_user = UserController::getAuthUser();
+        $this->authUser = UserController::getAuthUser();
         $this->csrf = Controller::createCSRFToken();
     }
 

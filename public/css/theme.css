@@ -1,0 +1,31 @@
+html {
+    --theme-color: rgba(0, 150, 255, 0.75);
+    --theme-darker-color: rgb(0, 150, 255, 1);
+    --theme-border: 1.5px solid var(--theme-color);
+  }
+  
+  .theme-color {
+    color: var(--theme-color);
+  }
+  .theme-darker-color {
+    color: var(--theme-darker-color);
+  }
+  .theme-bg-сolor {
+    background-color: var(--theme-color);
+  }
+  
+  .theme-border {
+    border: var(--theme-border);
+  }
+  .theme-border-start {
+    border-left: var(--theme-border);
+  }
+  .theme-border-top {
+    border-top: var(--theme-border);
+  }
+  .theme-border-end {
+    border-right: var(--theme-border);
+  }
+  .theme-border-bottom {
+    border-bottom: var(--theme-border);
+  }

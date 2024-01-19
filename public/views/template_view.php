@@ -10,9 +10,9 @@
     ?>
     <title><?php echo $page_name; ?></title>
     <link href="<?php echo $boostrap_url; ?>" rel="stylesheet" integrity="<?php echo $boostrap_integrity; ?>" crossorigin="anonymous">
-    <link rel="icon" href="http://<?php echo $site_address; ?>/public/images/icon.png">
-    <link rel="stylesheet" href="http://<?php echo $site_address; ?>/public/css/reset_styles.css">
+    <link rel="icon" href="http://<?php echo $site_address; ?>/public/images/favicon.ico">
     <link rel="stylesheet" href="http://<?php echo $site_address; ?>/public/css/template.css">
+    <link rel="stylesheet" href="http://<?php echo $site_address; ?>/public/css/theme.css">
     <!-- css -->
     <?php if (!empty($content_css)) { ?>
         <link rel="stylesheet" href="http://<?php echo $site_address; ?>/public/css/<?php echo $content_css; ?>">

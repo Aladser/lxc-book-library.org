@@ -1,0 +1,1 @@
+touch logs/error.log & touch logs/access.log 
