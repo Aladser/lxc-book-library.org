@@ -1,16 +1,17 @@
-<div class='container border-start border-end border-primary'>
-    <div class='p-3 mb-3 border-bottom border-primary'>
+<div class='container'>
+    <div class='p-3 mb-3 bg-light bg-gradient'>
         <div class='d-flex mb-3'>
             <article class='image-block mx-auto w-50'>
                 <img class='d-block mx-auto h-100 object-fit-cover' src="public/data/images/pikovaya_dama.jpeg" alt="Пиковая дама">
             </article>
             <div class='w-50'>
-                <p>Пиковая дама</p>
-                <p>Александр Пушкин</p>
+                <p class='h3'>Пиковая дама</p>
+                <p class='h6'>Александр Пушкин</p>
                 <p>Повесть</p>
+                <p>1834 год</p>
             </div>
         </div>
-        <div>
+        <div class='p-2'>
             Успех повести "Пиковая дама" начался с первого издания в 1834 году в журнале "Библиотека для чтения", не утихает он и сегодня. 
             Три заветные игральные карты, некогда принесшие крупный выигрыш графине, не оставляют в покое Германна. Одержимый их разгадкой, 
             непрошеный гость дожидается возвращения графини у неё дома, где и совершается непоправимое. 
@@ -19,18 +20,19 @@
         </div>
     </div>
 
-    <div class='p-3 mb-3 border-bottom border-primary'>
+    <div class='p-3 mb-3 bg-light bg-gradient'>
         <div class='d-flex mb-3'>
             <article class='image-block mx-auto w-50'>
                 <img class='d-block mx-auto h-100 object-fit-cover' src="public/data/images/buduschee.jpeg" alt="Будущее">
             </article>
             <div class='w-50'>
-                <p>Будущее</p>
-                <p>Дмитрий Глуховский</p>
+                <p class='h3'>Будущее</p>
+                <p class='h6'>Дмитрий Глуховский</p>
                 <p>Научно-фантастический роман</p>
+                <p>2013 год</p>
             </div>
         </div>
-        <div>
+        <div class='p-2'>
             НА ЧТО ТЫ ГОТОВ РАДИ ВЕЧНОЙ ЖИЗНИ? Уже при нашей жизни будут сделаны открытия, которые позволят людям оставаться вечно молодыми. 
             Смерти больше нет. Наши дети не умрут никогда. Добро пожаловать в будущее. В мир, населенный вечно юными, совершенно здоровыми, счастливыми людьми. 
             Но будут ли они такими же, как мы? Нужны ли дети, если за них придется пожертвовать бессмертием? Нужна ли семья тем, кто не может завести детей? 
@@ -38,18 +40,19 @@
         </div>
     </div>
 
-    <div class='p-3 mb-3 border-bottom border-primary'>
+    <div class='p-3 mb-3 bg-light bg-gradient'>
         <div class='d-flex mb-3'>
             <article class='image-block mx-auto w-50'>
                 <img class='d-block mx-auto h-100 object-fit-cover' src="public/data/images/zelenaya_milya.jpeg" alt="Зеленая миля">
             </article>
             <div class='w-50'>
-                <p>Зеленая миля</p>
-                <p>Стивен Кинг</p>
+                <p class='h3'>Зеленая миля</p>
+                <p class='h6'>Стивен Кинг</p>
                 <p>Роман</p>
+                <p>1996 год</p>
             </div>
         </div>
-        <div>
+        <div class='p-2'>
             Стивен Кинг приглашает читателей в жуткий мир тюремного блока смертников, откуда уходят, чтобы не вернуться, 
             приоткрывает дверь последнего пристанища тех, кто преступил не только человеческий, но и Божий закон. 
             По эту сторону электрического стула нет более смертоносного местечка! Ничто из того, что вы читали раньше, не сравнится с 
