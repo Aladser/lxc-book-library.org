@@ -12,7 +12,7 @@ function route($page_name)
         'register' => '/register',
         'auth' => '/user/auth',
         'store' => '/user/store',
-        'logout' => '/main?logout=true',
+        'logout' => '/user/logout',
     ];
 
     try {
