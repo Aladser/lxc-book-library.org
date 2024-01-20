@@ -28,19 +28,23 @@ class User extends Model
     }
 
     // добавить нового пользователя
-    public function add($login, $password): int
+    public function add($args, $type = 'db'): int
     {
-        $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+        if ($type === 'db') {
+            $args['password'] = password_hash($args['password'], PASSWORD_DEFAULT);
+            $sql = 'insert into db_users(login, password) values(:login, :password)';
+        } elseif ($type === 'vk') {
+            $sql = 'insert into vk_users(id, name) values(:id, :name)';
+        } else {
+            throw new Exception('Неверный тип регистрации');
+        }
 
-        $sql = 'insert into db_users(login, password) values(:login, :password)';
-        $args = ['login' => $login, 'password' => $passwordHash];
-        $db_user_id = $this->dbQuery->insert($sql, $args);
-
-        $sql = 'insert into users(db_user_id) values(:id)';
-        $args = ['id' => $db_user_id];
         $user_id = $this->dbQuery->insert($sql, $args);
+        $sql = "insert into users({$type}_user_id) values(:id)";
+        $args = ['id' => $user_id];
+        $general_user_id = $this->dbQuery->insert($sql, $args);
 
-        return $user_id;
+        return $general_user_id;
     }
 
     // получить ID пользователя

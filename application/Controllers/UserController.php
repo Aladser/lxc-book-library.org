@@ -57,7 +57,7 @@ class UserController extends Controller
         );
     }
 
-    // форма регистрации
+    // страница регистрации
     public function register(mixed $args): void
     {
         $args['csrf'] = $this->csrf;
@@ -96,10 +96,9 @@ class UserController extends Controller
     {
         $email = $args['login'];
         $password = $args['password'];
-        $passwordConfirm = $args['password_confirm'];
 
         // проверка паролей
-        if ($args['password'] !== $args['password_confirm']) {
+        if ($password !== $args['password_confirm']) {
             // проверка совпадения паролей
             header("Location: {$this->register_url}?error=dp&user=$email");
         } elseif (strlen($password) < 3) {
@@ -107,7 +106,8 @@ class UserController extends Controller
             header("Location:{$this->register_url}?error=sp&user=$email");
         } elseif (!$this->userModel->exists($email)) {
             // регистрация пользователя
-            $isUserRegistered = $this->userModel->add($email, $password);
+            unset($args['password_confirm']);
+            $isUserRegistered = $this->userModel->add($args);
             if ($isUserRegistered) {
                 $this->saveAuth($email);
                 header("Location: {$this->home_url}");
