@@ -15,7 +15,7 @@
         <div class='text-center p-3'>или войти с помощью</div>
 
         <!-- авторизация ВК -->
-        <form method="POST" class='pb-3' action="/engine/auth/auth_vk_check_csrf.php">
+        <form method="POST" class='pb-3' action="<?php echo $routes['login_vk']; ?>">
             <input type="image" src='/public/images/vk-logo.png' title='Авторизация VK'>
             <input type="hidden" name="CSRF" value="<?php echo $data['csrf']; ?>">
         </form>

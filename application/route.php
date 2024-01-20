@@ -9,6 +9,7 @@ function route($page_name)
     $urlPageList = [
         'home' => '/',
         'login' => '/login',
+        'login_vk' => '/user/login_vk',
         'register' => '/register',
         'auth' => '/user/auth',
         'store' => '/user/store',

@@ -8,9 +8,13 @@ use App\Core\Model;
 class User extends Model
 {
     /** проверить существование пользователя */
-    public function exists($login): bool
+    public function exists($login, $type): bool
     {
-        $sql = 'select count(*) as count from db_users where login = :login';
+        if ($type != 'db' && $type != 'vk') {
+            throw new Exception('Неверный тип авторизации');
+        }
+
+        $sql = "select count(*) as count from {$type}_users where login = :login";
         $args = ['login' => $login];
         $isExisted = $this->dbQuery->queryPrepared($sql, $args)['count'] == 1;
 
@@ -34,7 +38,7 @@ class User extends Model
             $args['password'] = password_hash($args['password'], PASSWORD_DEFAULT);
             $sql = 'insert into db_users(login, password) values(:login, :password)';
         } elseif ($type === 'vk') {
-            $sql = 'insert into vk_users(id, name) values(:id, :name)';
+            $sql = 'insert into vk_users(login, token) values(:login, :token)';
         } else {
             throw new Exception('Неверный тип регистрации');
         }
@@ -52,8 +56,16 @@ class User extends Model
     {
         $sql = 'select id from users where login = :login';
         $args = ['login' => $login];
-        $id = $this->dbQuery->queryPrepared($sql, $args)['id'];
 
-        return $id;
+        return $this->dbQuery->queryPrepared($sql, $args)['id'];
+    }
+
+    // запись ВК-токена
+    public function writeVKToken(int $login, string $token): bool
+    {
+        $sql = 'update vk_users set token = :token where login = :login';
+        $args = ['login' => $login, 'token' => $token];
+
+        return $this->dbQuery->update($sql, $args);
     }
 }

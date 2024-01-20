@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Core\Controller;
 use App\Models\User;
 
+use function App\config;
 use function App\route;
 
 // пользователи
@@ -45,6 +46,7 @@ class UserController extends Controller
         $routes = [
             'home' => $this->home_url,
             'register' => $this->register_url,
+            'login_vk' => route('login_vk'),
             'auth' => route('auth'),
         ];
 
@@ -55,6 +57,117 @@ class UserController extends Controller
             data: $args,
             routes: $routes,
         );
+    }
+
+    // авторизация
+    public function auth(mixed $args): void
+    {
+        $login = $args['login'];
+        $password = $args['password'];
+        // проверка аутентификации
+        if ($this->userModel->exists($login, 'db')) {
+            // проверка введенных данных
+            $isAuth = $this->userModel->is_correct_password($login, $password);
+            if ($isAuth) {
+                $this->saveAuth(['login' => $login], 'db');
+                header("Location: {$this->home_url}");
+            } else {
+                header("Location: {$this->login_url}?user=$login&error=wp");
+            }
+        } else {
+            header("Location: {$this->login_url}?user=$login&error=wu");
+        }
+    }
+
+    // страница авторизации ВК
+    public function login_vk()
+    {
+        // запрос получения ВК-кода
+        $vkCodeParams = [
+            'client_id' => config('VK_CLIENT_ID'),
+            'redirect_uri' => config('VK_REDIRECT_URI'),
+            'response_type' => 'code',
+            'scope' => 'photos,offline',
+        ];
+
+        $get_vk_code_url = 'http://oauth.vk.com/authorize?'.http_build_query($vkCodeParams);
+        header("Location: $get_vk_code_url");
+    }
+
+    // авторизация ВК
+    public function auth_vk()
+    {
+        $authType = 'vk';
+        // получение access_token
+        if (isset($_GET['code'])) {
+            $params = $this->getVKAccessToken($_GET['code']);
+            $vkToken = $params['vktoken'];
+            $vkId = $params['vkid'];
+
+            $params = [
+                'v' => config('VK_VERSION'),
+                'access_token' => $vkToken,
+                'user_ids' => $vkId,
+                // Список опциональных полей https://vk.com/dev/objects/user
+                'fields' => 'photo_100,about',
+            ];
+
+            if (!$content = @file_get_contents('https://api.vk.com/method/users.get?'.http_build_query($params))) {
+                $error = error_get_last();
+                throw new Exception('HTTP request failed. Error: '.$error['message']);
+            }
+            $response = json_decode($content);
+            if (isset($response->error)) {
+                throw new Exception($response->error);
+            }
+            $response = $response->response;
+
+            foreach ($response as $userItem) {
+                $login = $userItem->first_name.' '.$userItem->last_name;
+                // добавление пользователя вк в БД, если не существует
+
+                if ($this->userModel->exists($vkId, $authType)) {
+                    $this->userModel->writeVKToken($vkId, $vkToken);
+                } else {
+                    $this->userModel->add(['id' => $vkId, 'token' => $vkToken], $authType);
+                }
+
+                $this->saveAuth(['login' => $login], $authType);
+                header('Location: '.route('home'));
+            }
+        }
+    }
+
+    /** выйти из системы */
+    public function logout()
+    {
+        session_destroy();
+        setcookie('auth', '', time() - 3600, '/');
+        setcookie('login', '', time() - 3600, '/');
+        header("Location: {$this->home_url}");
+    }
+
+    // VKAccessToken
+    private function getVKAccessToken($code)
+    {
+        $params = [
+            'client_id' => config('VK_CLIENT_ID'),
+            'client_secret' => config('VK_CLIENT_SECRET'),
+            'code' => $code,
+            'redirect_uri' => config('VK_REDIRECT_URI'),
+        ];
+        if (!$content = @file_get_contents('https://oauth.vk.com/access_token?'.http_build_query($params))) {
+            $error = error_get_last();
+            throw new Exception('HTTP request failed. Error: '.$error['message']);
+        }
+
+        $response = json_decode($content);
+        if (isset($response->error)) {
+            throw new Exception('
+                    При получении токена произошла ошибка. Error: '.$response->error.'. Error description: '.$response->error_description);
+        }
+
+        return ['vktoken' => $response->access_token, 'vkid' => $response->user_id];
     }
 
     // страница регистрации
@@ -104,12 +217,12 @@ class UserController extends Controller
         } elseif (strlen($password) < 3) {
             // длина пароля
             header("Location:{$this->register_url}?error=sp&user=$email");
-        } elseif (!$this->userModel->exists($email)) {
+        } elseif (!$this->userModel->exists($email, 'db')) {
             // регистрация пользователя
             unset($args['password_confirm']);
             $isUserRegistered = $this->userModel->add($args);
             if ($isUserRegistered) {
-                $this->saveAuth($email);
+                $this->saveAuth(['login' => $email], 'db');
                 header("Location: {$this->home_url}");
             } else {
                 header("Location: {$this->register_url}?error=system_error");
@@ -119,53 +232,27 @@ class UserController extends Controller
         }
     }
 
-    // авторизация
-    public function auth(mixed $args): void
+    /** Сохранить авторизацию в куки и сессии */
+    private function saveAuth(array $params, $type): void
     {
-        $login = $args['login'];
-        $password = $args['password'];
-        // проверка аутентификации
-        if ($this->userModel->exists($login)) {
-            // проверка введенных данных
-            $isAuth = $this->userModel->is_correct_password($login, $password);
-            if ($isAuth) {
-                $this->saveAuth($login);
-                header("Location: {$this->home_url}");
-            } else {
-                header("Location: {$this->login_url}?user=$login&error=wp");
-            }
-        } else {
-            header("Location: {$this->login_url}?user=$login&error=wu");
+        if ($type !== 'db' && $type !== 'vk') {
+            throw new Exception('Неверный тип авторизации');
+        }
+
+        $_SESSION['auth'] = $type;
+        setcookie('auth', $type, time() + 60 * 60 * 24, '/');
+        foreach ($params as $key => $value) {
+            $_SESSION[$key] = $value;
+            setcookie($key, $value, time() + 60 * 60 * 24, '/');
         }
     }
 
-    /** Сохранить авторизацию в куки и сессии.
-     *
-     * @param string $user имя пользователя
-     */
-    private function saveAuth(string $user): void
-    {
-        $_SESSION['auth'] = 1;
-        $_SESSION['login'] = $user;
-        setcookie('auth', 1, time() + 60 * 60 * 24, '/');
-        setcookie('login', $user, time() + 60 * 60 * 24, '/');
-    }
-
-    /** выйти из системы */
-    public function logout()
-    {
-        session_destroy();
-        setcookie('auth', '', time() - 3600, '/');
-        setcookie('login', '', time() - 3600, '/');
-        header("Location: {$this->home_url}");
-    }
-
     /** получить логин из сессии или куки */
-    public static function getAuthUser(): string
+    public static function getAuthUser(): mixed
     {
-        if (isset($_SESSION['login'])) {
+        if (isset($_SESSION['auth'])) {
             return $_SESSION['login'];
-        } elseif (isset($_COOKIE['login'])) {
+        } elseif (isset($_COOKIE['auth'])) {
             return $_COOKIE['login'];
         } else {
             return false;
