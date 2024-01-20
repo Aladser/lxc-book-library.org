@@ -1,6 +1,7 @@
 html {
     --theme-color: rgba(0, 150, 255, 0.75);
     --theme-darker-color: rgb(0, 150, 255, 1);
+    --theme-red-color: rgb(202, 0, 0);
     --theme-border: 1.5px solid var(--theme-color);
   }
   
@@ -9,6 +10,9 @@ html {
   }
   .theme-darker-color {
     color: var(--theme-darker-color);
+  }
+  .theme-red-color {
+    color: var(--theme-red-color);
   }
   .theme-bg-сolor {
     background-color: var(--theme-color);

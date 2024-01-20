@@ -106,7 +106,7 @@ class UserController extends Controller
             // длина пароля
             header("Location:{$this->register_url}?error=sp&user=$email");
         } elseif (!$this->userModel->exists($email)) {
-            // проверить существование пользователя
+            // регистрация пользователя
             $isUserRegistered = $this->userModel->add($email, $password);
             if ($isUserRegistered) {
                 $this->saveAuth($email);
