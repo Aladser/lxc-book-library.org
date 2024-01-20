@@ -20,7 +20,7 @@ class User extends Model
     // проверка авторизации
     public function is_correct_password($login, $password): bool
     {
-        $sql = 'select password from users where login=:login';
+        $sql = 'select password from db_users where login=:login';
         $args = ['login' => $login];
         $passHash = $this->dbQuery->queryPrepared($sql, $args)['password'];
 

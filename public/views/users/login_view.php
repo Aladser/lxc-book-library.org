@@ -1,5 +1,5 @@
 <div class='container'>
-    <section class='w-50 mx-auto text-center'>
+    <section class='w-50 mx-auto text-center mb-3'>
         <h3>Авторизация</h3>
 
         <!-- логин-пароль -->
@@ -23,7 +23,7 @@
         <a href="<?php echo $routes['home']; ?>" class="d-block mx-auto button-basic theme-border w-75">Назад</a>
     </section>
 
-    <?php if (isset($args['error'])) { ?>
-        <article class='mx-auto text-center text-danger fw-bolder'><?php echo $args['error']; ?></article>
+    <?php if (isset($data['error'])) { ?>
+        <article class='mx-auto text-center text-danger fw-bolder'><?php echo $data['error']; ?></article>
     <?php } ?>
 </div>
