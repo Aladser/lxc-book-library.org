@@ -34,9 +34,13 @@ class User extends Model
 
         $sql = 'insert into db_users(login, password) values(:login, :password)';
         $args = ['login' => $login, 'password' => $passwordHash];
-        $id = $this->dbQuery->insert($sql, $args);
+        $db_user_id = $this->dbQuery->insert($sql, $args);
 
-        return $id;
+        $sql = 'insert into users(db_user_id) values(:id)';
+        $args = ['id' => $db_user_id];
+        $user_id = $this->dbQuery->insert($sql, $args);
+
+        return $user_id;
     }
 
     // получить ID пользователя
