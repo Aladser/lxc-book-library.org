@@ -104,6 +104,7 @@ class UserController extends Controller
             $vkToken = $params['vktoken'];
             $vkId = $params['vkid'];
 
+            // получить имя пользователя, фото
             $params = [
                 'v' => config('VK_VERSION'),
                 'access_token' => $vkToken,
@@ -111,7 +112,6 @@ class UserController extends Controller
                 // Список опциональных полей https://vk.com/dev/objects/user
                 'fields' => 'photo_100,about',
             ];
-
             if (!$content = @file_get_contents('https://api.vk.com/method/users.get?'.http_build_query($params))) {
                 $error = error_get_last();
                 throw new Exception('HTTP request failed. Error: '.$error['message']);
@@ -122,6 +122,7 @@ class UserController extends Controller
             }
             $response = $response->response;
 
+            // обновление данных пользователя
             foreach ($response as $userItem) {
                 $login = $userItem->first_name.' '.$userItem->last_name;
                 // добавление пользователя вк в БД, если не существует
@@ -129,7 +130,7 @@ class UserController extends Controller
                 if ($this->userModel->exists($vkId, $authType)) {
                     $this->userModel->writeVKToken($vkId, $vkToken);
                 } else {
-                    $this->userModel->add(['id' => $vkId, 'token' => $vkToken], $authType);
+                    $this->userModel->add(['login' => $vkId, 'token' => $vkToken], $authType);
                 }
 
                 $this->saveAuth(['login' => $login], $authType);
