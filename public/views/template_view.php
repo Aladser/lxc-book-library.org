@@ -29,8 +29,13 @@
 <header class='mb-4'>
     <div class='d-flex justify-content-between theme-border theme-color'>
         <div class='d-inline-block p-3 fw-bold'><?php echo $page_name; ?></div>
-        <?php if (!empty($routes['login'])) { ?>
-            <a href="<?php echo $routes['login']; ?>" class='button-basic theme-border-start d-flex justify-content-center'>Войти</a>
+        <?php if (!empty($data['header_button_url'])) { ?>
+            <div class='d-flex'>
+                <div class='px-5 d-flex align-items-center'><?php echo $data['auth_user']; ?></div>
+                <a href="<?php echo $data['header_button_url']; ?>" class='button-basic theme-border-start d-flex justify-content-center align-items-center'>
+                    <?php echo $data['header_button_name']; ?>
+                </a>
+            </div>
         <?php } ?>
     </div>
 </header>

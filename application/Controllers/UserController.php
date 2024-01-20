@@ -151,6 +151,15 @@ class UserController extends Controller
         setcookie('login', $user, time() + 60 * 60 * 24, '/');
     }
 
+    /** выйти из системы */
+    public function logout()
+    {
+        session_destroy();
+        setcookie('auth', '', time() - 3600, '/');
+        setcookie('login', '', time() - 3600, '/');
+        header("Location: {$this->home_url}");
+    }
+
     /** получить логин из сессии или куки */
     public static function getAuthUser(): string
     {
