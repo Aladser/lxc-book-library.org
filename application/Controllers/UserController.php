@@ -192,7 +192,7 @@ class UserController extends Controller
         }
 
         $routes = [
-            'home' => $this->home_url,
+            'login' => $this->login_url,
             'store' => route('store'),
         ];
 
