@@ -230,6 +230,8 @@ class UserController extends Controller
         $data['user_id'] = $response[0]->id;
         $data['user_photo'] = $response[0]->photo_100;
         $data['user_name'] = "{$response[0]->first_name} {$response[0]->last_name}";
+        $data['header_button_url'] = route('logout');
+        $data['header_button_name'] = 'Выйти';
 
         $this->view->generate(
             page_name: "Пользователь {$data['user_id']}",

@@ -31,12 +31,13 @@
         <div class='d-inline-block p-3 fw-bold'><?php echo $page_name; ?></div>
         <?php if (!empty($data['header_button_url'])) { ?>
             <div class='d-flex'>
+                <!-- имя пользователя -->
                 <?php if (!empty($data['auth_user_name'])) { ?>
                 <a href=<?php echo $data['auth_user_page']; ?> class='button-basic button-wide theme-border-start d-flex justify-content-center align-items-center' title='Профиль'>
                     <?php echo $data['auth_user_name']; ?>
                 </a>
                 <?php } ?> 
-
+                <!-- кнопка входа-выхода -->
                 <a href="<?php echo $data['header_button_url']; ?>" class='button-basic theme-border-start d-flex justify-content-center align-items-center'>
                     <?php echo $data['header_button_name']; ?>
                 </a>

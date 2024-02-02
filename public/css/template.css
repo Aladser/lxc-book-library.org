@@ -30,3 +30,9 @@ a {
   color: var(--theme-darker-color);
   background-color: white;
 }
+
+@media(max-width:700px) {
+  .button-wide{
+    width: 100%;
+  }
+}
