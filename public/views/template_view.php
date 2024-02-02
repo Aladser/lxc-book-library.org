@@ -32,7 +32,7 @@
         <?php if (!empty($data['header_button_url'])) { ?>
             <div class='d-flex'>
                 <?php if (!empty($data['auth_user_name'])) { ?>
-                <a href=<?php echo $data['auth_user_page']; ?> class='button-basic button-wide theme-border-start d-flex justify-content-center align-items-center'>
+                <a href=<?php echo $data['auth_user_page']; ?> class='button-basic button-wide theme-border-start d-flex justify-content-center align-items-center' title='Профиль'>
                     <?php echo $data['auth_user_name']; ?>
                 </a>
                 <?php } ?> 

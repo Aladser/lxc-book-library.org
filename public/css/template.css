@@ -26,3 +26,7 @@ a {
 .button-wide {
   width: 20rem;
 }
+.button-wide:hover {
+  color: var(--theme-darker-color);
+  background-color: white;
+}
