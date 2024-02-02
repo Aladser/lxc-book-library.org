@@ -8,7 +8,7 @@ use function App\route;
 
 class BookController extends Controller
 {
-    private string $auth_user;
+    private mixed $auth_user;
 
     public function __construct()
     {
@@ -19,14 +19,15 @@ class BookController extends Controller
     public function index(mixed $args): void
     {
         // кнопка Войти-Выйти
-        if (empty($this->auth_user)) {
-            $data['header_button_name'] = 'Войти';
-            $data['header_button_url'] = route('login');
-        } else {
+        if (!empty($this->auth_user)) {
             $data['header_button_name'] = 'Выйти';
             $data['header_button_url'] = route('logout');
+            $data['auth_user_name'] = $this->auth_user['user_name'];
+            $data['auth_user_page'] = route('show');
+        } else {
+            $data['header_button_name'] = 'Войти';
+            $data['header_button_url'] = route('login');
         }
-        $data['auth_user'] = $this->auth_user;
 
         $this->view->generate(
             page_name: $this->site_name,

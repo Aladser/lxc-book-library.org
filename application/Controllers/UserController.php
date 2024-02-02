@@ -101,30 +101,14 @@ class UserController extends Controller
         // получение access_token
         if (isset($_GET['code'])) {
             $params = $this->getVKAccessToken($_GET['code']);
-            $vkToken = $params['vktoken'];
             $vkId = $params['vkid'];
-
-            // получить имя пользователя, фото
-            $params = [
-                'v' => config('VK_VERSION'),
-                'access_token' => $vkToken,
-                'user_ids' => $vkId,
-                // Список опциональных полей https://vk.com/dev/objects/user
-                'fields' => 'photo_100,about',
-            ];
-            if (!$content = @file_get_contents('https://api.vk.com/method/users.get?'.http_build_query($params))) {
-                $error = error_get_last();
-                throw new Exception('HTTP request failed. Error: '.$error['message']);
-            }
-            $response = json_decode($content);
-            if (isset($response->error)) {
-                throw new Exception($response->error);
-            }
-            $response = $response->response;
+            $vkToken = $params['vktoken'];
+            $response = self::getVKUserInfo($vkId, $vkToken)->response;
 
             // обновление данных пользователя
             foreach ($response as $userItem) {
-                $login = $userItem->first_name.' '.$userItem->last_name;
+                $login = $vkId;
+                $user_name = "{$userItem->first_name} {$userItem->last_name}";
                 // добавление пользователя вк в БД, если не существует
 
                 if ($this->userModel->exists($vkId, $authType)) {
@@ -133,22 +117,26 @@ class UserController extends Controller
                     $this->userModel->add(['login' => $vkId, 'token' => $vkToken], $authType);
                 }
 
-                $this->saveAuth(['login' => $login], $authType);
+                $this->saveAuth(
+                    ['login' => $login, 'user_name' => $user_name],
+                    $authType
+                );
                 header('Location: '.route('home'));
             }
         }
     }
 
-    /** выйти из системы */
+    // выйти из системы
     public function logout()
     {
         session_destroy();
-        setcookie('auth', '', time() - 3600, '/');
+        setcookie('auth_type', '', time() - 3600, '/');
         setcookie('login', '', time() - 3600, '/');
+        setcookie('user_name', '', time() - 3600, '/');
         header("Location: {$this->home_url}");
     }
 
-    // VKAccessToken
+    // получить VKAccessToken
     private function getVKAccessToken($code)
     {
         $params = [
@@ -233,30 +221,83 @@ class UserController extends Controller
         }
     }
 
-    /** Сохранить авторизацию в куки и сессии */
+    // страница пользователя
+    public function show()
+    {
+        $login = self::getAuthUser()['login'];
+        $token = $this->userModel->getVKToken($login);
+        $response = self::getVKUserInfo($login, $token)->response;
+        $data['user_id'] = $response[0]->id;
+        $data['user_photo'] = $response[0]->photo_100;
+        $data['user_name'] = "{$response[0]->first_name} {$response[0]->last_name}";
+
+        $this->view->generate(
+            page_name: "Пользователь {$data['user_id']}",
+            template_view: 'template_view.php',
+            content_view: 'users/show_view.php',
+            data: $data,
+        );
+    }
+
+    // получить информацию о пользователе ВК
+    private static function getVKUserInfo($vkId, $vkToken)
+    {
+        // получить имя пользователя, фото
+        $params = [
+            'v' => config('VK_VERSION'),
+            'user_ids' => $vkId,
+            'access_token' => $vkToken,
+            // Список опциональных полей https://vk.com/dev/objects/user
+            'fields' => 'photo_100,about',
+        ];
+        if (!$content = @file_get_contents('https://api.vk.com/method/users.get?'.http_build_query($params))) {
+            $error = error_get_last();
+            throw new Exception('HTTP request failed. Error: '.$error['message']);
+        }
+        $response = json_decode($content);
+        if (isset($response->error)) {
+            throw new Exception($response->error);
+        }
+
+        return $response;
+    }
+
+    // получить авторизованного пользователя
+    public static function getAuthUser(): mixed
+    {
+        if (isset($_SESSION['auth_type'])) {
+            return [
+                'login' => $_SESSION['login'],
+                'user_name' => $_SESSION['user_name'],
+                'auth_type' => $_SESSION['auth_type'],
+            ];
+        } elseif (isset($_COOKIE['auth_type'])) {
+            return [
+                'login' => $_COOKIE['login'],
+                'user_name' => $_COOKIE['user_name'],
+                'auth_type' => $_COOKIE['auth_type'],
+            ];
+        } else {
+            return false;
+        }
+    }
+
+    // Сохранить авторизацию в куки и сессии
     private function saveAuth(array $params, $type): void
     {
         if ($type !== 'db' && $type !== 'vk') {
             throw new Exception('Неверный тип авторизации');
         }
 
-        $_SESSION['auth'] = $type;
-        setcookie('auth', $type, time() + 60 * 60 * 24, '/');
+        $_SESSION['auth_type'] = $type;
+        setcookie('auth_type', $type, time() + 60 * 60 * 24, '/');
         foreach ($params as $key => $value) {
             $_SESSION[$key] = $value;
             setcookie($key, $value, time() + 60 * 60 * 24, '/');
         }
-    }
-
-    /** получить логин из сессии или куки */
-    public static function getAuthUser(): mixed
-    {
-        if (isset($_SESSION['auth'])) {
-            return $_SESSION['login'];
-        } elseif (isset($_COOKIE['auth'])) {
-            return $_COOKIE['login'];
-        } else {
-            return false;
+        if ($type === 'db') {
+            $_SESSION['user_name'] = $params['login'];
+            setcookie('user_name', $params['login'], time() + 60 * 60 * 24, '/');
         }
     }
 }

@@ -13,6 +13,7 @@ function route($page_name)
         'register' => '/register',
         'auth' => '/user/auth',
         'store' => '/user/store',
+        'show' => '/user/show',
         'logout' => '/user/logout',
     ];
 

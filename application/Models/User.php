@@ -51,15 +51,6 @@ class User extends Model
         return $general_user_id;
     }
 
-    // получить ID пользователя
-    public function getId(string $login)
-    {
-        $sql = 'select id from users where login = :login';
-        $args = ['login' => $login];
-
-        return $this->dbQuery->queryPrepared($sql, $args)['id'];
-    }
-
     // запись ВК-токена
     public function writeVKToken(int $login, string $token): bool
     {
@@ -67,5 +58,14 @@ class User extends Model
         $args = ['login' => $login, 'token' => $token];
 
         return $this->dbQuery->update($sql, $args);
+    }
+
+    public function getVKToken($login)
+    {
+        $sql = 'select token from vk_users where login = :login';
+        $args = ['login' => $login];
+        $token = $this->dbQuery->queryPrepared($sql, $args)['token'];
+
+        return $token;
     }
 }

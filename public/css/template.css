@@ -22,3 +22,7 @@ a {
   color: white;
   background-color: var(--theme-color);
 }
+
+.button-wide {
+  width: 20rem;
+}
