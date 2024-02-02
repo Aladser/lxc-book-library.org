@@ -238,11 +238,16 @@ class UserController extends Controller
         $data['header_button_url'] = route('logout');
         $data['header_button_name'] = 'Выйти';
 
+        $routes = [
+            'home' => $this->home_url,
+        ];
+
         $this->view->generate(
             page_name: "Пользователь {$data['user_id']}",
             template_view: 'template_view.php',
             content_view: 'users/show_view.php',
             data: $data,
+            routes: $routes
         );
     }
 
