@@ -109,6 +109,7 @@ class UserController extends Controller
             foreach ($response as $userItem) {
                 $login = $vkId;
                 $user_name = "{$userItem->first_name} {$userItem->last_name}";
+                $user_photo = $userItem->photo_100;
                 // добавление пользователя вк в БД, если не существует
 
                 if ($this->userModel->exists($vkId, $authType)) {
@@ -118,7 +119,11 @@ class UserController extends Controller
                 }
 
                 $this->saveAuth(
-                    ['login' => $login, 'user_name' => $user_name],
+                    [
+                        'login' => $login,
+                        'user_name' => $user_name,
+                        'user_photo' => $user_photo,
+                    ],
                     $authType
                 );
                 header('Location: '.route('home'));
@@ -267,21 +272,21 @@ class UserController extends Controller
     // получить авторизованного пользователя
     public static function getAuthUser(): mixed
     {
+        $userData = null;
         if (isset($_SESSION['auth_type'])) {
-            return [
-                'login' => $_SESSION['login'],
-                'user_name' => $_SESSION['user_name'],
-                'auth_type' => $_SESSION['auth_type'],
-            ];
+            $userData = $_SESSION;
         } elseif (isset($_COOKIE['auth_type'])) {
-            return [
-                'login' => $_COOKIE['login'],
-                'user_name' => $_COOKIE['user_name'],
-                'auth_type' => $_COOKIE['auth_type'],
-            ];
+            $userData = $_COOKIE;
         } else {
             return false;
         }
+
+        return [
+            'login' => $userData['login'],
+            'user_name' => $userData['user_name'],
+            'user_photo' => $userData['user_photo'],
+            'auth_type' => $userData['auth_type'],
+        ];
     }
 
     // Сохранить авторизацию в куки и сессии
