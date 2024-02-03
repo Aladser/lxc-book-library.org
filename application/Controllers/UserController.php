@@ -229,14 +229,24 @@ class UserController extends Controller
     // страница пользователя
     public function show()
     {
-        $login = self::getAuthUser()['login'];
-        $token = $this->userModel->getVKToken($login);
-        $response = self::getVKUserInfo($login, $token)->response;
-        $data['user_id'] = $response[0]->id;
-        $data['user_photo'] = $response[0]->photo_100;
-        $data['user_name'] = "{$response[0]->first_name} {$response[0]->last_name}";
+        $data = [];
         $data['header_button_url'] = route('logout');
         $data['header_button_name'] = 'Выйти';
+
+        $authUser = self::getAuthUser();
+        $login = $authUser['login'];
+
+        if ($authUser['auth_type'] == 'vk') {
+            $token = $this->userModel->getVKToken($login);
+            $response = self::getVKUserInfo($login, $token)->response;
+            $data['user_id'] = $response[0]->id;
+            $data['user_photo'] = $response[0]->photo_100;
+            $data['user_name'] = "{$response[0]->first_name} {$response[0]->last_name}";
+        } elseif ($authUser['auth_type'] == 'db') {
+            $data['user_id'] = $login;
+        } else {
+            return null;
+        }
 
         $routes = [
             'home' => $this->home_url,
@@ -277,21 +287,21 @@ class UserController extends Controller
     // получить авторизованного пользователя
     public static function getAuthUser(): mixed
     {
-        $userDataStore = null;
+        $store = null;
         if (isset($_SESSION['auth_type'])) {
-            $userDataStore = $_SESSION;
+            $store = $_SESSION;
         } elseif (isset($_COOKIE['auth_type'])) {
-            $userDataStore = $_COOKIE;
+            $store = $_COOKIE;
         } else {
             return false;
         }
         $userData = [
-            'login' => $userDataStore['login'],
-            'user_name' => $userDataStore['user_name'],
-            'auth_type' => $userDataStore['auth_type'],
+            'login' => $store['login'],
+            'user_name' => $store['user_name'],
+            'auth_type' => $store['auth_type'],
         ];
-        if (isset($userDataStore['user_photo'])) {
-            $userData['user_photo'] = $userDataStore['user_photo'];
+        if (isset($store['user_photo'])) {
+            $userData['user_photo'] = $store['user_photo'];
         }
 
         return $userData;

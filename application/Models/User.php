@@ -51,6 +51,14 @@ class User extends Model
         return $general_user_id;
     }
 
+    public function getDBUser(string $login)
+    {
+        $sql = 'select * from db_users where login = :login';
+        $args = ['login' => $login];
+
+        return $this->dbQuery->queryPrepared($sql, $args);
+    }
+
     // запись ВК-токена
     public function writeVKToken(int $login, string $token): bool
     {
