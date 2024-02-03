@@ -239,11 +239,11 @@ class UserController extends Controller
         if ($authUser['auth_type'] == 'vk') {
             $token = $this->userModel->getVKToken($login);
             $response = self::getVKUserInfo($login, $token)->response;
-            $data['user_id'] = "ID: {$response[0]->id}";
-            $data['user_photo'] = $response[0]->photo_100;
+            $data['user_login'] = "ID: {$response[0]->id}";
             $data['user_name'] = "{$response[0]->first_name} {$response[0]->last_name}";
+            $data['user_photo'] = $response[0]->photo_100;
         } elseif ($authUser['auth_type'] == 'db') {
-            $data['user_id'] = "Почта: $login";
+            $data['user_login'] = "Почта: $login";
             $data['user_name'] = $login;
         } else {
             return null;
@@ -253,8 +253,9 @@ class UserController extends Controller
             'home' => $this->home_url,
         ];
 
+        $page_name = $authUser['auth_type'] === 'vk' ? "Пользователь ID$login" : "Пользователь $login";
         $this->view->generate(
-            page_name: "Пользователь {$data['user_id']}",
+            page_name: $page_name,
             template_view: 'template_view.php',
             content_view: 'users/show_view.php',
             data: $data,
