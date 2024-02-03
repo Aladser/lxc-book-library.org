@@ -244,6 +244,7 @@ class UserController extends Controller
             $data['user_name'] = "{$response[0]->first_name} {$response[0]->last_name}";
         } elseif ($authUser['auth_type'] == 'db') {
             $data['user_id'] = $login;
+            $data['user_name'] = $login;
         } else {
             return null;
         }

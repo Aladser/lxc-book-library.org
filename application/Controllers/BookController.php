@@ -23,8 +23,10 @@ class BookController extends Controller
             $data['header_button_name'] = 'Выйти';
             $data['header_button_url'] = route('logout');
             $data['auth_user_name'] = $this->auth_user['user_name'];
-            $data['auth_user_photo'] = $this->auth_user['user_photo'];
             $data['auth_user_page'] = route('show');
+            if (isset($this->auth_user['user_photo'])) {
+                $data['auth_user_photo'] = $this->auth_user['user_photo'];
+            }
         } else {
             $data['header_button_name'] = 'Войти';
             $data['header_button_url'] = route('login');
