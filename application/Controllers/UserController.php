@@ -201,7 +201,7 @@ class UserController extends Controller
     // регистрация пользователя
     public function store(mixed $args): void
     {
-        $email = $args['login'];
+        $email = $args['email'];
         $password = $args['password'];
 
         // проверка паролей
@@ -239,11 +239,11 @@ class UserController extends Controller
         if ($authUser['auth_type'] == 'vk') {
             $token = $this->userModel->getVKToken($login);
             $response = self::getVKUserInfo($login, $token)->response;
-            $data['user_id'] = $response[0]->id;
+            $data['user_id'] = "ID: {$response[0]->id}";
             $data['user_photo'] = $response[0]->photo_100;
             $data['user_name'] = "{$response[0]->first_name} {$response[0]->last_name}";
         } elseif ($authUser['auth_type'] == 'db') {
-            $data['user_id'] = $login;
+            $data['user_id'] = "Почта: $login";
             $data['user_name'] = $login;
         } else {
             return null;

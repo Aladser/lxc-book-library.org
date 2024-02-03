@@ -36,7 +36,7 @@ class User extends Model
     {
         if ($type === 'db') {
             $args['password'] = password_hash($args['password'], PASSWORD_DEFAULT);
-            $sql = 'insert into db_users(login, password) values(:login, :password)';
+            $sql = 'insert into db_users(login, password) values(:email, :password)';
         } elseif ($type === 'vk') {
             $sql = 'insert into vk_users(login, token) values(:login, :token)';
         } else {
