@@ -277,21 +277,24 @@ class UserController extends Controller
     // получить авторизованного пользователя
     public static function getAuthUser(): mixed
     {
-        $userData = null;
+        $userDataStore = null;
         if (isset($_SESSION['auth_type'])) {
-            $userData = $_SESSION;
+            $userDataStore = $_SESSION;
         } elseif (isset($_COOKIE['auth_type'])) {
-            $userData = $_COOKIE;
+            $userDataStore = $_COOKIE;
         } else {
             return false;
         }
-
-        return [
-            'login' => $userData['login'],
-            'user_name' => $userData['user_name'],
-            'user_photo' => $userData['user_photo'],
-            'auth_type' => $userData['auth_type'],
+        $userData = [
+            'login' => $userDataStore['login'],
+            'user_name' => $userDataStore['user_name'],
+            'auth_type' => $userDataStore['auth_type'],
         ];
+        if (isset($userDataStore['user_photo'])) {
+            $userData['user_photo'] = $userDataStore['user_photo'];
+        }
+
+        return $userData;
     }
 
     // Сохранить авторизацию в куки и сессии
