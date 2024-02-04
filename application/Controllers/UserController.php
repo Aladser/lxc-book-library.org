@@ -53,7 +53,7 @@ class UserController extends Controller
         $this->view->generate(
             page_name: "{$this->site_name} - авторизация",
             template_view: 'template_view.php',
-            content_view: 'users/login_view.php',
+            content_view: 'user/login_view.php',
             data: $args,
             routes: $routes,
         );
@@ -192,7 +192,7 @@ class UserController extends Controller
         $this->view->generate(
             page_name: "{$this->site_name} - регистрация",
             template_view: 'template_view.php',
-            content_view: 'users/register_view.php',
+            content_view: 'user/register_view.php',
             data: $args,
             routes: $routes
         );
@@ -257,7 +257,7 @@ class UserController extends Controller
         $this->view->generate(
             page_name: $page_name,
             template_view: 'template_view.php',
-            content_view: 'users/show_view.php',
+            content_view: 'user/show_view.php',
             data: $data,
             routes: $routes
         );
