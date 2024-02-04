@@ -131,39 +131,6 @@ class UserController extends Controller
         }
     }
 
-    // выйти из системы
-    public function logout()
-    {
-        session_destroy();
-        setcookie('auth_type', '', time() - 3600, '/');
-        setcookie('login', '', time() - 3600, '/');
-        setcookie('user_name', '', time() - 3600, '/');
-        header("Location: {$this->home_url}");
-    }
-
-    // получить VKAccessToken
-    private function getVKAccessToken($code)
-    {
-        $params = [
-            'client_id' => config('VK_CLIENT_ID'),
-            'client_secret' => config('VK_CLIENT_SECRET'),
-            'code' => $code,
-            'redirect_uri' => config('VK_REDIRECT_URI'),
-        ];
-        if (!$content = @file_get_contents('https://oauth.vk.com/access_token?'.http_build_query($params))) {
-            $error = error_get_last();
-            throw new Exception('HTTP request failed. Error: '.$error['message']);
-        }
-
-        $response = json_decode($content);
-        if (isset($response->error)) {
-            throw new Exception('
-                    При получении токена произошла ошибка. Error: '.$response->error.'. Error description: '.$response->error_description);
-        }
-
-        return ['vktoken' => $response->access_token, 'vkid' => $response->user_id];
-    }
-
     // страница регистрации
     public function register(mixed $args): void
     {
@@ -263,6 +230,16 @@ class UserController extends Controller
         );
     }
 
+    // выйти из системы
+    public function logout()
+    {
+        session_destroy();
+        setcookie('auth_type', '', time() - 3600, '/');
+        setcookie('login', '', time() - 3600, '/');
+        setcookie('user_name', '', time() - 3600, '/');
+        header("Location: {$this->home_url}");
+    }
+
     // получить информацию о пользователе ВК
     private static function getVKUserInfo($vkId, $vkToken)
     {
@@ -326,5 +303,28 @@ class UserController extends Controller
             $_SESSION['user_name'] = $params['login'];
             setcookie('user_name', $params['login'], time() + 60 * 60 * 24, '/');
         }
+    }
+
+    // получить VKAccessToken
+    private function getVKAccessToken($code)
+    {
+        $params = [
+            'client_id' => config('VK_CLIENT_ID'),
+            'client_secret' => config('VK_CLIENT_SECRET'),
+            'code' => $code,
+            'redirect_uri' => config('VK_REDIRECT_URI'),
+        ];
+        if (!$content = @file_get_contents('https://oauth.vk.com/access_token?'.http_build_query($params))) {
+            $error = error_get_last();
+            throw new Exception('HTTP request failed. Error: '.$error['message']);
+        }
+
+        $response = json_decode($content);
+        if (isset($response->error)) {
+            throw new Exception('
+                        При получении токена произошла ошибка. Error: '.$response->error.'. Error description: '.$response->error_description);
+        }
+
+        return ['vktoken' => $response->access_token, 'vkid' => $response->user_id];
     }
 }
