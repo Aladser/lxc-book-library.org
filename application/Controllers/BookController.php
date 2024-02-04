@@ -18,7 +18,7 @@ class BookController extends Controller
 
     public function index(mixed $args): void
     {
-        // кнопка Войти-Выйти
+        // кнопка Войти-Выйти, данные авт.пользователя
         if (!empty($this->auth_user)) {
             $data['header_button_name'] = 'Выйти';
             $data['header_button_url'] = route('logout');
@@ -35,9 +35,17 @@ class BookController extends Controller
         $this->view->generate(
             page_name: $this->site_name,
             template_view: 'template_view.php',
-            content_view: 'index_view.php',
+            content_view: 'book/index_view.php',
             content_css: 'index.css',
             data: $data,
         );
+    }
+
+    public function create()
+    {
+    }
+
+    public function show()
+    {
     }
 }
