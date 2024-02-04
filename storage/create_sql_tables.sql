@@ -1,14 +1,6 @@
 drop table if exists db_users;
 drop table if exists vk_users;
-drop table if exists users;
 
-# --- пользователи
-create table users
-(
-    id int auto_increment primary key,
-    db_user_id int unique,
-    vk_user_id int unique
-);
 
 -- пользователи БД
 CREATE TABLE db_users (
@@ -20,7 +12,6 @@ CREATE TABLE db_users (
 -- пользователи ВК
  CREATE TABLE vk_users (
   id int auto_increment primary key,
-  login varchar(15), 
-  name varchar(255),
+  login varchar(15),
   token varchar(255)
 );

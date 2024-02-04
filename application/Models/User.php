@@ -42,13 +42,9 @@ class User extends Model
         } else {
             throw new Exception('Неверный тип регистрации');
         }
-
         $user_id = $this->dbQuery->insert($sql, $args);
-        $sql = "insert into users({$type}_user_id) values(:id)";
-        $args = ['id' => $user_id];
-        $general_user_id = $this->dbQuery->insert($sql, $args);
 
-        return $general_user_id;
+        return $user_id;
     }
 
     public function getDBUser(string $login)
