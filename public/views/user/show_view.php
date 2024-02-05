@@ -1,7 +1,7 @@
 <div class='container'>
     <section class='theme-border p-4'>
         <?php if (isset($data['user_photo'])) {?>
-            <img src=<?php echo $data['user_photo']; ?>/>
+            <img src=<?php echo $data['user_photo']; ?>>
         <?php } ?>
         <div class='d-inline-block ms-4'>
             <div class='fw-bolder fs-5'><?php echo $data['user_login']; ?></div>

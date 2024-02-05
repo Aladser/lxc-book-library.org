@@ -152,16 +152,6 @@ class UserController extends Controller
 
     public function auth_google()
     {
-        /*
-         * Array ( [id] => 107126238814528305529
-         * [email] => aladser@gmail.com
-         * [verified_email] => 1
-         * [name] => Andrei Avramenko
-         * [given_name] => Andrei
-         * [family_name] => Avramenko
-         * [picture] => https://lh3.googleusercontent.com/a/ACg8ocJRhcySpNfmcC3bc8dDm0JmUsrjyO1Btc_ESrQMKTGOpIw=s96-c
-         * [locale] => ru )
-         */
         $authType = 'google';
         if (isset($_GET['code'])) {
             // Отправляем код для получения токена (POST-запрос).
@@ -278,12 +268,20 @@ class UserController extends Controller
         $authUser = self::getAuthUser();
         $login = $authUser['login'];
 
-        if ($authUser['auth_type'] == 'vk') {
+        if ($authUser['auth_type'] == 'vk' || $authUser['auth_type'] == 'google') {
             $token = $this->userModel->getToken($login, $authUser['auth_type']);
-            $response = self::getVKUserInfo($login, $token);
-            $data['user_login'] = "ID: {$response[0]->id}";
-            $data['user_name'] = "{$response[0]->first_name} {$response[0]->last_name}";
-            $data['user_photo'] = $response[0]->photo_100;
+            if ($authUser['auth_type'] == 'vk') {
+                $response = self::getVKUserInfo($login, $token);
+                $data['user_login'] = "ID: {$response[0]->id}";
+                $data['user_name'] = "{$response[0]->first_name} {$response[0]->last_name}";
+                $data['user_photo'] = $response[0]->photo_100;
+            } else {
+                $response = self::getGoogleUserInfo($token, $login);
+                $login = $response['email'];
+                $data['user_login'] = $response['email'];
+                $data['user_name'] = $response['name'];
+                $data['user_photo'] = $response['picture'];
+            }
         } elseif ($authUser['auth_type'] == 'db') {
             $data['user_login'] = "Почта: $login";
             $data['user_name'] = $login;
@@ -295,7 +293,7 @@ class UserController extends Controller
             'home' => $this->home_url,
         ];
 
-        if ($authUser['auth_type'] === 'vk' || $authUser['auth_type'] === 'google') {
+        if ($authUser['auth_type'] === 'vk') {
             $page_name = "Пользователь ID$login";
         } else {
             $page_name = "Пользователь $login";
