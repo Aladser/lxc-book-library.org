@@ -154,7 +154,6 @@ class UserController extends Controller
             [
                 'login' => $vkUserId,
                 'user_name' => $user_name,
-                'user_photo' => $user_photo,
             ],
             'vk'
         );
@@ -374,9 +373,6 @@ class UserController extends Controller
             'user_name' => $store['user_name'],
             'auth_type' => $store['auth_type'],
         ];
-        if (isset($store['user_photo'])) {
-            $userData['user_photo'] = $store['user_photo'];
-        }
 
         return $userData;
     }
