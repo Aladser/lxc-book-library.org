@@ -12,9 +12,7 @@
             <input type="hidden" name="CSRF" value="<?php echo $data['csrf']; ?>">
         </form>
 
-        <div class='text-center p-3 theme-darker-color fw-bolder'>или войти с помощью</div>
-
-        <div class='mb-3'>
+        <div class='my-3'>
         <!-- авторизация ВК -->
         <form method="POST" class='d-inline' action="<?php echo $routes['login_vk']; ?>">
             <input type="image" src='/public/images/vk_logo.ico' alt='ВК'>
