@@ -111,7 +111,7 @@ class UserController extends Controller
                 $url = 'https://accounts.google.com/o/oauth2/auth?'.urldecode(http_build_query($this->codeParams['google']));
                 break;
             default:
-                throw new Exception('HTTP request failed: неверный тип сервиса авторизации');
+                throw new \Exception('HTTP request failed: неверный тип сервиса авторизации');
         }
 
         header("Location: $url");
@@ -123,24 +123,23 @@ class UserController extends Controller
         // получение access_token
         if (isset($_GET['code'])) {
             [$vkToken, $vkId] = $this->getVKAccessToken($_GET['code']);
-            $response = self::getVKUserInfo($vkId, $vkToken)->response;
+            $response = self::getVKUserInfo($vkId, $vkToken);
 
             // обновление данных пользователя
             foreach ($response as $userItem) {
-                $login = $vkId;
                 $user_name = "{$userItem->first_name} {$userItem->last_name}";
                 $user_photo = $userItem->photo_100;
                 // добавление пользователя вк в БД, если не существует
 
                 if ($this->userModel->exists($vkId, $authType)) {
-                    $this->userModel->writeVKToken($vkId, $vkToken);
+                    $this->userModel->writeToken($vkId, $vkToken, $authType);
                 } else {
                     $this->userModel->add(['login' => $vkId, 'token' => $vkToken], $authType);
                 }
 
                 $this->saveAuth(
                     [
-                        'login' => $login,
+                        'login' => $vkId,
                         'user_name' => $user_name,
                         'user_photo' => $user_photo,
                     ],
@@ -163,6 +162,7 @@ class UserController extends Controller
          * [picture] => https://lh3.googleusercontent.com/a/ACg8ocJRhcySpNfmcC3bc8dDm0JmUsrjyO1Btc_ESrQMKTGOpIw=s96-c
          * [locale] => ru )
          */
+        $authType = 'google';
         if (isset($_GET['code'])) {
             // Отправляем код для получения токена (POST-запрос).
             $params = [
@@ -184,17 +184,24 @@ class UserController extends Controller
 
             $data = json_decode($data, true);
             if (!empty($data['access_token'])) {
-                // Токен получили, получаем данные пользователя.
-                $params = [
-                    'access_token' => $data['access_token'],
-                    'id_token' => $data['id_token'],
-                    'token_type' => 'Bearer',
-                    'expires_in' => 3599,
-                ];
+                $userData = self::getGoogleUserInfo($data['access_token'], $data['id_token']);
+                // добавление пользователя google в БД, если не существует
 
-                $userData = file_get_contents('https://www.googleapis.com/oauth2/v1/userinfo?'.urldecode(http_build_query($params)));
-                $userData = json_decode($userData, true);
-                print_r($userData);
+                if ($this->userModel->exists($userData['id'], $authType)) {
+                    $this->userModel->writeToken($userData['id'], $data['access_token'], $authType);
+                } else {
+                    $this->userModel->add(['login' => $userData['id'], 'token' => $data['access_token']], $authType);
+                }
+
+                $this->saveAuth(
+                    [
+                        'login' => $userData['id'],
+                        'user_name' => $userData['name'],
+                        'user_photo' => $userData['picture'],
+                    ],
+                    $authType
+                );
+                header('Location: '.route('home'));
             }
         }
     }
@@ -272,8 +279,8 @@ class UserController extends Controller
         $login = $authUser['login'];
 
         if ($authUser['auth_type'] == 'vk') {
-            $token = $this->userModel->getVKToken($login);
-            $response = self::getVKUserInfo($login, $token)->response;
+            $token = $this->userModel->getToken($login, $authUser['auth_type']);
+            $response = self::getVKUserInfo($login, $token);
             $data['user_login'] = "ID: {$response[0]->id}";
             $data['user_name'] = "{$response[0]->first_name} {$response[0]->last_name}";
             $data['user_photo'] = $response[0]->photo_100;
@@ -288,7 +295,11 @@ class UserController extends Controller
             'home' => $this->home_url,
         ];
 
-        $page_name = $authUser['auth_type'] === 'vk' ? "Пользователь ID$login" : "Пользователь $login";
+        if ($authUser['auth_type'] === 'vk' || $authUser['auth_type'] === 'google') {
+            $page_name = "Пользователь ID$login";
+        } else {
+            $page_name = "Пользователь $login";
+        }
         $this->view->generate(
             page_name: $page_name,
             template_view: 'template_view.php',
@@ -324,12 +335,12 @@ class UserController extends Controller
         ];
         if (!$content = @file_get_contents('https://oauth.vk.com/access_token?'.http_build_query($params))) {
             $error = error_get_last();
-            throw new Exception('HTTP request failed. Error: '.$error['message']);
+            throw new \Exception('HTTP request failed. Error: '.$error['message']);
         }
 
         $response = json_decode($content);
         if (isset($response->error)) {
-            throw new Exception('
+            throw new \Exception('
                 При получении токена произошла ошибка. Error: '.$response->error.'. Error description: '.$response->error_description);
         }
 
@@ -341,22 +352,36 @@ class UserController extends Controller
     {
         // получить имя пользователя, фото
         $params = [
-            'v' => config('VK_VERSION'),
             'user_ids' => $vkId,
             'access_token' => $vkToken,
-            // Список опциональных полей https://vk.com/dev/objects/user
+            'v' => config('VK_VERSION'),
             'fields' => 'photo_100,about',
         ];
         if (!$content = @file_get_contents('https://api.vk.com/method/users.get?'.http_build_query($params))) {
             $error = error_get_last();
-            throw new Exception('HTTP request failed. Error: '.$error['message']);
+            throw new \Exception('HTTP request failed. Error: '.$error['message']);
         }
         $response = json_decode($content);
         if (isset($response->error)) {
-            throw new Exception($response->error);
+            throw new \Exception($response->error);
         }
 
-        return $response;
+        return $response->response;
+    }
+
+    // получить информацию о пользователе Google
+    private static function getGoogleUserInfo($token, $user_id)
+    {
+        $params = [
+            'access_token' => $token,
+            'id_token' => $user_id,
+            'token_type' => 'Bearer',
+            'expires_in' => 3599,
+        ];
+
+        $userData = file_get_contents('https://www.googleapis.com/oauth2/v1/userinfo?'.urldecode(http_build_query($params)));
+
+        return json_decode($userData, true);
     }
 
     // получить авторизованного пользователя
@@ -385,7 +410,7 @@ class UserController extends Controller
     // Сохранить авторизацию в куки и сессии
     private function saveAuth(array $params, $type): void
     {
-        if ($type !== 'db' && $type !== 'vk') {
+        if ($type !== 'db' && $type !== 'vk' && $type != 'google') {
             throw new Exception('Неверный тип авторизации');
         }
 

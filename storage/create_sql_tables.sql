@@ -13,13 +13,13 @@ CREATE TABLE db_users (
 -- пользователи ВК
  CREATE TABLE vk_users (
   id int auto_increment primary key,
-  login varchar(15),
+  login varchar(255),
   token varchar(255)
 );
 
 -- пользователи Google
  CREATE TABLE google_users (
   id int auto_increment primary key,
-  login varchar(15),
+  login varchar(255),
   token varchar(255)
 );

@@ -10,7 +10,7 @@ class User extends Model
     /** проверить существование пользователя */
     public function exists($login, $type): bool
     {
-        if ($type != 'db' && $type != 'vk') {
+        if ($type != 'db' && $type != 'vk' && $type != 'google') {
             throw new Exception('Неверный тип авторизации');
         }
 
@@ -37,8 +37,8 @@ class User extends Model
         if ($type === 'db') {
             $args['password'] = password_hash($args['password'], PASSWORD_DEFAULT);
             $sql = 'insert into db_users(login, password) values(:email, :password)';
-        } elseif ($type === 'vk') {
-            $sql = 'insert into vk_users(login, token) values(:login, :token)';
+        } elseif ($type === 'vk' || $type === 'google') {
+            $sql = "insert into {$type}_users(login, token) values(:login, :token)";
         } else {
             throw new Exception('Неверный тип регистрации');
         }
@@ -56,17 +56,17 @@ class User extends Model
     }
 
     // запись ВК-токена
-    public function writeVKToken(int $login, string $token): bool
+    public function writeToken(string $login, string $token, string $authServiceType): bool
     {
-        $sql = 'update vk_users set token = :token where login = :login';
+        $sql = "update {$authServiceType}_users set token = :token where login = :login";
         $args = ['login' => $login, 'token' => $token];
 
         return $this->dbQuery->update($sql, $args);
     }
 
-    public function getVKToken($login)
+    public function getToken(string $login, string $authServiceType)
     {
-        $sql = 'select token from vk_users where login = :login';
+        $sql = "select token from {$authServiceType}_users where login = :login";
         $args = ['login' => $login];
         $token = $this->dbQuery->queryPrepared($sql, $args)['token'];
 
