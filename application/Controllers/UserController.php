@@ -142,13 +142,20 @@ class UserController extends Controller
             config('VK_REDIRECT_URI'),
             $_GET['code']
         );
-        $vkToken = $accessTokenResponse['access_token'];
-        $vkUserId = $accessTokenResponse['user_id'];
-        $this->userModel->writeToken($vkUserId, $vkToken, 'vk');
 
-        $userData = self::getVKUserInfo($vkUserId, $vkToken);
+        $access_token = $accessTokenResponse['access_token'];
+        $vkUserId = $accessTokenResponse['user_id'];
+        $this->userModel->writeToken($vkUserId, $access_token, 'vk');
+        $userData = self::getVKUserInfo($vkUserId, $access_token);
         $user_name = $userData['name'];
         $user_photo = $userData['photo'];
+
+        // запись токена в БД
+        if ($this->userModel->exists($vkUserId, 'vk')) {
+            $this->userModel->writeToken($vkUserId, $access_token, 'vk');
+        } else {
+            $this->userModel->add(['login' => $vkUserId, 'token' => $access_token], 'vk');
+        }
 
         $this->saveAuth(['login' => $vkUserId, 'user_name' => $user_name], 'vk');
         header('Location: '.route('home'));
@@ -321,9 +328,9 @@ class UserController extends Controller
         header("Location: {$this->home_url}");
     }
 
-    private function getVKUserInfo(string $vkUserId, string $vkToken): array
+    private function getVKUserInfo(string $vkUserId, string $access_token): array
     {
-        $userDataResponse = $this->vkApiClient->users()->get($vkToken, [
+        $userDataResponse = $this->vkApiClient->users()->get($access_token, [
             'user_ids' => $vkUserId,
             'fields' => ['photo_100'],
         ])[0];
