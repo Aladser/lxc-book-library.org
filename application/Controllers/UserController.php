@@ -150,13 +150,7 @@ class UserController extends Controller
         $user_name = $userData['name'];
         $user_photo = $userData['photo'];
 
-        $this->saveAuth(
-            [
-                'login' => $vkUserId,
-                'user_name' => $user_name,
-            ],
-            'vk'
-        );
+        $this->saveAuth(['login' => $vkUserId, 'user_name' => $user_name], 'vk');
         header('Location: '.route('home'));
     }
 
@@ -293,7 +287,7 @@ class UserController extends Controller
                 $data['user_photo'] = $response['picture'];
             }
         } elseif ($authUser['auth_type'] == 'db') {
-            $data['user_login'] = "Почта: $login";
+            $data['user_login'] = $login;
             $data['user_name'] = $login;
         } else {
             return null;
