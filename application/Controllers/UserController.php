@@ -122,9 +122,7 @@ class UserController extends Controller
         $authType = 'vk';
         // получение access_token
         if (isset($_GET['code'])) {
-            $params = $this->getVKAccessToken($_GET['code']);
-            $vkId = $params['vkid'];
-            $vkToken = $params['vktoken'];
+            [$vkToken, $vkId] = $this->getVKAccessToken($_GET['code']);
             $response = self::getVKUserInfo($vkId, $vkToken)->response;
 
             // обновление данных пользователя
@@ -310,8 +308,13 @@ class UserController extends Controller
         header("Location: {$this->home_url}");
     }
 
-    // получить VKAccessToken
-    private function getVKAccessToken($code)
+    /** получить VKAccessToken.
+     *
+     * @param string $code код API
+     *
+     * @return array [access_token, user_id]
+     */
+    private function getVKAccessToken(string $code): array
     {
         $params = [
             'client_id' => config('VK_CLIENT_ID'),
@@ -330,7 +333,7 @@ class UserController extends Controller
                 При получении токена произошла ошибка. Error: '.$response->error.'. Error description: '.$response->error_description);
         }
 
-        return ['vktoken' => $response->access_token, 'vkid' => $response->user_id];
+        return [$response->access_token, $response->user_id];
     }
 
     // получить информацию о пользователе ВК
