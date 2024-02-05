@@ -13,9 +13,13 @@ class UserController extends Controller
 {
     private User $userModel;
     private string $csrf;
+
     private string $register_url;
     private string $home_url;
     private string $login_url;
+
+    private array $vkTokenParams;
+    private array $googleTokenParams;
 
     public function __construct()
     {
@@ -26,6 +30,22 @@ class UserController extends Controller
         $this->register_url = route('register');
         $this->home_url = route('home');
         $this->login_url = route('login');
+
+        // параметры запроса получения ВК-кода
+        $this->vkTokenParams = [
+            'client_id' => config('VK_CLIENT_ID'),
+            'redirect_uri' => config('VK_REDIRECT_URI'),
+            'response_type' => 'code',
+            'scope' => 'photos,offline',
+        ];
+        // параметры запроса получения Google-кода
+        $this->googleTokenParams = [
+            'client_id' => config('GOOGLE_CLIENT_ID'),
+            'redirect_uri' => config('GOOGLE_REDIRECT_URI'),
+            'response_type' => 'code',
+            'scope' => 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
+            'state' => '123',
+        ];
     }
 
     // ----- АВТОРИЗАЦИЯ ЛОГИН-ПАРОЛЬ -----
@@ -80,18 +100,18 @@ class UserController extends Controller
         }
     }
 
-    // ----- АВТОРИЗАЦИЯ ВК -----
-    public function login_vk()
+    // ----- АВТОРИЗАЦИЯ В СТОРОННЕМ СЕРВИСЕ -----
+    public function login_service($args)
     {
-        // запрос получения ВК-кода
-        $params = [
-            'client_id' => config('VK_CLIENT_ID'),
-            'redirect_uri' => config('VK_REDIRECT_URI'),
-            'response_type' => 'code',
-            'scope' => 'photos,offline',
-        ];
+        $service_type = $args['id'];
+        if ($service_type === 'vk') {
+            $url = 'http://oauth.vk.com/authorize?'.urldecode(http_build_query($this->vkTokenParams));
+        } elseif ($service_type === 'google') {
+            $url = 'https://accounts.google.com/o/oauth2/auth?'.urldecode(http_build_query($this->googleTokenParams));
+        } else {
+            throw new Exception('HTTP request failed: неверный тип сервиса авторизации');
+        }
 
-        $url = 'http://oauth.vk.com/authorize?'.http_build_query($params);
         header("Location: $url");
     }
 
@@ -129,21 +149,6 @@ class UserController extends Controller
                 header('Location: '.route('home'));
             }
         }
-    }
-
-    // ----- АВТОРИЗАЦИЯ GOOGLE ---
-    public function login_google()
-    {
-        $params = [
-            'client_id' => config('GOOGLE_CLIENT_ID'),
-            'redirect_uri' => config('GOOGLE_REDIRECT_URI'),
-            'response_type' => 'code',
-            'scope' => 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
-            'state' => '123',
-        ];
-
-        $url = 'https://accounts.google.com/o/oauth2/auth?'.urldecode(http_build_query($params));
-        header("Location: $url");
     }
 
     public function auth_google()
