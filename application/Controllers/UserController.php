@@ -17,9 +17,8 @@ class UserController extends Controller
     private string $register_url;
     private string $home_url;
     private string $login_url;
-
-    private array $vkCodeParams;
-    private array $googleCodeParams;
+    // параметры запроса получения кода (ВК, Google)
+    private array $codeParams;
 
     public function __construct()
     {
@@ -31,20 +30,20 @@ class UserController extends Controller
         $this->home_url = route('home');
         $this->login_url = route('login');
 
-        // параметры запроса получения ВК-кода
-        $this->vkCodeParams = [
-            'client_id' => config('VK_CLIENT_ID'),
-            'redirect_uri' => config('VK_REDIRECT_URI'),
-            'response_type' => 'code',
-            'scope' => 'photos,offline',
-        ];
-        // параметры запроса получения Google-кода
-        $this->googleCodeParams = [
-            'client_id' => config('GOOGLE_CLIENT_ID'),
-            'redirect_uri' => config('GOOGLE_REDIRECT_URI'),
-            'response_type' => 'code',
-            'scope' => 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
-            'state' => '123',
+        $this->codeParams = [
+            'vk' => [
+                'client_id' => config('VK_CLIENT_ID'),
+                'redirect_uri' => config('VK_REDIRECT_URI'),
+                'response_type' => 'code',
+                'scope' => 'photos,offline',
+            ],
+            'google' => [
+                'client_id' => config('GOOGLE_CLIENT_ID'),
+                'redirect_uri' => config('GOOGLE_REDIRECT_URI'),
+                'response_type' => 'code',
+                'scope' => 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
+                'state' => '123',
+            ],
         ];
     }
 
@@ -106,10 +105,10 @@ class UserController extends Controller
         $service_type = $args['id'];
         switch ($service_type) {
             case 'vk':
-                $url = 'http://oauth.vk.com/authorize?'.urldecode(http_build_query($this->vkCodeParams));
+                $url = 'http://oauth.vk.com/authorize?'.urldecode(http_build_query($this->codeParams['vk']));
                 break;
             case 'google':
-                $url = 'https://accounts.google.com/o/oauth2/auth?'.urldecode(http_build_query($this->googleCodeParams));
+                $url = 'https://accounts.google.com/o/oauth2/auth?'.urldecode(http_build_query($this->codeParams['google']));
                 break;
             default:
                 throw new Exception('HTTP request failed: неверный тип сервиса авторизации');
