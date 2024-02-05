@@ -18,8 +18,8 @@ class UserController extends Controller
     private string $home_url;
     private string $login_url;
 
-    private array $vkTokenParams;
-    private array $googleTokenParams;
+    private array $vkCodeParams;
+    private array $googleCodeParams;
 
     public function __construct()
     {
@@ -32,14 +32,14 @@ class UserController extends Controller
         $this->login_url = route('login');
 
         // параметры запроса получения ВК-кода
-        $this->vkTokenParams = [
+        $this->vkCodeParams = [
             'client_id' => config('VK_CLIENT_ID'),
             'redirect_uri' => config('VK_REDIRECT_URI'),
             'response_type' => 'code',
             'scope' => 'photos,offline',
         ];
         // параметры запроса получения Google-кода
-        $this->googleTokenParams = [
+        $this->googleCodeParams = [
             'client_id' => config('GOOGLE_CLIENT_ID'),
             'redirect_uri' => config('GOOGLE_REDIRECT_URI'),
             'response_type' => 'code',
@@ -104,12 +104,15 @@ class UserController extends Controller
     public function login_service($args)
     {
         $service_type = $args['id'];
-        if ($service_type === 'vk') {
-            $url = 'http://oauth.vk.com/authorize?'.urldecode(http_build_query($this->vkTokenParams));
-        } elseif ($service_type === 'google') {
-            $url = 'https://accounts.google.com/o/oauth2/auth?'.urldecode(http_build_query($this->googleTokenParams));
-        } else {
-            throw new Exception('HTTP request failed: неверный тип сервиса авторизации');
+        switch ($service_type) {
+            case 'vk':
+                $url = 'http://oauth.vk.com/authorize?'.urldecode(http_build_query($this->vkCodeParams));
+                break;
+            case 'google':
+                $url = 'https://accounts.google.com/o/oauth2/auth?'.urldecode(http_build_query($this->googleCodeParams));
+                break;
+            default:
+                throw new Exception('HTTP request failed: неверный тип сервиса авторизации');
         }
 
         header("Location: $url");
@@ -153,6 +156,16 @@ class UserController extends Controller
 
     public function auth_google()
     {
+        /*
+         * Array ( [id] => 107126238814528305529
+         * [email] => aladser@gmail.com
+         * [verified_email] => 1
+         * [name] => Andrei Avramenko
+         * [given_name] => Andrei
+         * [family_name] => Avramenko
+         * [picture] => https://lh3.googleusercontent.com/a/ACg8ocJRhcySpNfmcC3bc8dDm0JmUsrjyO1Btc_ESrQMKTGOpIw=s96-c
+         * [locale] => ru )
+         */
         if (isset($_GET['code'])) {
             // Отправляем код для получения токена (POST-запрос).
             $params = [
@@ -182,9 +195,9 @@ class UserController extends Controller
                     'expires_in' => 3599,
                 ];
 
-                $info = file_get_contents('https://www.googleapis.com/oauth2/v1/userinfo?'.urldecode(http_build_query($params)));
-                $info = json_decode($info, true);
-                print_r($info);
+                $userData = file_get_contents('https://www.googleapis.com/oauth2/v1/userinfo?'.urldecode(http_build_query($params)));
+                $userData = json_decode($userData, true);
+                print_r($userData);
             }
         }
     }
