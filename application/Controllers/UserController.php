@@ -122,7 +122,24 @@ class UserController extends Controller
         $authType = 'vk';
         // получение access_token
         if (isset($_GET['code'])) {
-            [$vkToken, $vkId] = $this->getVKAccessToken($_GET['code']);
+            $params = [
+                'client_id' => config('VK_CLIENT_ID'),
+                'client_secret' => config('VK_CLIENT_SECRET'),
+                'code' => $_GET['code'],
+                'redirect_uri' => config('VK_REDIRECT_URI'),
+            ];
+            if (!$content = @file_get_contents('https://oauth.vk.com/access_token?'.http_build_query($params))) {
+                $error = error_get_last();
+                throw new \Exception('HTTP request failed. Error: '.$error['message']);
+            }
+
+            $response = json_decode($content);
+            if (isset($response->error)) {
+                throw new \Exception('
+                    При получении токена произошла ошибка. Error: '.$response->error.'. Error description: '.$response->error_description);
+            }
+            [$vkToken, $vkId] = [$response->access_token, $response->user_id];
+
             $response = self::getVKUserInfo($vkId, $vkToken);
 
             // обновление данных пользователя
@@ -315,34 +332,6 @@ class UserController extends Controller
         setcookie('login', '', time() - 3600, '/');
         setcookie('user_name', '', time() - 3600, '/');
         header("Location: {$this->home_url}");
-    }
-
-    /** получить VKAccessToken.
-     *
-     * @param string $code код API
-     *
-     * @return array [access_token, user_id]
-     */
-    private function getVKAccessToken(string $code): array
-    {
-        $params = [
-            'client_id' => config('VK_CLIENT_ID'),
-            'client_secret' => config('VK_CLIENT_SECRET'),
-            'code' => $code,
-            'redirect_uri' => config('VK_REDIRECT_URI'),
-        ];
-        if (!$content = @file_get_contents('https://oauth.vk.com/access_token?'.http_build_query($params))) {
-            $error = error_get_last();
-            throw new \Exception('HTTP request failed. Error: '.$error['message']);
-        }
-
-        $response = json_decode($content);
-        if (isset($response->error)) {
-            throw new \Exception('
-                При получении токена произошла ошибка. Error: '.$response->error.'. Error description: '.$response->error_description);
-        }
-
-        return [$response->access_token, $response->user_id];
     }
 
     // получить информацию о пользователе ВК
