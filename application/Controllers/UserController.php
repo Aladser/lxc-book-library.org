@@ -159,6 +159,41 @@ class UserController extends Controller
          */
         echo 'UserController::auth_google()<br>';
         var_dump($_GET);
+
+        if (isset($_GET['code'])) {
+            // Отправляем код для получения токена (POST-запрос).
+            $params = [
+                'client_id' => config('GOOGLE_CLIENT_ID'),
+                'client_secret' => config('GOOGLE_CLIENT_SECRET'),
+                'redirect_uri' => config('GOOGLE_REDIRECT_URI'),
+                'grant_type' => 'authorization_code',
+                'code' => $_GET['code'],
+            ];
+
+            $ch = curl_init('https://accounts.google.com/o/oauth2/token');
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_HEADER, false);
+            $data = curl_exec($ch);
+            curl_close($ch);
+
+            $data = json_decode($data, true);
+            if (!empty($data['access_token'])) {
+                // Токен получили, получаем данные пользователя.
+                $params = [
+                    'access_token' => $data['access_token'],
+                    'id_token' => $data['id_token'],
+                    'token_type' => 'Bearer',
+                    'expires_in' => 3599,
+                ];
+
+                $info = file_get_contents('https://www.googleapis.com/oauth2/v1/userinfo?'.urldecode(http_build_query($params)));
+                $info = json_decode($info, true);
+                print_r($info);
+            }
+        }
     }
 
     // страница регистрации
@@ -270,6 +305,29 @@ class UserController extends Controller
         header("Location: {$this->home_url}");
     }
 
+    // получить VKAccessToken
+    private function getVKAccessToken($code)
+    {
+        $params = [
+            'client_id' => config('VK_CLIENT_ID'),
+            'client_secret' => config('VK_CLIENT_SECRET'),
+            'code' => $code,
+            'redirect_uri' => config('VK_REDIRECT_URI'),
+        ];
+        if (!$content = @file_get_contents('https://oauth.vk.com/access_token?'.http_build_query($params))) {
+            $error = error_get_last();
+            throw new Exception('HTTP request failed. Error: '.$error['message']);
+        }
+
+        $response = json_decode($content);
+        if (isset($response->error)) {
+            throw new Exception('
+                При получении токена произошла ошибка. Error: '.$response->error.'. Error description: '.$response->error_description);
+        }
+
+        return ['vktoken' => $response->access_token, 'vkid' => $response->user_id];
+    }
+
     // получить информацию о пользователе ВК
     private static function getVKUserInfo($vkId, $vkToken)
     {
@@ -333,28 +391,5 @@ class UserController extends Controller
             $_SESSION['user_name'] = $params['login'];
             setcookie('user_name', $params['login'], time() + 60 * 60 * 24, '/');
         }
-    }
-
-    // получить VKAccessToken
-    private function getVKAccessToken($code)
-    {
-        $params = [
-            'client_id' => config('VK_CLIENT_ID'),
-            'client_secret' => config('VK_CLIENT_SECRET'),
-            'code' => $code,
-            'redirect_uri' => config('VK_REDIRECT_URI'),
-        ];
-        if (!$content = @file_get_contents('https://oauth.vk.com/access_token?'.http_build_query($params))) {
-            $error = error_get_last();
-            throw new Exception('HTTP request failed. Error: '.$error['message']);
-        }
-
-        $response = json_decode($content);
-        if (isset($response->error)) {
-            throw new Exception('
-                        При получении токена произошла ошибка. Error: '.$response->error.'. Error description: '.$response->error_description);
-        }
-
-        return ['vktoken' => $response->access_token, 'vkid' => $response->user_id];
     }
 }
