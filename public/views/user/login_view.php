@@ -12,7 +12,7 @@
             <input type="hidden" name="CSRF" value="<?php echo $data['csrf']; ?>">
         </form>
 
-        <div class='text-center p-3'>или войти с помощью</div>
+        <div class='text-center p-3 theme-darker-color fw-bolder'>или войти с помощью</div>
 
         <div class='mb-3'>
         <!-- авторизация ВК -->
