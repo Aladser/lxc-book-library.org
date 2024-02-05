@@ -153,18 +153,6 @@ class UserController extends Controller
 
     public function auth_google()
     {
-        /*
-         * array(5) {
-         * ["state"]=> string(3) "123"
-         * ["code"]=> string(73) "4/0AfJohXmGX5by4eao07D2Fj6AUtsFXVpFNxQuGwFJOofxxpf1DvecJzLVcd4ZrMfzn6aPsg"
-         * ["scope"]=> string(116) "email profile openid https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email"
-         * ["authuser"]=> string(1) "0"
-         * ["prompt"]=> string(7) "consent"
-         * }
-         */
-        echo 'UserController::auth_google()<br>';
-        var_dump($_GET);
-
         if (isset($_GET['code'])) {
             // Отправляем код для получения токена (POST-запрос).
             $params = [
