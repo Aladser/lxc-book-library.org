@@ -14,11 +14,19 @@
 
         <div class='text-center p-3'>или войти с помощью</div>
 
+        <div class='mb-3'>
         <!-- авторизация ВК -->
-        <form method="POST" class='pb-3' action="<?php echo $routes['login_vk']; ?>">
-            <input type="image" src='/public/images/vk-logo.png' title='Авторизация VK'>
+        <form method="POST" class='d-inline' action="<?php echo $routes['login_vk']; ?>">
+            <input type="image" src='/public/images/vk_logo.ico' alt='ВК'>
             <input type="hidden" name="CSRF" value="<?php echo $data['csrf']; ?>">
         </form>
+        <!-- авторизация google -->
+        <form method="POST" class='d-inline' action="<?php echo $routes['login_google']; ?>">
+            <input type="image" src='/public/images/google_logo.ico' alt='google'>
+            <input type="hidden" name="CSRF" value="<?php echo $data['csrf']; ?>">
+        </form>
+        </div>
+
 
         <a href="<?php echo $routes['home']; ?>" class="d-block mx-auto button-basic theme-border w-75">Назад</a>
     </section>

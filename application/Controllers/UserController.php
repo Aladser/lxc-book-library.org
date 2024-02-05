@@ -22,6 +22,7 @@ class UserController extends Controller
         parent::__construct();
         $this->userModel = new User();
         $this->csrf = Controller::createCSRFToken();
+
         $this->register_url = route('register');
         $this->home_url = route('home');
         $this->login_url = route('login');
@@ -47,6 +48,7 @@ class UserController extends Controller
             'home' => $this->home_url,
             'register' => $this->register_url,
             'login_vk' => route('login_vk'),
+            'login_google' => route('login_google'),
             'auth' => route('auth'),
         ];
 
@@ -129,6 +131,12 @@ class UserController extends Controller
                 header('Location: '.route('home'));
             }
         }
+    }
+
+    public function login_google()
+    {
+        $authType = 'google';
+        echo 'Авторизация Google';
     }
 
     // страница регистрации

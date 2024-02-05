@@ -10,6 +10,7 @@ function route($page_name)
         'home' => '/',
         'login' => '/login',
         'login_vk' => '/user/login_vk',
+        'login_google' => '/user/login_google',
         'register' => '/register',
         'auth' => '/user/auth',
         'store' => '/user/store',
