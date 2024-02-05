@@ -84,14 +84,14 @@ class UserController extends Controller
     public function login_vk()
     {
         // запрос получения ВК-кода
-        $$params = [
+        $params = [
             'client_id' => config('VK_CLIENT_ID'),
             'redirect_uri' => config('VK_REDIRECT_URI'),
             'response_type' => 'code',
             'scope' => 'photos,offline',
         ];
 
-        $url = 'http://oauth.vk.com/authorize?'.http_build_query($$params);
+        $url = 'http://oauth.vk.com/authorize?'.http_build_query($params);
         header("Location: $url");
     }
 
@@ -148,7 +148,8 @@ class UserController extends Controller
 
     public function auth_google()
     {
-        echo 'UserController::auth_google()';
+        echo 'UserController::auth_google()<br>';
+        var_dump($_GET);
     }
 
     // страница регистрации
