@@ -13,16 +13,16 @@
         </form>
 
         <div class='my-3'>
-        <!-- авторизация ВК -->
-        <form method="POST" class='d-inline' action="<?php echo $routes['login_vk']; ?>">
-            <input type="image" src='/public/images/vk_logo.ico' alt='ВК'>
-            <input type="hidden" name="CSRF" value="<?php echo $data['csrf']; ?>">
-        </form>
-        <!-- авторизация google -->
-        <form method="POST" class='d-inline' action="<?php echo $routes['login_google']; ?>">
-            <input type="image" src='/public/images/google_logo.ico' alt='google'>
-            <input type="hidden" name="CSRF" value="<?php echo $data['csrf']; ?>">
-        </form>
+            <!-- авторизация ВК -->
+            <form method="POST" class='d-inline' action="<?php echo $routes['login_vk']; ?>">
+                <input type="image" src='/public/images/vk_logo.ico' alt='ВК'>
+                <input type="hidden" name="CSRF" value="<?php echo $data['csrf']; ?>">
+            </form>
+            <!-- авторизация google -->
+            <form method="POST" class='d-inline' action="<?php echo $routes['login_google']; ?>">
+                <input type="image" src='/public/images/google_logo.ico' alt='google'>
+                <input type="hidden" name="CSRF" value="<?php echo $data['csrf']; ?>">
+            </form>
         </div>
 
 
@@ -30,6 +30,6 @@
     </section>
 
     <?php if (isset($data['error'])) { ?>
-        <article class='mx-auto text-center text-danger fw-bolder'><?php echo $data['error']; ?></article>
+        <div class='mx-auto text-center text-danger fw-bolder'><?php echo $data['error']; ?></div>
     <?php } ?>
 </div>
