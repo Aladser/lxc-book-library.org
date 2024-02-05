@@ -96,6 +96,12 @@ class UserController extends Controller
         header("Location: $get_vk_code_url");
     }
 
+    public function login_google()
+    {
+        $authType = 'google';
+        echo 'Авторизация Google';
+    }
+
     // авторизация ВК
     public function auth_vk()
     {
@@ -131,12 +137,6 @@ class UserController extends Controller
                 header('Location: '.route('home'));
             }
         }
-    }
-
-    public function login_google()
-    {
-        $authType = 'google';
-        echo 'Авторизация Google';
     }
 
     // страница регистрации
