@@ -144,20 +144,19 @@ class UserController extends Controller
         );
 
         $access_token = $accessTokenResponse['access_token'];
-        $vkUserId = $accessTokenResponse['user_id'];
-        $this->userModel->writeToken($vkUserId, $access_token, 'vk');
-        $userData = self::getVKUserInfo($vkUserId, $access_token);
+        $user_id = $accessTokenResponse['user_id'];
+        $userData = self::getVKUserInfo($user_id, $access_token);
         $user_name = $userData['name'];
         $user_photo = $userData['photo'];
 
         // запись токена в БД
-        if ($this->userModel->exists($vkUserId, 'vk')) {
-            $this->userModel->writeToken($vkUserId, $access_token, 'vk');
+        if ($this->userModel->exists($user_id, 'vk')) {
+            $this->userModel->writeToken($user_id, $access_token, 'vk');
         } else {
-            $this->userModel->add(['login' => $vkUserId, 'token' => $access_token], 'vk');
+            $this->userModel->add(['login' => $user_id, 'token' => $access_token], 'vk');
         }
 
-        $this->saveAuth(['login' => $vkUserId, 'user_name' => $user_name], 'vk');
+        $this->saveAuth(['login' => $user_id, 'user_name' => $user_name], 'vk');
         header('Location: '.route('home'));
     }
 
@@ -328,10 +327,10 @@ class UserController extends Controller
         header("Location: {$this->home_url}");
     }
 
-    private function getVKUserInfo(string $vkUserId, string $access_token): array
+    private function getVKUserInfo(string $user_id, string $access_token): array
     {
         $userDataResponse = $this->vkApiClient->users()->get($access_token, [
-            'user_ids' => $vkUserId,
+            'user_ids' => $user_id,
             'fields' => ['photo_100'],
         ])[0];
         $user_name = "{$userDataResponse['first_name']} {$userDataResponse['last_name']}";
