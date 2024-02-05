@@ -4,6 +4,11 @@ namespace App\Controllers;
 
 use App\Core\Controller;
 use App\Models\User;
+use VK\Client\VKApiClient;
+use VK\OAuth\Scopes\VKOAuthUserScope;
+use VK\OAuth\VKOAuth;
+use VK\OAuth\VKOAuthDisplay;
+use VK\OAuth\VKOAuthResponseType;
 
 use function App\config;
 use function App\route;
@@ -20,6 +25,9 @@ class UserController extends Controller
     // параметры запроса получения кода (ВК, Google)
     private array $codeParams;
 
+    private VKApiClient $vkApiClient;
+    private VKOAuth $vkOAuth;
+
     public function __construct()
     {
         parent::__construct();
@@ -35,7 +43,7 @@ class UserController extends Controller
                 'client_id' => config('VK_CLIENT_ID'),
                 'redirect_uri' => config('VK_REDIRECT_URI'),
                 'response_type' => 'code',
-                'scope' => 'photos,offline',
+                'scope' => 'photos,offline, email',
             ],
             'google' => [
                 'client_id' => config('GOOGLE_CLIENT_ID'),
@@ -45,6 +53,9 @@ class UserController extends Controller
                 'state' => '123',
             ],
         ];
+
+        $this->vkApiClient = new VKApiClient();
+        $this->vkOAuth = new VKOAuth();
     }
 
     // ----- АВТОРИЗАЦИЯ ЛОГИН-ПАРОЛЬ -----
@@ -105,7 +116,14 @@ class UserController extends Controller
         $service_type = $args['id'];
         switch ($service_type) {
             case 'vk':
-                $url = 'http://oauth.vk.com/authorize?'.urldecode(http_build_query($this->codeParams['vk']));
+                $url = $this->vkOAuth->getAuthorizeUrl(
+                    VKOAuthResponseType::CODE,
+                    config('VK_CLIENT_ID'),
+                    config('VK_REDIRECT_URI'),
+                    VKOAuthDisplay::PAGE,
+                    [VKOAuthUserScope::PHOTOS, VKOAuthUserScope::OFFLINE, VKOAuthUserScope::EMAIL],
+                    config('VK_CLIENT_SECRET')
+                );
                 break;
             case 'google':
                 $url = 'https://accounts.google.com/o/oauth2/auth?'.urldecode(http_build_query($this->codeParams['google']));
