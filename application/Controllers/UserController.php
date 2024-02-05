@@ -28,7 +28,7 @@ class UserController extends Controller
         $this->login_url = route('login');
     }
 
-    // страница авторизации
+    // ----- АВТОРИЗАЦИЯ ЛОГИН-ПАРОЛЬ -----
     public function login(mixed $args): void
     {
         $args['csrf'] = $this->csrf;
@@ -61,7 +61,6 @@ class UserController extends Controller
         );
     }
 
-    // авторизация
     public function auth(mixed $args): void
     {
         $login = $args['login'];
@@ -81,28 +80,21 @@ class UserController extends Controller
         }
     }
 
-    // страница авторизации ВК
+    // ----- АВТОРИЗАЦИЯ ВК -----
     public function login_vk()
     {
         // запрос получения ВК-кода
-        $vkCodeParams = [
+        $$params = [
             'client_id' => config('VK_CLIENT_ID'),
             'redirect_uri' => config('VK_REDIRECT_URI'),
             'response_type' => 'code',
             'scope' => 'photos,offline',
         ];
 
-        $get_vk_code_url = 'http://oauth.vk.com/authorize?'.http_build_query($vkCodeParams);
-        header("Location: $get_vk_code_url");
+        $url = 'http://oauth.vk.com/authorize?'.http_build_query($$params);
+        header("Location: $url");
     }
 
-    public function login_google()
-    {
-        $authType = 'google';
-        echo 'Авторизация Google';
-    }
-
-    // авторизация ВК
     public function auth_vk()
     {
         $authType = 'vk';
@@ -137,6 +129,26 @@ class UserController extends Controller
                 header('Location: '.route('home'));
             }
         }
+    }
+
+    // ----- АВТОРИЗАЦИЯ GOOGLE ---
+    public function login_google()
+    {
+        $params = [
+            'client_id' => config('GOOGLE_CLIENT_ID'),
+            'redirect_uri' => config('GOOGLE_REDIRECT_URI'),
+            'response_type' => 'code',
+            'scope' => 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
+            'state' => '123',
+        ];
+
+        $url = 'https://accounts.google.com/o/oauth2/auth?'.urldecode(http_build_query($params));
+        header("Location: $url");
+    }
+
+    public function auth_google()
+    {
+        echo 'UserController::auth_google()';
     }
 
     // страница регистрации
