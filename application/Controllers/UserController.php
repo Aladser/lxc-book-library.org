@@ -24,7 +24,7 @@ class UserController extends Controller
     private string $login_url;
     // параметры запроса получения кода (ВК, Google)
     private array $codeParams;
-
+    // ВК авторизация
     private VKApiClient $vkApiClient;
     private VKOAuth $vkOAuth;
 
@@ -39,12 +39,6 @@ class UserController extends Controller
         $this->login_url = route('login');
 
         $this->codeParams = [
-            'vk' => [
-                'client_id' => config('VK_CLIENT_ID'),
-                'redirect_uri' => config('VK_REDIRECT_URI'),
-                'response_type' => 'code',
-                'scope' => 'photos,offline, email',
-            ],
             'google' => [
                 'client_id' => config('GOOGLE_CLIENT_ID'),
                 'redirect_uri' => config('GOOGLE_REDIRECT_URI'),
@@ -121,7 +115,7 @@ class UserController extends Controller
                     config('VK_CLIENT_ID'),
                     config('VK_REDIRECT_URI'),
                     VKOAuthDisplay::PAGE,
-                    [VKOAuthUserScope::PHOTOS, VKOAuthUserScope::OFFLINE, VKOAuthUserScope::EMAIL],
+                    [VKOAuthUserScope::PHOTOS, VKOAuthUserScope::OFFLINE],
                     config('VK_CLIENT_SECRET')
                 );
                 break;
@@ -137,52 +131,35 @@ class UserController extends Controller
 
     public function auth_vk()
     {
+        if (!isset($_GET['code'])) {
+            return;
+        }
+
         $authType = 'vk';
         // получение access_token
-        if (isset($_GET['code'])) {
-            $params = [
-                'client_id' => config('VK_CLIENT_ID'),
-                'client_secret' => config('VK_CLIENT_SECRET'),
-                'code' => $_GET['code'],
-                'redirect_uri' => config('VK_REDIRECT_URI'),
-            ];
-            if (!$content = @file_get_contents('https://oauth.vk.com/access_token?'.http_build_query($params))) {
-                $error = error_get_last();
-                throw new \Exception('HTTP request failed. Error: '.$error['message']);
-            }
+        $accessTokenResponse = $this->vkOAuth->getAccessToken(
+            config('VK_CLIENT_ID'),
+            config('VK_CLIENT_SECRET'),
+            config('VK_REDIRECT_URI'),
+            $_GET['code']
+        );
+        $vkToken = $accessTokenResponse['access_token'];
+        $vkUserId = $accessTokenResponse['user_id'];
+        $this->userModel->writeToken($vkUserId, $vkToken, $authType);
 
-            $response = json_decode($content);
-            if (isset($response->error)) {
-                throw new \Exception('
-                    При получении токена произошла ошибка. Error: '.$response->error.'. Error description: '.$response->error_description);
-            }
-            [$vkToken, $vkId] = [$response->access_token, $response->user_id];
+        $userData = self::getVKUserInfo($vkUserId, $vkToken);
+        $user_name = $userData['name'];
+        $user_photo = $userData['photo'];
 
-            $response = self::getVKUserInfo($vkId, $vkToken);
-
-            // обновление данных пользователя
-            foreach ($response as $userItem) {
-                $user_name = "{$userItem->first_name} {$userItem->last_name}";
-                $user_photo = $userItem->photo_100;
-                // добавление пользователя вк в БД, если не существует
-
-                if ($this->userModel->exists($vkId, $authType)) {
-                    $this->userModel->writeToken($vkId, $vkToken, $authType);
-                } else {
-                    $this->userModel->add(['login' => $vkId, 'token' => $vkToken], $authType);
-                }
-
-                $this->saveAuth(
-                    [
-                        'login' => $vkId,
-                        'user_name' => $user_name,
-                        'user_photo' => $user_photo,
-                    ],
-                    $authType
-                );
-                header('Location: '.route('home'));
-            }
-        }
+        $this->saveAuth(
+            [
+                'login' => $vkUserId,
+                'user_name' => $user_name,
+                'user_photo' => $user_photo,
+            ],
+            $authType
+        );
+        header('Location: '.route('home'));
     }
 
     public function auth_google()
@@ -352,26 +329,19 @@ class UserController extends Controller
         header("Location: {$this->home_url}");
     }
 
-    // получить информацию о пользователе ВК
-    private static function getVKUserInfo($vkId, $vkToken)
+    private function getVKUserInfo(string $vkUserId, string $vkToken): array
     {
-        // получить имя пользователя, фото
-        $params = [
-            'user_ids' => $vkId,
-            'access_token' => $vkToken,
-            'v' => config('VK_VERSION'),
-            'fields' => 'photo_100,about',
-        ];
-        if (!$content = @file_get_contents('https://api.vk.com/method/users.get?'.http_build_query($params))) {
-            $error = error_get_last();
-            throw new \Exception('HTTP request failed. Error: '.$error['message']);
-        }
-        $response = json_decode($content);
-        if (isset($response->error)) {
-            throw new \Exception($response->error);
-        }
+        $userDataResponse = $this->vkApiClient->users()->get($vkToken, [
+            'user_ids' => $vkUserId,
+            'fields' => ['photo_100'],
+        ])[0];
+        $user_name = "{$userDataResponse['first_name']} {$userDataResponse['last_name']}";
 
-        return $response->response;
+        return [
+            'id' => $userDataResponse['id'],
+            'name' => $user_name,
+            'photo' => $userDataResponse['photo_100'],
+        ];
     }
 
     // получить информацию о пользователе Google
