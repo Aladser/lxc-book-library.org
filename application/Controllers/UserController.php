@@ -135,7 +135,6 @@ class UserController extends Controller
             return;
         }
 
-        $authType = 'vk';
         // получение access_token
         $accessTokenResponse = $this->vkOAuth->getAccessToken(
             config('VK_CLIENT_ID'),
@@ -145,7 +144,7 @@ class UserController extends Controller
         );
         $vkToken = $accessTokenResponse['access_token'];
         $vkUserId = $accessTokenResponse['user_id'];
-        $this->userModel->writeToken($vkUserId, $vkToken, $authType);
+        $this->userModel->writeToken($vkUserId, $vkToken, 'vk');
 
         $userData = self::getVKUserInfo($vkUserId, $vkToken);
         $user_name = $userData['name'];
@@ -157,7 +156,7 @@ class UserController extends Controller
                 'user_name' => $user_name,
                 'user_photo' => $user_photo,
             ],
-            $authType
+            'vk'
         );
         header('Location: '.route('home'));
     }
@@ -283,10 +282,10 @@ class UserController extends Controller
         if ($authUser['auth_type'] == 'vk' || $authUser['auth_type'] == 'google') {
             $token = $this->userModel->getToken($login, $authUser['auth_type']);
             if ($authUser['auth_type'] == 'vk') {
-                $response = self::getVKUserInfo($login, $token);
-                $data['user_login'] = "ID: {$response[0]->id}";
-                $data['user_name'] = "{$response[0]->first_name} {$response[0]->last_name}";
-                $data['user_photo'] = $response[0]->photo_100;
+                $userData = self::getVKUserInfo($login, $token);
+                $data['user_login'] = "VK_ID {$userData['id']}";
+                $data['user_name'] = $userData['name'];
+                $data['user_photo'] = $userData['photo'];
             } else {
                 $response = self::getGoogleUserInfo($token, $login);
                 $login = $response['email'];
@@ -306,7 +305,7 @@ class UserController extends Controller
         ];
 
         if ($authUser['auth_type'] === 'vk') {
-            $page_name = "Пользователь ID$login";
+            $page_name = 'Пользователь '.$data['user_name'];
         } else {
             $page_name = "Пользователь $login";
         }
