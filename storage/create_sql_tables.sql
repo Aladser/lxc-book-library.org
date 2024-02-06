@@ -1,37 +1,21 @@
 drop table if exists db_users;
-drop table if exists vk_users;
-drop table if exists google_users;
-drop table if exists books;
 drop table if exists auth_service_users;
 drop table if exists auth_services;
-
+drop table if exists books;
 
 CREATE table auth_services (
 	id int auto_increment primary key,
 	name varchar(255) not null unique
 );
+insert into auth_services(name) values('vk'), ('google');
 
--- пользователи ВК--
+-- пользователи внешних сервисов--
  CREATE TABLE auth_service_users (
   id int auto_increment primary key,
   login varchar(255) not null,
   token varchar(255),
   auth_service int not null,
   foreign key (auth_service) references auth_services(id) on delete cascade
-);
-
--- пользователи ВК--
- CREATE TABLE vk_users (
-  id int auto_increment primary key,
-  login varchar(255),
-  token varchar(255)
-);
-
--- пользователи Google--
- CREATE TABLE google_users (
-  id int auto_increment primary key,
-  login varchar(255),
-  token varchar(255)
 );
 
 -- пользователи БД--
