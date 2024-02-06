@@ -27,6 +27,8 @@ class UserController extends Controller
     // ВК авторизация
     private VKApiClient $vkApiClient;
     private VKOAuth $vkOAuth;
+    // Google авторизация
+    private \Google\Client $googleClient;
 
     public function __construct()
     {
@@ -50,6 +52,13 @@ class UserController extends Controller
 
         $this->vkApiClient = new VKApiClient();
         $this->vkOAuth = new VKOAuth();
+
+        $this->googleClient = new \Google\Client();
+        $this->googleClient->setClientId(config('GOOGLE_CLIENT_ID'));
+        $this->googleClient->setClientSecret(config('GOOGLE_CLIENT_SECRET'));
+        $this->googleClient->setRedirectUri(config('GOOGLE_REDIRECT_URI'));
+        $this->googleClient->addScope('email');
+        $this->googleClient->addScope('profile');
     }
 
     // ----- АВТОРИЗАЦИЯ ЛОГИН-ПАРОЛЬ -----
@@ -120,7 +129,7 @@ class UserController extends Controller
                 );
                 break;
             case 'google':
-                $url = 'https://accounts.google.com/o/oauth2/auth?'.urldecode(http_build_query($this->codeParams['google']));
+                $url = $this->googleClient->createAuthUrl();
                 break;
             default:
                 throw new \Exception('HTTP request failed: неверный тип сервиса авторизации');
@@ -162,47 +171,49 @@ class UserController extends Controller
 
     public function auth_google()
     {
+        if (!isset($_GET['code'])) {
+            return;
+        }
         $authType = 'google';
-        if (isset($_GET['code'])) {
-            // Отправляем код для получения токена (POST-запрос).
-            $params = [
-                'client_id' => config('GOOGLE_CLIENT_ID'),
-                'client_secret' => config('GOOGLE_CLIENT_SECRET'),
-                'redirect_uri' => config('GOOGLE_REDIRECT_URI'),
-                'grant_type' => 'authorization_code',
-                'code' => $_GET['code'],
-            ];
 
-            $ch = curl_init('https://accounts.google.com/o/oauth2/token');
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_HEADER, false);
-            $data = curl_exec($ch);
-            curl_close($ch);
+        // Отправляем код для получения токена (POST-запрос).
+        $params = [
+            'client_id' => config('GOOGLE_CLIENT_ID'),
+            'client_secret' => config('GOOGLE_CLIENT_SECRET'),
+            'redirect_uri' => config('GOOGLE_REDIRECT_URI'),
+            'grant_type' => 'authorization_code',
+            'code' => $_GET['code'],
+        ];
 
-            $data = json_decode($data, true);
-            if (!empty($data['access_token'])) {
-                $userData = self::getGoogleUserInfo($data['access_token'], $data['id_token']);
-                // добавление пользователя google в БД, если не существует
+        $ch = curl_init('https://accounts.google.com/o/oauth2/token');
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_HEADER, false);
+        $data = curl_exec($ch);
+        curl_close($ch);
 
-                if ($this->userModel->exists($userData['id'], $authType)) {
-                    $this->userModel->writeToken($userData['id'], $data['access_token'], $authType);
-                } else {
-                    $this->userModel->add(['login' => $userData['id'], 'token' => $data['access_token']], $authType);
-                }
+        $data = json_decode($data, true);
+        if (!empty($data['access_token'])) {
+            $userData = self::getGoogleUserInfo($data['access_token'], $data['id_token']);
+            // добавление пользователя google в БД, если не существует
 
-                $this->saveAuth(
-                    [
-                        'login' => $userData['id'],
-                        'user_name' => $userData['name'],
-                        'user_photo' => $userData['picture'],
-                    ],
-                    $authType
-                );
-                header('Location: '.route('home'));
+            if ($this->userModel->exists($userData['id'], $authType)) {
+                $this->userModel->writeToken($userData['id'], $data['access_token'], $authType);
+            } else {
+                $this->userModel->add(['login' => $userData['id'], 'token' => $data['access_token']], $authType);
             }
+
+            $this->saveAuth(
+                [
+                    'login' => $userData['id'],
+                    'user_name' => $userData['name'],
+                    'user_photo' => $userData['picture'],
+                ],
+                $authType
+            );
+            header('Location: '.route('home'));
         }
     }
 
