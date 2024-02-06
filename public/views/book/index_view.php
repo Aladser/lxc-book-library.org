@@ -2,27 +2,6 @@
     <div class='p-3 mb-3 theme-border'>
         <div class='book-content mb-3'>
             <article class='image-block mx-auto'>
-                <img class='d-block mx-auto h-100 object-fit-cover' src="public/data/images/pikovaya_dama.jpeg" alt="Пиковая дама">
-            </article>
-            <div class='w-50 p-1'>
-                <p class='h3 theme-darker-color'>Пиковая дама</p>
-                <p class='h6 theme-darker-color'>Александр Пушкин</p>
-                <p>Повесть</p>
-                <p class="fst-italic">1834 год</p>
-            </div>
-        </div>
-        <div class='p-2'>
-            Успех повести "Пиковая дама" начался с первого издания в 1834 году в журнале "Библиотека для чтения", не утихает он и сегодня. 
-            Три заветные игральные карты, некогда принесшие крупный выигрыш графине, не оставляют в покое Германна. Одержимый их разгадкой, 
-            непрошеный гость дожидается возвращения графини у неё дома, где и совершается непоправимое. 
-            Монохромные иллюстрации Дементия Алексеевича Шмаринова создают атмосферу мистического зимнего Петербурга, где Германн, 
-            во власти страстей, искушает свою судьбу. Вереница событий приводит к исходу, фатальному для главного героя.
-        </div>
-    </div>
-
-    <div class='p-3 mb-3 theme-border'>
-        <div class='book-content mb-3'>
-            <article class='image-block mx-auto'>
                 <img class='d-block mx-auto h-100 object-fit-cover' src="public/data/images/buduschee.jpeg" alt="Будущее">
             </article>
             <div class='w-50'>

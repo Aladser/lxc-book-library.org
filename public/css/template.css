@@ -3,12 +3,21 @@
   padding: 0;
 }
 
+html {
+  font-size: 15px;
+}
+
 textarea {
   resize: none;
 }
 
 a {
   text-decoration: none;
+}
+
+button {
+  border: none;
+  background-color: white;
 }
 
 .button-basic {
@@ -30,6 +39,16 @@ a {
   color: var(--theme-darker-color);
   font-weight: bolder;
   background-color: white;
+}
+
+.button-small {
+  display: inline-block;
+  border: 1px solid var(--theme-color);
+  color: var(--theme-color);
+  font-size: 2rem;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  border-radius: 0.25em;
 }
 
 @media(max-width:700px) {
