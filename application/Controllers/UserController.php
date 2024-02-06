@@ -333,15 +333,15 @@ class UserController extends Controller
         }
     }
 
-    private function saveAccessToken(string $type, string $access_token, string $user_id, string $user_name): void
+    private function saveAccessToken(string $authType, string $access_token, string $user_id, string $user_name): void
     {
         // запись токена в БД
-        if ($this->userModel->exists($user_id, $type)) {
-            $this->userModel->writeToken($user_id, $access_token, $type);
+        if ($this->userModel->exists($user_id, $authType)) {
+            $this->userModel->writeToken($user_id, $access_token, $authType);
         } else {
-            $this->userModel->add(['login' => $user_id, 'token' => $access_token], $type);
+            $this->userModel->add(['login' => $user_id, 'token' => $access_token], $authType);
         }
-        $this->saveAuth(['login' => $user_id, 'user_name' => $user_name], $type);
+        $this->saveAuth(['login' => $user_id, 'user_name' => $user_name], $authType);
     }
 
     // данные  пользователя ВК
@@ -394,19 +394,19 @@ class UserController extends Controller
     }
 
     // Сохранить авторизацию в куки и сессии
-    private function saveAuth(array $params, $type): void
+    private function saveAuth(array $params, $authType): void
     {
-        if ($type !== 'db' && $type !== 'vk' && $type != 'google') {
+        if ($authType !== 'db' && $authType !== 'vk' && $authType != 'google') {
             throw new Exception('Неверный тип авторизации');
         }
 
-        $_SESSION['auth_type'] = $type;
-        setcookie('auth_type', $type, time() + 60 * 60 * 24, '/');
+        $_SESSION['auth_type'] = $authType;
+        setcookie('auth_type', $authType, time() + 60 * 60 * 24, '/');
         foreach ($params as $key => $value) {
             $_SESSION[$key] = $value;
             setcookie($key, $value, time() + 60 * 60 * 24, '/');
         }
-        if ($type === 'db') {
+        if ($authType === 'db') {
             $_SESSION['user_name'] = $params['login'];
             setcookie('user_name', $params['login'], time() + 60 * 60 * 24, '/');
         }

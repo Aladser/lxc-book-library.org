@@ -7,18 +7,29 @@ use App\Core\Model;
 /** таблица пользователей */
 class User extends Model
 {
-    /** проверить существование пользователя */
-    public function exists($login, $type): bool
+    // id сервисов авторизации в БД
+    private array $authServiceIds;
+
+    public function __construct()
     {
-        if ($type != 'db' && $type != 'vk' && $type != 'google') {
+        parent::__construct();
+        $this->authServiceIds = ['vk' => 1, 'google' => 2];
+    }
+
+    /** проверить существование пользователя */
+    public function exists($login, $authType): bool
+    {
+        if ($authType === 'db') {
+            $sql = 'select count(*) as count from db_users where login = :login';
+            $args = ['login' => $login];
+        } elseif ($authType === 'vk' || $authType === 'google') {
+            $sql = 'select count(*) as count from auth_service_users where login = :login and auth_service_id = :auth_service_id';
+            $args = ['login' => $login, 'auth_service_id' => $this->authServiceIds[$authType]];
+        } else {
             throw new Exception('Неверный тип авторизации');
         }
 
-        $sql = "select count(*) as count from {$type}_users where login = :login";
-        $args = ['login' => $login];
-        $isExisted = $this->dbQuery->queryPrepared($sql, $args)['count'] == 1;
-
-        return $isExisted;
+        return $this->dbQuery->queryPrepared($sql, $args)['count'] == 1;
     }
 
     // проверка авторизации
@@ -32,15 +43,16 @@ class User extends Model
     }
 
     // добавить нового пользователя
-    public function add($args, $type = 'db'): int
+    public function add($args, $authType = 'db'): int
     {
-        if ($type === 'db') {
-            $args['password'] = password_hash($args['password'], PASSWORD_DEFAULT);
+        if ($authType === 'db') {
             $sql = 'insert into db_users(login, password) values(:email, :password)';
-        } elseif ($type === 'vk' || $type === 'google') {
-            $sql = "insert into {$type}_users(login, token) values(:login, :token)";
+            $args['password'] = password_hash($args['password'], PASSWORD_DEFAULT);
+        } elseif ($authType === 'vk' || $authType === 'google') {
+            $sql = 'insert into auth_service_users(login, token, auth_service_id) values(:login, :token, :auth_service_id)';
+            $args['auth_service_id'] = $this->authServiceIds[$authType];
         } else {
-            throw new Exception('Неверный тип регистрации');
+            throw new Exception('Неверный тип авторизации');
         }
         $user_id = $this->dbQuery->insert($sql, $args);
 
@@ -56,18 +68,25 @@ class User extends Model
     }
 
     // запись ВК-токена
-    public function writeToken(string $login, string $token, string $authServiceType): bool
+    public function writeToken(string $login, string $token, string $authType): bool
     {
-        $sql = "update {$authServiceType}_users set token = :token where login = :login";
-        $args = ['login' => $login, 'token' => $token];
+        if ($authType === 'db') {
+            $sql = 'update db_users set token = :token where login = :login';
+            $args = ['login' => $login, 'token' => $token];
+        } elseif ($authType === 'vk' || $authType === 'google') {
+            $sql = 'update auth_service_users set token = :token where login = :login and auth_service_id = :auth_service_id';
+            $args = ['login' => $login, 'token' => $token, 'auth_service_id' => $this->authServiceIds[$authType]];
+        } else {
+            throw new Exception('Неверный тип авторизации');
+        }
 
         return $this->dbQuery->update($sql, $args);
     }
 
-    public function getToken(string $login, string $authServiceType)
+    public function getToken(string $login, string $authType): string
     {
-        $sql = "select token from {$authServiceType}_users where login = :login";
-        $args = ['login' => $login];
+        $sql = 'select token from auth_service_users where login = :login and auth_service_id = :auth_service_id';
+        $args = ['login' => $login, 'auth_service_id' => $this->authServiceIds[$authType]];
         $token = $this->dbQuery->queryPrepared($sql, $args)['token'];
 
         return $token;
