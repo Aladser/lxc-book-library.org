@@ -41,16 +41,6 @@ class UserController extends Controller
         $this->home_url = route('home');
         $this->login_url = route('login');
 
-        $this->codeParams = [
-            'google' => [
-                'client_id' => config('GOOGLE_CLIENT_ID'),
-                'redirect_uri' => config('GOOGLE_REDIRECT_URI'),
-                'response_type' => 'code',
-                'scope' => 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
-                'state' => '123',
-            ],
-        ];
-
         $this->vkApiClient = new VKApiClient();
         $this->vkOAuth = new VKOAuth();
 
@@ -140,6 +130,33 @@ class UserController extends Controller
         header("Location: $url");
     }
 
+    public function auth_service($args)
+    {
+        var_dump($args);
+
+        return;
+        if (!isset($_GET['code'])) {
+            return;
+        }
+        $authType = $_GET['service'];
+        $accessTokenResponse = self::getAccessToken($_GET['code'], $authType);
+        switch ($authType) {
+            case 'vk':
+                $user_id = $accessTokenResponse['user_id'];
+                $access_token = $accessTokenResponse['access_token'];
+                $userData = self::getVKUserInfo($user_id, $access_token);
+                break;
+            case 'google':
+                $access_token = $accessTokenResponse['access_token'];
+                $this->googleClient->setAccessToken($access_token);
+                $userData = self::getGoogleUserInfo($access_token);
+                $user_id = $userData['user_id'];
+        }
+        $user_name = $userData['user_name'];
+        self::saveToken($authType, $access_token, $user_id, $user_name);
+        // header('Location: '.route('home'));
+    }
+
     public function auth_vk()
     {
         if (!isset($_GET['code'])) {
@@ -169,7 +186,9 @@ class UserController extends Controller
 
         $this->googleClient->setAccessToken($access_token);
         $userData = self::getGoogleUserInfo($access_token);
-        self::saveToken($authType, $access_token, $userData['user_login'], $userData['user_name']);
+        $user_login = $userData['user_login'];
+        $user_name = $userData['user_name'];
+        self::saveToken($authType, $access_token, $user_login, $user_name);
         header('Location: '.route('home'));
     }
 
