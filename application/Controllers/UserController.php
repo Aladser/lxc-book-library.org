@@ -170,6 +170,7 @@ class UserController extends Controller
 
         $userData = self::getVKUserInfo($user_id, $access_token);
         $user_name = $userData['user_name'];
+
         self::saveToken($authType, $access_token, $user_id, $user_name);
         header('Location: '.route('home'));
     }
@@ -188,6 +189,7 @@ class UserController extends Controller
         $userData = self::getGoogleUserInfo($access_token);
         $user_login = $userData['user_login'];
         $user_name = $userData['user_name'];
+
         self::saveToken($authType, $access_token, $user_login, $user_name);
         header('Location: '.route('home'));
     }
