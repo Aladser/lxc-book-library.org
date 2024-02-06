@@ -14,8 +14,8 @@ insert into auth_services(name) values('vk'), ('google');
   id int auto_increment primary key,
   login varchar(255) not null,
   token varchar(255),
-  auth_service int not null,
-  foreign key (auth_service) references auth_services(id) on delete cascade
+  auth_service_id int not null,
+  foreign key (auth_service_id) references auth_services(id) on delete cascade
 );
 
 -- пользователи БД--
