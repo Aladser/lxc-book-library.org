@@ -29,6 +29,7 @@ class UserController extends Controller
     private VKOAuth $vkOAuth;
     // Google авторизация
     private \Google\Client $googleClient;
+    private \Google\Service\Oauth2 $google_oauth;
 
     public function __construct()
     {
@@ -59,6 +60,7 @@ class UserController extends Controller
         $this->googleClient->setRedirectUri(config('GOOGLE_REDIRECT_URI'));
         $this->googleClient->addScope('email');
         $this->googleClient->addScope('profile');
+        $this->google_oauth = new \Google\Service\Oauth2($this->googleClient);
     }
 
     // ----- АВТОРИЗАЦИЯ ЛОГИН-ПАРОЛЬ -----
@@ -171,50 +173,39 @@ class UserController extends Controller
 
     public function auth_google()
     {
+        /*
+         * email:aladser@gmail.com
+         * id:107126238814528305529
+         * name:Andrei Avramenko
+         * picture:https://lh3.googleusercontent.com/a/ACg8ocJRhcySpNfmcC3bc8dDm0JmUsrjyO1Btc_ESrQMKTGOpIw=s96-c
+         */
         if (!isset($_GET['code'])) {
             return;
         }
-        $authType = 'google';
+        $token = $this->googleClient->fetchAccessTokenWithAuthCode($_GET['code']);
 
-        // Отправляем код для получения токена (POST-запрос).
-        $params = [
-            'client_id' => config('GOOGLE_CLIENT_ID'),
-            'client_secret' => config('GOOGLE_CLIENT_SECRET'),
-            'redirect_uri' => config('GOOGLE_REDIRECT_URI'),
-            'grant_type' => 'authorization_code',
-            'code' => $_GET['code'],
-        ];
-
-        $ch = curl_init('https://accounts.google.com/o/oauth2/token');
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_HEADER, false);
-        $data = curl_exec($ch);
-        curl_close($ch);
-
-        $data = json_decode($data, true);
-        if (!empty($data['access_token'])) {
-            $userData = self::getGoogleUserInfo($data['access_token'], $data['id_token']);
-            // добавление пользователя google в БД, если не существует
-
-            if ($this->userModel->exists($userData['id'], $authType)) {
-                $this->userModel->writeToken($userData['id'], $data['access_token'], $authType);
-            } else {
-                $this->userModel->add(['login' => $userData['id'], 'token' => $data['access_token']], $authType);
-            }
-
-            $this->saveAuth(
-                [
-                    'login' => $userData['id'],
-                    'user_name' => $userData['name'],
-                    'user_photo' => $userData['picture'],
-                ],
-                $authType
-            );
-            header('Location: '.route('home'));
+        if (!isset($token)) {
+            return;
         }
+        $access_token = $token['access_token'];
+
+        $this->googleClient->setAccessToken($access_token);
+        $userData = self::getGoogleUserInfo();
+
+        if ($this->userModel->exists($userData['user_login'], 'google')) {
+            $this->userModel->writeToken($userData['user_login'], $access_token, 'google');
+        } else {
+            $this->userModel->add(['login' => $userData['user_login'], 'token' => $access_token], 'google');
+        }
+
+        $this->saveAuth(
+            [
+                'login' => $userData['user_login'],
+                'user_name' => $userData['user_name'],
+            ],
+            'google'
+        );
+        header('Location: '.route('home'));
     }
 
     // страница регистрации
@@ -297,7 +288,7 @@ class UserController extends Controller
                 $data['user_name'] = $userData['name'];
                 $data['user_photo'] = $userData['photo'];
             } else {
-                $response = self::getGoogleUserInfo($token, $login);
+                $response = self::getGoogleUserInfo();
                 $login = $response['email'];
                 $data['user_login'] = $response['email'];
                 $data['user_name'] = $response['name'];
@@ -338,6 +329,7 @@ class UserController extends Controller
         header("Location: {$this->home_url}");
     }
 
+    // данные  пользователя ВК
     private function getVKUserInfo(string $user_id, string $access_token): array
     {
         $userDataResponse = $this->vkApiClient->users()->get($access_token, [
@@ -353,19 +345,16 @@ class UserController extends Controller
         ];
     }
 
-    // получить информацию о пользователе Google
-    private static function getGoogleUserInfo($token, $user_id)
+    // данные пользователя Gmail
+    private function getGoogleUserInfo()
     {
-        $params = [
-            'access_token' => $token,
-            'id_token' => $user_id,
-            'token_type' => 'Bearer',
-            'expires_in' => 3599,
+        $google_account_info = $this->google_oauth->userinfo->get();
+
+        return [
+            'user_login' => $google_account_info->email,
+            'user_name' => $google_account_info->name,
+            'user_photo' => $google_account_info->picture,
         ];
-
-        $userData = file_get_contents('https://www.googleapis.com/oauth2/v1/userinfo?'.urldecode(http_build_query($params)));
-
-        return json_decode($userData, true);
     }
 
     // получить авторизованного пользователя
