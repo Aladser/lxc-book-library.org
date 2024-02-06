@@ -157,8 +157,7 @@ class UserController extends Controller
         $access_token = $accessTokenResponse['access_token'];
         $user_id = $accessTokenResponse['user_id'];
         $userData = self::getVKUserInfo($user_id, $access_token);
-        $user_name = $userData['name'];
-        $user_photo = $userData['photo'];
+        $user_name = $userData['user_name'];
 
         // запись токена в БД
         if ($this->userModel->exists($user_id, 'vk')) {
@@ -190,7 +189,7 @@ class UserController extends Controller
         $access_token = $token['access_token'];
 
         $this->googleClient->setAccessToken($access_token);
-        $userData = self::getGoogleUserInfo();
+        $userData = self::getGoogleUserInfo($access_token);
 
         if ($this->userModel->exists($userData['user_login'], 'google')) {
             $this->userModel->writeToken($userData['user_login'], $access_token, 'google');
@@ -284,15 +283,15 @@ class UserController extends Controller
             $token = $this->userModel->getToken($login, $authUser['auth_type']);
             if ($authUser['auth_type'] == 'vk') {
                 $userData = self::getVKUserInfo($login, $token);
-                $data['user_login'] = "VK_ID {$userData['id']}";
-                $data['user_name'] = $userData['name'];
-                $data['user_photo'] = $userData['photo'];
+                $data['user_login'] = "VK_ID {$userData['user_login']}";
+                $data['user_name'] = $userData['user_name'];
+                $data['user_photo'] = $userData['user_photo'];
             } else {
-                $response = self::getGoogleUserInfo();
-                $login = $response['email'];
-                $data['user_login'] = $response['email'];
-                $data['user_name'] = $response['name'];
-                $data['user_photo'] = $response['picture'];
+                $response = self::getGoogleUserInfo($token);
+                $login = $response['user_login'];
+                $data['user_login'] = $response['user_login'];
+                $data['user_name'] = $response['user_name'];
+                $data['user_photo'] = $response['user_photo'];
             }
         } elseif ($authUser['auth_type'] == 'db') {
             $data['user_login'] = $login;
@@ -339,15 +338,16 @@ class UserController extends Controller
         $user_name = "{$userDataResponse['first_name']} {$userDataResponse['last_name']}";
 
         return [
-            'id' => $userDataResponse['id'],
-            'name' => $user_name,
-            'photo' => $userDataResponse['photo_100'],
+            'user_login' => $userDataResponse['id'],
+            'user_name' => $user_name,
+            'user_photo' => $userDataResponse['photo_100'],
         ];
     }
 
     // данные пользователя Gmail
-    private function getGoogleUserInfo()
+    private function getGoogleUserInfo(string $access_token)
     {
+        $this->googleClient->setAccessToken($access_token);
         $google_account_info = $this->google_oauth->userinfo->get();
 
         return [
