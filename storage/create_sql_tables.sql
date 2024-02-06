@@ -15,13 +15,15 @@ insert into auth_services(name) values('vk'), ('google');
   login varchar(255) not null,
   token varchar(255),
   auth_service_id int not null,
+  unique(login, auth_service_id),
   foreign key (auth_service_id) references auth_services(id) on delete cascade
 );
 
 -- пользователи БД--
 CREATE TABLE db_users (
   id int auto_increment primary key,
-  login varchar(50) unique not null, 
+  login varchar(50) unique not null,
+  nickname varchar(255) unique,  
   password varchar(255) not null
 );
 
@@ -36,3 +38,4 @@ create table books(
 	mark int check(mark > 0 and mark < 6),
 	index uniq_author_name (author, name)
 );
+
