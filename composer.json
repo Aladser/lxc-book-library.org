@@ -9,6 +9,7 @@
         "friendsofphp/php-cs-fixer": "^3.47",
       "ext-json": "*",
       "ext-pdo": "*",
-        "vkcom/vk-php-sdk": "^5.131"
+        "vkcom/vk-php-sdk": "^5.131",
+        "google/apiclient": "^2.0"
     }
   }
