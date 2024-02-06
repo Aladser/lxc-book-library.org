@@ -145,65 +145,31 @@ class UserController extends Controller
         if (!isset($_GET['code'])) {
             return;
         }
+        $authType = 'vk';
 
-        // получение access_token
-        $accessTokenResponse = $this->vkOAuth->getAccessToken(
-            config('VK_CLIENT_ID'),
-            config('VK_CLIENT_SECRET'),
-            config('VK_REDIRECT_URI'),
-            $_GET['code']
-        );
-
-        $access_token = $accessTokenResponse['access_token'];
+        $accessTokenResponse = self::getAccessToken($_GET['code'], $authType);
         $user_id = $accessTokenResponse['user_id'];
+        $access_token = $accessTokenResponse['access_token'];
+
         $userData = self::getVKUserInfo($user_id, $access_token);
         $user_name = $userData['user_name'];
-
-        // запись токена в БД
-        if ($this->userModel->exists($user_id, 'vk')) {
-            $this->userModel->writeToken($user_id, $access_token, 'vk');
-        } else {
-            $this->userModel->add(['login' => $user_id, 'token' => $access_token], 'vk');
-        }
-
-        $this->saveAuth(['login' => $user_id, 'user_name' => $user_name], 'vk');
+        self::saveToken($authType, $access_token, $user_id, $user_name);
         header('Location: '.route('home'));
     }
 
     public function auth_google()
     {
-        /*
-         * email:aladser@gmail.com
-         * id:107126238814528305529
-         * name:Andrei Avramenko
-         * picture:https://lh3.googleusercontent.com/a/ACg8ocJRhcySpNfmcC3bc8dDm0JmUsrjyO1Btc_ESrQMKTGOpIw=s96-c
-         */
         if (!isset($_GET['code'])) {
             return;
         }
-        $token = $this->googleClient->fetchAccessTokenWithAuthCode($_GET['code']);
+        $authType = 'google';
 
-        if (!isset($token)) {
-            return;
-        }
+        $token = self::getAccessToken($_GET['code'], $authType);
         $access_token = $token['access_token'];
 
         $this->googleClient->setAccessToken($access_token);
         $userData = self::getGoogleUserInfo($access_token);
-
-        if ($this->userModel->exists($userData['user_login'], 'google')) {
-            $this->userModel->writeToken($userData['user_login'], $access_token, 'google');
-        } else {
-            $this->userModel->add(['login' => $userData['user_login'], 'token' => $access_token], 'google');
-        }
-
-        $this->saveAuth(
-            [
-                'login' => $userData['user_login'],
-                'user_name' => $userData['user_name'],
-            ],
-            'google'
-        );
+        self::saveToken($authType, $access_token, $userData['user_login'], $userData['user_name']);
         header('Location: '.route('home'));
     }
 
@@ -326,6 +292,35 @@ class UserController extends Controller
         setcookie('login', '', time() - 3600, '/');
         setcookie('user_name', '', time() - 3600, '/');
         header("Location: {$this->home_url}");
+    }
+
+    // получить access_token
+    private function getAccessToken(string $code, string $serviceName): array
+    {
+        switch ($serviceName) {
+            case 'vk':
+                return $this->vkOAuth->getAccessToken(
+                    config('VK_CLIENT_ID'),
+                    config('VK_CLIENT_SECRET'),
+                    config('VK_REDIRECT_URI'),
+                    $code
+                );
+            case 'google':
+                return $this->googleClient->fetchAccessTokenWithAuthCode($code);
+            default:
+                throw new \Exception('UserController::getAccessToken(): неверный тип сервиса');
+        }
+    }
+
+    private function saveToken(string $type, string $access_token, string $user_id, string $user_name): void
+    {
+        // запись токена в БД
+        if ($this->userModel->exists($user_id, $type)) {
+            $this->userModel->writeToken($user_id, $access_token, $type);
+        } else {
+            $this->userModel->add(['login' => $user_id, 'token' => $access_token], $type);
+        }
+        $this->saveAuth(['login' => $user_id, 'user_name' => $user_name], $type);
     }
 
     // данные  пользователя ВК
