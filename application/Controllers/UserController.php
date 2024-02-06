@@ -165,13 +165,13 @@ class UserController extends Controller
         $authType = 'vk';
 
         $accessTokenResponse = self::getAccessToken($_GET['code'], $authType);
-        $user_id = $accessTokenResponse['user_id'];
         $access_token = $accessTokenResponse['access_token'];
+        $user_id = $accessTokenResponse['user_id'];
 
         $userData = self::getVKUserInfo($user_id, $access_token);
         $user_name = $userData['user_name'];
 
-        self::saveToken($authType, $access_token, $user_id, $user_name);
+        self::saveAccessToken($authType, $access_token, $user_id, $user_name);
         header('Location: '.route('home'));
     }
 
@@ -182,15 +182,15 @@ class UserController extends Controller
         }
         $authType = 'google';
 
-        $token = self::getAccessToken($_GET['code'], $authType);
-        $access_token = $token['access_token'];
+        $accessTokenResponse = self::getAccessToken($_GET['code'], $authType);
+        $access_token = $accessTokenResponse['access_token'];
 
         $this->googleClient->setAccessToken($access_token);
         $userData = self::getGoogleUserInfo($access_token);
         $user_login = $userData['user_login'];
         $user_name = $userData['user_name'];
 
-        self::saveToken($authType, $access_token, $user_login, $user_name);
+        self::saveAccessToken($authType, $access_token, $user_login, $user_name);
         header('Location: '.route('home'));
     }
 
@@ -333,7 +333,7 @@ class UserController extends Controller
         }
     }
 
-    private function saveToken(string $type, string $access_token, string $user_id, string $user_name): void
+    private function saveAccessToken(string $type, string $access_token, string $user_id, string $user_name): void
     {
         // запись токена в БД
         if ($this->userModel->exists($user_id, $type)) {
