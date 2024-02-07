@@ -31,14 +31,24 @@ class AuthorController extends Controller
             'show' => route('show'),
         ];
 
+        // доп.заголовки
+        $csrf = Controller::createCSRFToken();
+        $csrf_meta = "<meta name='csrf' content=$csrf>";
+
         $this->view->generate(
             page_name: "{$this->site_name} - авторы",
             template_view: 'template_view.php',
             content_view: 'author_view.php',
             content_css: 'author.css',
-            content_js: ['author.js'],
+            content_js: ['ServerRequest.js', 'author.js'],
             data: $data,
             routes: $routes,
+            add_head: $csrf_meta,
         );
+    }
+
+    public function update()
+    {
+        echo 'AuthorController->update()';
     }
 }
