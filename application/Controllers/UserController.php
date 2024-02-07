@@ -291,16 +291,20 @@ class UserController extends Controller
         // роуты
         $routes = [
             'home' => $this->home_url,
+            'authors' => route('authors'),
+            'genres' => route('genres'),
         ];
 
         // название страницы
-        $page_name = 'Пользователь ';
-        $page_name .= $authUser['auth_type'] === 'vk' ? $data['user_name'] : $login;
+
         // контент страницы
         if ($isAdmin) {
+            $page_name = "{$this->site_name} - администрирование";
             $content_view = 'user/admin_view.php';
             $content_css = 'admin_page.css';
         } else {
+            $page_name = 'Пользователь ';
+            $page_name .= $authUser['auth_type'] === 'vk' ? $data['user_name'] : $login;
             $content_view = 'user/show_view.php';
             $content_css = null;
         }

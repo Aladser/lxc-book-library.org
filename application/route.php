@@ -16,6 +16,8 @@ function route($page_name)
         'store' => '/user/store',
         'show' => '/user/show',
         'logout' => '/user/logout',
+        'authors' => '/author/view',
+        'genres' => '/genre/view',
     ];
 
     try {
