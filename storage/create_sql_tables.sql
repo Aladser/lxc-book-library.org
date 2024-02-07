@@ -45,9 +45,15 @@ create table authors (
 	id int auto_increment primary key,
 	name varchar(255) not null,
 	surname varchar(255) not null,
-	patronym varchar(255),
 	unique(name, surname)
 );
+insert into authors(name, surname) values
+	('Стивен','Кинг'),
+	('Александр','Пушкин'),
+	('Дмитрий','Глуховский'),
+	('Терри','Пратчетт'),
+	('Филип','Дик');
+
 -- жанры --
 create table genres (
 	id int auto_increment primary key,
