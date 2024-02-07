@@ -3,7 +3,7 @@
         <h3 class='admin-section__mb'>Авторы</h3>
         <table class='w-75 mx-auto'>
             <?php foreach ($data['authors'] as $author) { ?>
-            <tr><td class='p-3 cursor-pointer theme-border-bottom'><?php echo $author['name'].' '.$author['surname']; ?></td></tr>
+            <tr><td class='p-3 cursor-pointer theme-bg-сolor-white theme-border-bottom'><?php echo $author['name'].' '.$author['surname']; ?></td></tr>
             <?php }?>
         </table>
     </section>
