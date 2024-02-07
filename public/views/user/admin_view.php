@@ -1,5 +1,5 @@
 <div class='container'>
-    <section class='admin-section w-50 mx-auto text-center mb-3'>
+    <section class='admin-section'>
         <h3 class='admin-section__mb'>Панель администратора</h3>
 
         <div class='admin-section__mb d-inline-block w-100 text-start px-2'>
