@@ -44,6 +44,7 @@ btnEditList.forEach(btn => {
                 <input type="hidden" name="CSRF" value="${csrf.content}">
             </form>
         `;
+        document.querySelector('#table-row__form-edit').onsubmit = (e) => saveAuthorEditing(e);
         document.querySelector('#table-row__btn-cancel').onclick = cancelAuthorEditing;
     });
 });
@@ -55,6 +56,13 @@ btnRemoveList.forEach(btn => {
     });
 });
 
+/** сохранить изменение автора */
+function saveAuthorEditing(e) {
+    e.preventDefault();
+    cancelAuthorEditing();
+    console.log(e.target.name.value);
+    console.log(e.target.surname.value);
+}
 
 /** отменить изменение автора */
 function cancelAuthorEditing() {
