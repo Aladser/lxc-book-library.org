@@ -1,0 +1,10 @@
+.admin-section {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.admin-section__mb {
+    margin-bottom: 2rem;
+}
