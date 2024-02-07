@@ -12,6 +12,5 @@ authorRows.forEach(row => {
     row.addEventListener('contextmenu', function(e) {
         authorContextMenu.style.left = (e.pageX-10)+'px';
         authorContextMenu.style.top = (e.pageY-5)+'px';
-        console.log(this.offsetWidth);
     });
 }); 
