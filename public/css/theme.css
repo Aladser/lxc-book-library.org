@@ -33,3 +33,7 @@ html {
   .theme-border-bottom {
     border-bottom: var(--theme-border);
   }
+
+  .theme-border-radius {
+    border-radius: 0.25em;
+  }

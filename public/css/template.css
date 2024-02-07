@@ -20,6 +20,10 @@ button {
   background-color: white;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .button-basic {
   padding: 0.75rem;
   width: 10rem;

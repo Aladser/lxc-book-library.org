@@ -35,6 +35,7 @@ class AuthorController extends Controller
             page_name: "{$this->site_name} - авторы",
             template_view: 'template_view.php',
             content_view: 'author_view.php',
+            content_css: 'admin_page.css',
             data: $data,
             routes: $routes,
         );
