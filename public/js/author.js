@@ -10,6 +10,8 @@ window.addEventListener('DOMContentLoaded', function(e) {
 // нажатия правой кнопкой мыши на строке автора
 authorRows.forEach(row => {
     row.addEventListener('contextmenu', function(e) {
-        console.log(e.target.textContent);
+        authorContextMenu.style.left = (e.pageX+5)+'px';
+        authorContextMenu.style.top = (e.pageY+5)+'px';
+        console.log(this.offsetWidth);
     });
 }); 

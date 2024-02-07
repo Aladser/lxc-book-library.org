@@ -1,10 +1,10 @@
-<div class='container position-relative w-50'>
+<div class='container w-50'>
     <section class='text-center mx-auto mb-3'>
         <h3 class='section-mb'>Авторы</h3>
         <table class='w-75 mx-auto'>
             <?php foreach ($data['authors'] as $author) { ?>
             <tr>
-                <td class='table-row p-3 cursor-pointer theme-bg-сolor-white theme-border-bottom position-relative'>
+                <td class='table-row p-3 cursor-pointer theme-bg-сolor-white theme-border-bottom'>
                     <?php echo $author['name'].' '.$author['surname']; ?>
                 </td>
             </tr>
