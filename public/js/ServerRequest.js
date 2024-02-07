@@ -23,8 +23,6 @@ class ServerRequest {
             });
         }
 
-        console.log(response.status);
-        return;
         switch (response.status) {
             case 200:
                 let data = await response.text();

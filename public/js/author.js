@@ -11,6 +11,8 @@ const btnRemoveList = document.querySelectorAll('.author-context-menu__btn-remov
 /** выбранный автор */
 let selectedAuthorElem = false;
 let selectedAuthor = false;
+// URL author->update()
+let authorUpdateURL = '/author/update';
 
 window.addEventListener('DOMContentLoaded', function(e) {
     document.oncontextmenu = () => false;
@@ -36,7 +38,7 @@ btnEditList.forEach(btn => {
     btn.addEventListener('click', function(){
         let [name, surname] = selectedAuthor.split(' ');
         selectedAuthorElem.innerHTML = `
-            <form id='table-row__form-edit' method='post' action='/author/update'>
+            <form id='table-row__form-edit'>
                 <input type='text' name='name' class='table-row__input-author theme-border' value='${name}'>
                 <input type='text' name='surname' class='table-row__input-author theme-border' value='${surname}'>
                 <input type='button' id='table-row__btn-cancel' class='table-row__btn theme-border' value='Отмена'>
@@ -60,8 +62,14 @@ btnRemoveList.forEach(btn => {
 function saveAuthorEditing(e) {
     e.preventDefault();
     cancelAuthorEditing();
-    console.log(e.target.name.value);
-    console.log(e.target.surname.value);
+    let formData = new FormData(e.target);
+    ServerRequest.execute(
+        authorUpdateURL,
+        (data) => console.log(data),
+        "post",
+        null,
+        formData
+    );
 }
 
 /** отменить изменение автора */
