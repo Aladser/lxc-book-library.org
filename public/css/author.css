@@ -6,6 +6,13 @@
     opacity: 1;
 }
 
+.author-context-menu{
+    display: none;
+}
+.author-context-menu--active{
+    display: block;
+}
+
 .author-context-menu__btn {
     display: block;
     width: 10rem;
