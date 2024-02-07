@@ -14,7 +14,7 @@
     <a href="<?php echo $routes['show']; ?>" class="d-block button-basic theme-border theme-border-radius mx-auto mb-2">Назад</a>
 
     <div class='author-context-menu position-absolute'>
-        <button class='author-context-menu__btn theme-border-top theme-border-start theme-border-end theme-bg-сolor-white'>Изменить</button>
-        <button class='author-context-menu__btn theme-border theme-bg-сolor-white'>Удалить</button>
+        <button class='author-context-menu__btn author-context-menu__btn-edit theme-border-top theme-border-start theme-border-end theme-bg-сolor-white'>Изменить</button>
+        <button class='author-context-menu__btn author-context-menu__btn-remove theme-border theme-bg-сolor-white'>Удалить</button>
     </div>
 </div>

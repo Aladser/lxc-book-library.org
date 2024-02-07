@@ -10,3 +10,13 @@
     width: 10rem;
     padding: 0.5rem;
 }
+
+.table-row__input-author{
+    outline: none;
+}
+
+.table-row__btn{
+    background-color: white;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
