@@ -5,3 +5,9 @@
 .table-row__btn:hover{
     opacity: 1;
 }
+
+.author-context-menu__btn {
+    display: block;
+    width: 10rem;
+    padding: 0.5rem;
+}

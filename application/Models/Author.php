@@ -15,7 +15,7 @@ class Author extends Model
     // список авторов
     public function get()
     {
-        $sql = 'select name, surname from authors';
+        $sql = 'select name, surname from authors order by surname';
         $dbAuthors = $this->dbQuery->query($sql, false);
         foreach ($dbAuthors as $dbAuthor) {
             $authors[] = ['name' => $dbAuthor['name'], 'surname' => $dbAuthor['surname']];

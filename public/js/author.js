@@ -1,15 +1,15 @@
-/** кнопки изменения автора */
-let edit_buttons = document.querySelectorAll('.table-row__btn-edit');
-/** кнопки удаления автора */
-let remove_buttons = document.querySelectorAll('.table-row__btn-remove'); 
+/** контекстное меню строки*/
+const authorContextMenu = document.querySelector('.author-context-menu');
+/** строки таблицы авторов */
+const authorRows = document.querySelectorAll('.table-row');
 
-edit_buttons.forEach(btn => btn.onclick = e => {
-    let tableRow = e.target.closest('.table-row');
-    let authorName = tableRow.querySelector('.table-row__author').textContent;
-    console.log('изменить ' + authorName);
+window.addEventListener('DOMContentLoaded', function(e) {
+    document.oncontextmenu = () => false;
 });
-remove_buttons.forEach(btn => btn.onclick = e => {
-    let tableRow = e.target.closest('.table-row');
-    let authorName = tableRow.querySelector('.table-row__author').textContent;
-    console.log('удалить ' + authorName);
-});
+
+// нажатия правой кнопкой мыши на строке автора
+authorRows.forEach(row => {
+    row.addEventListener('contextmenu', function(e) {
+        console.log(e.target.textContent);
+    });
+}); 
