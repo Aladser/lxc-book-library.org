@@ -16,7 +16,7 @@ use function App\route;
 // пользователи
 class UserController extends Controller
 {
-    private User $userModel;
+    private User $user;
     private string $csrf;
 
     private string $register_url;
@@ -34,7 +34,7 @@ class UserController extends Controller
     public function __construct()
     {
         parent::__construct();
-        $this->userModel = new User();
+        $this->user = new User();
         $this->csrf = Controller::createCSRFToken();
 
         $this->register_url = route('register');
@@ -91,9 +91,9 @@ class UserController extends Controller
         $login = $args['login'];
         $password = $args['password'];
         // проверка аутентификации
-        if ($this->userModel->exists($login, 'db')) {
+        if ($this->user->exists($login, 'db')) {
             // проверка введенных данных
-            $isAuth = $this->userModel->is_correct_password($login, $password);
+            $isAuth = $this->user->is_correct_password($login, $password);
             if ($isAuth) {
                 $this->saveAuth(['login' => $login], 'db');
                 header("Location: {$this->home_url}");
@@ -241,10 +241,10 @@ class UserController extends Controller
         } elseif (strlen($password) < 3) {
             // длина пароля
             header("Location:{$this->register_url}?error=sp&user=$email");
-        } elseif (!$this->userModel->exists($email, 'db')) {
+        } elseif (!$this->user->exists($email, 'db')) {
             // регистрация пользователя
             unset($args['password_confirm']);
-            $isUserRegistered = $this->userModel->add($args);
+            $isUserRegistered = $this->user->add($args);
             if ($isUserRegistered) {
                 $this->saveAuth(['login' => $email], 'db');
                 header("Location: {$this->home_url}");
@@ -267,7 +267,7 @@ class UserController extends Controller
         $data['header_button_url'] = route('logout');
         $data['header_button_name'] = 'Выйти';
         if ($authUser['auth_type'] == 'vk' || $authUser['auth_type'] == 'google') {
-            $token = $this->userModel->getToken($login, $authUser['auth_type']);
+            $token = $this->user->getToken($login, $authUser['auth_type']);
             if ($authUser['auth_type'] == 'vk') {
                 $userData = self::getVKUserInfo($login, $token);
                 $data['user_login'] = "VK_ID {$userData['user_login']}";
@@ -280,7 +280,7 @@ class UserController extends Controller
             $data['user_photo'] = $userData['user_photo'];
             $isAdmin = false;
         } elseif ($authUser['auth_type'] == 'db') {
-            $userData = $this->userModel->getDBUser($login);
+            $userData = $this->user->getDBUser($login);
             $data['user_login'] = $login;
             $data['user_name'] = $userData['nickname'];
             $isAdmin = $userData['is_admin'] == 1;
@@ -350,10 +350,10 @@ class UserController extends Controller
     private function saveAccessToken(string $authType, string $access_token, string $user_id, string $user_name): void
     {
         // запись токена в БД
-        if ($this->userModel->exists($user_id, $authType)) {
-            $this->userModel->writeToken($user_id, $access_token, $authType);
+        if ($this->user->exists($user_id, $authType)) {
+            $this->user->writeToken($user_id, $access_token, $authType);
         } else {
-            $this->userModel->add(['login' => $user_id, 'token' => $access_token], $authType);
+            $this->user->add(['login' => $user_id, 'token' => $access_token], $authType);
         }
         $this->saveAuth(['login' => $user_id, 'user_name' => $user_name], $authType);
     }
