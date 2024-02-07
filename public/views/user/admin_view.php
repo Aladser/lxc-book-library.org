@@ -1,8 +1,8 @@
 <div class='container'>
-    <section class='admin-section'>
-        <h3 class='admin-section__mb'>Панель администратора</h3>
+    <section class='w-50 mx-auto'>
+        <h3 class='section-mb'>Панель администратора</h3>
 
-        <div class='admin-section__mb d-inline-block w-100 text-start px-2'>
+        <div class='section-mb d-inline-block w-100 text-start px-2'>
             <div class='fw-bolder fs-5'>Логин: <?php echo $data['user_login']; ?></div>
             <div class='fs-3'>Имя: <?php echo $data['user_name']; ?></div>
         </div>

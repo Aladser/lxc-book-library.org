@@ -1,0 +1,7 @@
+.table-row__btn{
+    opacity: 0.25;
+    background-color: transparent;
+}
+.table-row__btn:hover{
+    opacity: 1;
+}

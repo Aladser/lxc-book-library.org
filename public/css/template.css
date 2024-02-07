@@ -24,6 +24,10 @@ button {
   cursor: pointer;
 }
 
+.section-mb{
+  margin-bottom: 2rem;
+}
+
 .button-basic {
   padding: 0.75rem;
   width: 10rem;
