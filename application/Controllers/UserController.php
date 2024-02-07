@@ -259,47 +259,50 @@ class UserController extends Controller
     // страница пользователя
     public function show()
     {
-        $data = [];
-        $data['header_button_url'] = route('logout');
-        $data['header_button_name'] = 'Выйти';
-
         $authUser = self::getAuthUser();
         $login = $authUser['login'];
 
+        // данные
+        $data = [];
+        $data['header_button_url'] = route('logout');
+        $data['header_button_name'] = 'Выйти';
         if ($authUser['auth_type'] == 'vk' || $authUser['auth_type'] == 'google') {
             $token = $this->userModel->getToken($login, $authUser['auth_type']);
             if ($authUser['auth_type'] == 'vk') {
                 $userData = self::getVKUserInfo($login, $token);
                 $data['user_login'] = "VK_ID {$userData['user_login']}";
-                $data['user_name'] = $userData['user_name'];
-                $data['user_photo'] = $userData['user_photo'];
             } else {
-                $response = self::getGoogleUserInfo($token);
-                $login = $response['user_login'];
-                $data['user_login'] = $response['user_login'];
-                $data['user_name'] = $response['user_name'];
-                $data['user_photo'] = $response['user_photo'];
+                $userData = self::getGoogleUserInfo($token);
+                $login = $userData['user_login'];
+                $data['user_login'] = $userData['user_login'];
             }
+            $data['user_name'] = $userData['user_name'];
+            $data['user_photo'] = $userData['user_photo'];
+            $isAdmin = false;
         } elseif ($authUser['auth_type'] == 'db') {
+            $userData = $this->userModel->getDBUser($login);
             $data['user_login'] = $login;
-            $data['user_name'] = $login;
+            $data['user_name'] = $userData['nickname'];
+            $isAdmin = $userData['is_admin'] == 1;
         } else {
             return null;
         }
 
+        // роуты
         $routes = [
             'home' => $this->home_url,
         ];
 
-        if ($authUser['auth_type'] === 'vk') {
-            $page_name = 'Пользователь '.$data['user_name'];
-        } else {
-            $page_name = "Пользователь $login";
-        }
+        // название страницы
+        $page_name = 'Пользователь ';
+        $page_name .= $authUser['auth_type'] === 'vk' ? $data['user_name'] : $login;
+        // контент страницы
+        $content_view = $isAdmin ? 'user/admin_view.php' : 'user/show_view.php';
+
         $this->view->generate(
             page_name: $page_name,
             template_view: 'template_view.php',
-            content_view: 'user/show_view.php',
+            content_view: $content_view,
             data: $data,
             routes: $routes
         );
