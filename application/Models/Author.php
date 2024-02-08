@@ -30,11 +30,13 @@ class Author extends Model
         $sql = 'select count(*) as count from authors where name=:name and surname=:surname';
         $args = ['name' => $name, 'surname' => $surname];
 
-        return $this->dbQuery->queryPrepared($sql, $args)['count'] > 0;
+        return $this->dbQuery->update($sql, $args);
     }
 
     // добавить нового автора
-    public function add(): int
+    public function update(string $new_name, string $new_surname, string $old_name, string $old_surname): int
     {
+        $sql = 'update authors set name=:new_name, surname=:new_surname where name=:old_name and surname=:old_surname';
+        $args = ['new_name' => $new_name, 'new_surname' => $new_surname, 'old_name' => $old_name, 'old_surname' => $old_surname];
     }
 }

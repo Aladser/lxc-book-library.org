@@ -88,6 +88,7 @@ function saveAuthorEditing(e) {
  */
 function processSaveResponse(responseData, newAuthorName) {
     try {
+        console.log(responseData);
         let response = JSON.parse(responseData);
         if (response.is_updated == 1) {
             selectedAuthorElem.innerHTML = newAuthorName;

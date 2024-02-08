@@ -49,9 +49,9 @@ class AuthorController extends Controller
 
     public function update($args)
     {
-        $current_author_name = $args['current_author_name'];
         $new_name = $args['name'];
         $new_surname = $args['surname'];
+        [$old_name, $old_surname] = explode(' ', $args['current_author_name']);
 
         $isExisted = $this->author->exists($new_name, $new_surname);
         $response = ['author_name' => "$new_name $new_surname"];
