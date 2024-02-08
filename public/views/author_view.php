@@ -1,4 +1,5 @@
 <div class='container w-50'>
+    <p id='prg-error' class='prg-error'></p>
     <section class='text-center mx-auto mb-3'>
         <h3 class='section-mb'>Авторы</h3>
         <table class='w-75 mx-auto'>

@@ -8,6 +8,8 @@ const authorRows = document.querySelectorAll('.table-row');
 const btnEditList = document.querySelectorAll('.author-context-menu__btn-edit');
 /** кнопки удаления автора */
 const btnRemoveList = document.querySelectorAll('.author-context-menu__btn-remove');
+/** блок ошибок */
+const prgError = document.querySelector('#prg-error');
 /** выбранный автор */
 let selectedAuthorElem = false;
 let selectedAuthor = false;
@@ -61,13 +63,14 @@ btnRemoveList.forEach(btn => {
 /** сохранить изменение автора */
 function saveAuthorEditing(e) {
     e.preventDefault();
-    cancelAuthorEditing();
+    let author = e.target.name.value + ' ' + e.target.surname.value;
+    selectedAuthorElem.innerHTML = author;
     let formData = new FormData(e.target);
     ServerRequest.execute(
         authorUpdateURL,
         (data) => console.log(data),
         "post",
-        null,
+        prgError,
         formData
     );
 }
@@ -76,4 +79,3 @@ function saveAuthorEditing(e) {
 function cancelAuthorEditing() {
     selectedAuthorElem.innerHTML = selectedAuthor;
 }
-
