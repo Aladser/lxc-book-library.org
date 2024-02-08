@@ -63,16 +63,29 @@ btnRemoveList.forEach(btn => {
 /** сохранить изменение автора */
 function saveAuthorEditing(e) {
     e.preventDefault();
-    let author = e.target.name.value + ' ' + e.target.surname.value;
-    selectedAuthorElem.innerHTML = author;
     let formData = new FormData(e.target);
     ServerRequest.execute(
         authorUpdateURL,
-        (data) => console.log(data),
+        (data) => processSaveResponse(data),
         "post",
         prgError,
         formData
     );
+}
+
+/** обработать ответ сервера на изменение автора */
+function processSaveResponse(responseData) {
+    try {
+        let response = JSON.parse(responseData);
+        selectedAuthorElem.innerHTML = response.author_name;
+        if (response.is_updated == 1) {
+            prgError.textContent = '';
+        } else {
+            prgError.textContent = response.description;
+        }
+    } catch(exc) {
+        prgError.textContent = exc;
+    }
 }
 
 /** отменить изменение автора */

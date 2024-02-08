@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Core\Model;
 
-/** таблица пользователей */
+/** таблица авторов */
 class Author extends Model
 {
     public function __construct()
@@ -24,12 +24,16 @@ class Author extends Model
         return $authors;
     }
 
-    /** проверить существование пользователя */
-    public function exists(): bool
+    /** проверить существование автора*/
+    public function exists(string $name, string $surname): bool
     {
+        $sql = 'select count(*) as count from authors where name=:name and surname=:surname';
+        $args = ['name' => $name, 'surname' => $surname];
+
+        return $this->dbQuery->queryPrepared($sql, $args)['count'] > 0;
     }
 
-    // добавить нового пользователя
+    // добавить нового автора
     public function add(): int
     {
     }
