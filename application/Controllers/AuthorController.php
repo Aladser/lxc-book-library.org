@@ -19,6 +19,7 @@ class AuthorController extends Controller
         $this->author = new Author();
     }
 
+    // index
     public function view(mixed $args): void
     {
         // данные
@@ -54,12 +55,17 @@ class AuthorController extends Controller
         [$old_name, $old_surname] = explode(' ', $args['current_author_name']);
 
         $isExisted = $this->author->exists($new_name, $new_surname);
-        $response = ['author_name' => "$new_name $new_surname"];
         if ($isExisted) {
             $response['is_updated'] = 0;
             $response['description'] = 'Указанный автор существует';
         } else {
-            $response['is_updated'] = 1;
+            $isUpdated = $this->author->update($new_name, $new_surname, $old_name, $old_surname);
+            if ($isUpdated) {
+                $response['is_updated'] = 1;
+            } else {
+                $response['is_updated'] = 0;
+                $response['description'] = $isUpdated;
+            }
         }
         echo json_encode($response);
     }
