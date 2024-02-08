@@ -12,7 +12,7 @@ const btnRemoveList = document.querySelectorAll('.author-context-menu__btn-remov
 const prgError = document.querySelector('#prg-error');
 /** выбранный автор */
 let selectedAuthorElem = false;
-let selectedAuthor = false;
+let selectedAuthorName = false;
 // URL author->update()
 let authorUpdateURL = '/author/update';
 
@@ -31,14 +31,14 @@ authorRows.forEach(row => {
         authorContextMenu.style.top = (e.pageY - 10)+'px';
         authorContextMenu.classList.add('author-context-menu--active');
         selectedAuthorElem = this;
-        selectedAuthor = selectedAuthorElem.textContent.trim();
+        selectedAuthorName = selectedAuthorElem.textContent.trim();
     });
 });
 
 // изменить автора
 btnEditList.forEach(btn => {
     btn.addEventListener('click', function(){
-        let [name, surname] = selectedAuthor.split(' ');
+        let [name, surname] = selectedAuthorName.split(' ');
         selectedAuthorElem.innerHTML = `
             <form id='table-row__form-edit'>
                 <input type='text' name='name' class='table-row__input-author theme-border' value='${name}'>
@@ -63,32 +63,45 @@ btnRemoveList.forEach(btn => {
 /** сохранить изменение автора */
 function saveAuthorEditing(e) {
     e.preventDefault();
+
+    let newAuthorName = `${e.target.name.value} ${e.target.surname.value}`;
+    // если не изменилось имя
+    if (selectedAuthorName === newAuthorName) {
+        cancelAuthorEditing();
+        return;
+    }
+
     let formData = new FormData(e.target);
+    formData.set('current_author_name', selectedAuthorName);
     ServerRequest.execute(
         authorUpdateURL,
-        (data) => processSaveResponse(data),
+        (data) => processSaveResponse(data, newAuthorName),
         "post",
         prgError,
         formData
     );
 }
 
-/** обработать ответ сервера на изменение автора */
-function processSaveResponse(responseData) {
+/** обработать ответ сервера на изменение автора
+ * @param {*} responseData ответ сервера
+ * @param {*} newAuthorName новое имя
+ */
+function processSaveResponse(responseData, newAuthorName) {
     try {
         let response = JSON.parse(responseData);
-        selectedAuthorElem.innerHTML = response.author_name;
         if (response.is_updated == 1) {
+            selectedAuthorElem.innerHTML = newAuthorName;
             prgError.textContent = '';
         } else {
             prgError.textContent = response.description;
         }
-    } catch(exc) {
-        prgError.textContent = exc;
+    } catch(exception) {
+        prgError.textContent = exception;
     }
 }
 
 /** отменить изменение автора */
 function cancelAuthorEditing() {
-    selectedAuthorElem.innerHTML = selectedAuthor;
+    selectedAuthorElem.innerHTML = selectedAuthorName;
+    prgError.textContent = '';
 }
