@@ -1,23 +1,12 @@
 class AuthorClientController {
-        /** DOM выбранного автора */
-        #selectedAuthorElem = false;
-        /** имя выбранного автора */
-        #selectedAuthorName = false;
+    /** DOM выбранного автора */
+    #selectedAuthorElem = false;
+    /** имя выбранного автора */
+    #selectedAuthorName = false;
 
-    constructor() {
-        /** таблица авторов */
-        this.authorTable = document.querySelector('#author-table').childNodes[1]; 
-
-        this.baseClassURL = '/author';
-        this.url = {
-            'update': '/author/update',
-            'store': '/author/store',
-            'destroy': '/author/destroy'
-        };
-        /** блок ошибок */
-        this.prgError = document.querySelector('#prg-error');
-        /** контекстное меню строки*/
-        this.authorContextMenu = document.querySelector('.author-context-menu');
+    constructor(url, errorPrg) {
+        this.url = url;
+        this.errorPrg = errorPrg;
     }
 
     /** установить выбранного автора */
@@ -25,19 +14,21 @@ class AuthorClientController {
         this.#selectedAuthorElem = selectedAuthorElem;
         this.#selectedAuthorName = selectedAuthorElem.textContent.trim();
     }
-
-    hideContextMenu() {
-        this.authorContextMenu.classList.remove('author-context-menu--active');
+    
+    /** отменить обновление автора */
+    restore() {
+        this.#selectedAuthorElem.innerHTML = this.#selectedAuthorName;
+        this.errorPrg.textContent = '';
     }
 
     /** добавить нового автора */
-    async store(e) {
+    async store(e, authorTable) {
         e.preventDefault();
         return await ServerRequest.execute(
             this.url.store,
-            data => this.#processStoreAuthorResponse(data, e.target),
+            data => this.#processStoreAuthorResponse(data, e.target, authorTable),
             "post",
-            this.prgError,
+            this.errorPrg,
             new FormData(e.target)
         );
     }
@@ -46,7 +37,7 @@ class AuthorClientController {
      * @param {*} responseData ответ сервера
      * @param {*} form форма добавления
      */
-    #processStoreAuthorResponse(responseData, form) {
+    #processStoreAuthorResponse(responseData, form, authorTable) {
         try {
             let response = JSON.parse(responseData);
             if (response.is_added > 0) {
@@ -55,24 +46,24 @@ class AuthorClientController {
                 trElem.append(tdElem);
                 tdElem.className = 'table-row p-3 cursor-pointer theme-bg-сolor-white theme-border-top theme-border-bottom';
                 tdElem.textContent = `${form.name.value} ${form.surname.value}`;
-                this.authorTable.prepend(trElem);
+                authorTable.prepend(trElem);
 
-                this.prgError.textContent = '';
+                this.errorPrg.textContent = '';
                 form.reset();
 
                 return tdElem;
             } else {
-                this.prgError.textContent = response.description;
+                this.errorPrg.textContent = response.description;
                 return false;
             }
         } catch(exception) {
-            this.prgError.textContent = exception;
+            this.errorPrg.textContent = exception;
             console.log("#processStoreAuthorResponse: " + responseData);
             return false;
         }
     }
 
-    // показать форму обновления автора
+    /** показать форму обновления автора */
     edit(csrf) {
         let [name, surname] = this.#selectedAuthorName.split(' ');
         this.#selectedAuthorElem.innerHTML = `
@@ -95,7 +86,7 @@ class AuthorClientController {
         let newAuthorName = `${e.target.name.value} ${e.target.surname.value}`;
         // если не изменилось имя
         if (this.#selectedAuthorName === newAuthorName) {
-            this.cancelUpdate();
+            this.restore(e);
             return;
         }
 
@@ -105,15 +96,9 @@ class AuthorClientController {
             this.url.update,
             data => this.#processUpdateAuthorResponse(data, newAuthorName),
             "post",
-            this.prgError,
+            this.errorPrg,
             formData
         );
-    }
-
-    /** отменить обновление автора */
-    restore() {
-        this.#selectedAuthorElem.innerHTML = this.#selectedAuthorName;
-        this.prgError.textContent = '';
     }
 
     /** обработать ответ сервера на изменение автора
@@ -125,12 +110,12 @@ class AuthorClientController {
             let response = JSON.parse(responseData);
             if (response.is_updated == 1) {
                 this.#selectedAuthorElem.innerHTML = newAuthorName;
-                this.prgError.textContent = '';
+                this.errorPrg.textContent = '';
             } else {
-                this.prgError.textContent = response.description;
+                this.errorPrg.textContent = response.description;
             }
         } catch(exception) {
-            this.prgError.textContent = exception;
+            this.errorPrg.textContent = exception;
             console.log(responseData);
         }
     }
@@ -145,7 +130,7 @@ class AuthorClientController {
             this.url.destroy,
             data => this.#processRemoveResponse(data),
             "post",
-            this.prgError,
+            this.errorPrg,
             author_name
         );
     }
@@ -160,10 +145,10 @@ class AuthorClientController {
                 this.#selectedAuthorElem.remove();
                 this.#selectedAuthorElem = false;
             } else {
-                this.prgError.textContent = response.description;
+                this.errorPrg.textContent = response.description;
             }
         } catch(exception) {
-            this.prgError.textContent = exception;
+            this.errorPrg.textContent = exception;
             console.log(responseData);
         }
     }
