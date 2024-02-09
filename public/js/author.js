@@ -47,54 +47,6 @@ window.addEventListener('DOMContentLoaded', function(e) {
     });
 });
 
-/** обработать ответ сервера на изменение автора
- * @param {*} responseData ответ сервера
- * @param {*} newAuthorName новое имя
- */
-function processUpdateResponse(responseData, newAuthorName) {
-    try {
-        let response = JSON.parse(responseData);
-        if (response.is_updated == 1) {
-            selectedAuthorElem.innerHTML = newAuthorName;
-            prgError.textContent = '';
-        } else {
-            prgError.textContent = response.description;
-        }
-    } catch(exception) {
-        prgError.textContent = exception;
-        console.log(responseData);
-    }
-}
-
-/** отменить изменение автора */
-function cancelAuthorEditing() {
-    selectedAuthorElem.innerHTML = selectedAuthorName;
-    prgError.textContent = '';
-}
-
-/** ответ сервера о добавлении нового автора
- * @param {*} responseData ответ сервера
- * @param {*} form форма добавления
- */
-function processStoreResponse(responseData, form) {
-    try {
-        let response = JSON.parse(responseData);
-        if (response.is_added > 0) {
-            let cssClass = 'table-row p-3 cursor-pointer theme-bg-сolor-white theme-border-top theme-border-bottom';
-            let row = `<tr><td class='${cssClass}'>${form.name.value} ${form.surname.value}</td></tr>`;
-            authorTable.innerHTML = row + authorTable.innerHTML;
-            prgError.textContent = '';
-            appendButtonListeners();
-            form.reset();
-        } else {
-            prgError.textContent = response.description;
-        }
-    } catch(exception) {
-        prgError.textContent = exception;
-        console.log(responseData);
-    }
-}
-
 /** обработать ответ сервера об удалении автора
  * @param {*} responseData 
  */

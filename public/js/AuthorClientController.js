@@ -18,10 +18,13 @@ class AuthorClientController {
         /** форма добавления автора*/
         this.addAuthorForm = document.querySelector('#form-add-author');
         this.addAuthorForm.onsubmit = e => this.store(e);
-
         // изменить автора
         document.querySelectorAll('.author-context-menu__btn-edit').forEach(btn => {
             btn.onclick = e => this.edit(e);
+        });
+        // удалить автора
+        document.querySelectorAll('.author-context-menu__btn-remove').forEach(btn => {
+            btn.addEventListener('click', e => this.destroy(e));
         });
     }
 
@@ -66,7 +69,7 @@ class AuthorClientController {
         }
     }
 
-    // показать форму изменения навтора
+    // показать форму обновления автора
     edit() {
         let [name, surname] = this.selectedAuthorName.split(' ');
         this.selectedAuthorElem.innerHTML = `
@@ -125,6 +128,39 @@ class AuthorClientController {
             }
         } catch(exception) {
             this.prgError.textContent = exception;
+            console.log(responseData);
+        }
+    }
+    
+    /** удалить автора */
+    destroy() {
+        let author_name = new URLSearchParams();
+        author_name.set('author_name', this.selectedAuthorName);
+        author_name.set('CSRF', this.csrf.content);
+
+        ServerRequest.execute(
+            this.url.destroy,
+            data => this.#processRemoveResponse(data),
+            "post",
+            this.prgError,
+            author_name
+        );
+    }
+
+    /** обработать ответ сервера об удалении автора
+     * @param {*} responseData 
+     */
+    #processRemoveResponse(responseData) {
+        try {
+            let response = JSON.parse(responseData);
+            if (response.is_removed == 1) {
+                selectedAuthorElem.remove();
+                selectedAuthorElem = false;
+            } else {
+                prgError.textContent = response.description;
+            }
+        } catch(exception) {
+            prgError.textContent = exception;
             console.log(responseData);
         }
     }
