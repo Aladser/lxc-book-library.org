@@ -1,5 +1,8 @@
 class AuthorClientController {
     constructor() {
+        /** таблица авторов */
+        this.authorTable = document.querySelector('#author-table').childNodes[1]; 
+
         /** DOM выбранного автора */
         this.selectedAuthorElem = false;
         /** имя выбранного автора */
@@ -41,7 +44,7 @@ class AuthorClientController {
             this.url.store,
             data => this.#processStoreAuthorResponse(data, e.target),
             "post",
-            prgError,
+            this.prgError,
             new FormData(e.target)
         );
     }
@@ -56,16 +59,15 @@ class AuthorClientController {
             if (response.is_added > 0) {
                 let cssClass = 'table-row p-3 cursor-pointer theme-bg-сolor-white theme-border-top theme-border-bottom';
                 let row = `<tr><td class='${cssClass}'>${form.name.value} ${form.surname.value}</td></tr>`;
-                authorTable.innerHTML = row + authorTable.innerHTML;
-                prgError.textContent = '';
-                appendButtonListeners();
+                this.authorTable.innerHTML = row + this.authorTable.innerHTML;
+                this.prgError.textContent = '';
                 form.reset();
             } else {
-                prgError.textContent = response.description;
+                this.prgError.textContent = response.description;
             }
         } catch(exception) {
-            prgError.textContent = exception;
-            console.log(responseData);
+            this.prgError.textContent = exception;
+            console.log("#processStoreAuthorResponse: " + responseData);
         }
     }
 
@@ -154,13 +156,13 @@ class AuthorClientController {
         try {
             let response = JSON.parse(responseData);
             if (response.is_removed == 1) {
-                selectedAuthorElem.remove();
-                selectedAuthorElem = false;
+                this.selectedAuthorElem.remove();
+                this.selectedAuthorElem = false;
             } else {
-                prgError.textContent = response.description;
+                this.prgError.textContent = response.description;
             }
         } catch(exception) {
-            prgError.textContent = exception;
+            this.prgError.textContent = exception;
             console.log(responseData);
         }
     }
