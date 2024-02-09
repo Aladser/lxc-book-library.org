@@ -14,8 +14,6 @@ class AuthorClientController {
             'store': '/author/store',
             'destroy': '/author/destroy'
         };
-        /** CSRF */
-        this.csrf = document.querySelector("meta[name='csrf']");
         /** блок ошибок */
         this.prgError = document.querySelector('#prg-error');
         /** контекстное меню строки*/
@@ -75,7 +73,7 @@ class AuthorClientController {
     }
 
     // показать форму обновления автора
-    edit() {
+    edit(csrf) {
         let [name, surname] = this.#selectedAuthorName.split(' ');
         this.#selectedAuthorElem.innerHTML = `
             <form id='table-row__form-edit'>
@@ -83,7 +81,7 @@ class AuthorClientController {
                 <input type='text' name='surname' class='table-row__input-author theme-border' value='${surname}'>
                 <input type='button' id='table-row__btn-cancel' class='table-row__btn theme-border' value='Отмена'>
                 <input type='submit' class='table-row__btn theme-border' value='OK'>
-                <input type="hidden" name="CSRF" value="${this.csrf.content}">
+                <input type="hidden" name="CSRF" value="${csrf.content}">
             </form>
         `;
         document.querySelector('#table-row__form-edit').onsubmit = e => this.update(e);
@@ -138,10 +136,10 @@ class AuthorClientController {
     }
     
     /** удалить автора */
-    destroy() {
+    destroy(csrf) {
         let author_name = new URLSearchParams();
         author_name.set('author_name', this.#selectedAuthorName);
-        author_name.set('CSRF', this.csrf.content);
+        author_name.set('CSRF', csrf.content);
 
         ServerRequest.execute(
             this.url.destroy,

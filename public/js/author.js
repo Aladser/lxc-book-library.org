@@ -1,27 +1,23 @@
 /** клиентский контроллер авторов */
 const authorClientController = new AuthorClientController();
+/** CSRF */
+const csrf = document.querySelector("meta[name='csrf']");
 
 window.addEventListener('DOMContentLoaded', function(e) {
     document.oncontextmenu = () => false;
     window.addEventListener('click', () => authorClientController.hideContextMenu());
 
-    // ПКМ по автору
+    // контекстное меню автора
     document.querySelectorAll('.table-row').forEach(row => {
-        row.addEventListener('contextmenu', function(e) {
-            authorClientController.authorContextMenu.style.left = (e.pageX - 10)+'px';
-            authorClientController.authorContextMenu.style.top = (e.pageY - 10)+'px';
-            authorClientController.authorContextMenu.classList.add('author-context-menu--active');
-            authorClientController.setSelectedAuthor(this);
-        });
+        row.addEventListener('contextmenu', e => clickTableRowContextMenu(e));
     });
-
     // изменить автора
     document.querySelectorAll('.author-context-menu__btn-edit').forEach(btn => {
-        btn.onclick = e => authorClientController.edit(e);
+        btn.onclick = () => authorClientController.edit(csrf);
     });
     // удалить автора
     document.querySelectorAll('.author-context-menu__btn-remove').forEach(btn => {
-        btn.addEventListener('click', e => authorClientController.destroy(e));
+        btn.onclick = () => authorClientController.destroy(csrf);
     });
 });
 
@@ -29,11 +25,13 @@ window.addEventListener('DOMContentLoaded', function(e) {
 const addAuthorForm = document.querySelector('#form-add-author');
 addAuthorForm.onsubmit = async(e) => {
     let tr = await authorClientController.store(e);
-    tr.oncontextmenu = e => {
-        authorClientController.authorContextMenu.style.left = (e.pageX - 10)+'px';
-        authorClientController.authorContextMenu.style.top = (e.pageY - 10)+'px';
-        authorClientController.authorContextMenu.classList.add('author-context-menu--active');
-        authorClientController.setSelectedAuthor(e.target);
-    };
+    tr.oncontextmenu = e => clickTableRowContextMenu(e);
 };
 
+/** ПКМ по автору */
+function clickTableRowContextMenu(e) {
+    authorClientController.authorContextMenu.style.left = (e.pageX - 10)+'px';
+    authorClientController.authorContextMenu.style.top = (e.pageY - 10)+'px';
+    authorClientController.authorContextMenu.classList.add('author-context-menu--active');
+    authorClientController.setSelectedAuthor(e.target);
+}
