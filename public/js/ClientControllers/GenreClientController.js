@@ -3,9 +3,13 @@ class GenreClientController {
     #selectedGenreElem = false;
     /** имя выбранного автора */
     #selectedGenreName = false;
+    /** URL методов*/
+    #url = {
+        'store': '/genre/store',
+        'destroy': '/genre/destroy'
+    };
 
-    constructor(url, errorPrg) {
-        this.url = url;
+    constructor(errorPrg) {
         this.errorPrg = errorPrg;
     }
 
@@ -25,7 +29,7 @@ class GenreClientController {
     async store(e, genreTable) {
         e.preventDefault();
         return await ServerRequest.execute(
-            this.url.store,
+            this.#url.store,
             data => this.#processStoreGenreResponse(data, e.target, genreTable),
             "post",
             this.errorPrg,
@@ -84,7 +88,7 @@ class GenreClientController {
         genre_name.set('CSRF', csrf.content);
 
         ServerRequest.execute(
-            this.url.destroy,
+            this.#url.destroy,
             data => this.#processRemoveResponse(data),
             "post",
             this.errorPrg,

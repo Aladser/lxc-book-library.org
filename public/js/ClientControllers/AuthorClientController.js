@@ -3,9 +3,14 @@ class AuthorClientController {
     #selectedAuthorElem = false;
     /** имя выбранного автора */
     #selectedAuthorName = false;
+    /** URL методов*/
+    #url = {
+        'store': '/author/store',
+        'update': '/author/update',
+        'destroy': '/author/destroy'
+    };
 
-    constructor(url, errorPrg) {
-        this.url = url;
+    constructor(errorPrg) {
         this.errorPrg = errorPrg;
     }
 
@@ -25,7 +30,7 @@ class AuthorClientController {
     async store(e, authorTable) {
         e.preventDefault();
         return await ServerRequest.execute(
-            this.url.store,
+            this.#url.store,
             data => this.#processStoreAuthorResponse(data, e.target, authorTable),
             "post",
             this.errorPrg,
@@ -93,7 +98,7 @@ class AuthorClientController {
         let formData = new FormData(e.target);
         formData.set('current_author_name', this.#selectedAuthorName);
         ServerRequest.execute(
-            this.url.update,
+            this.#url.update,
             data => this.#processUpdateAuthorResponse(data, newAuthorName),
             "post",
             this.errorPrg,
@@ -127,7 +132,7 @@ class AuthorClientController {
         author_name.set('CSRF', csrf.content);
 
         ServerRequest.execute(
-            this.url.destroy,
+            this.#url.destroy,
             data => this.#processRemoveResponse(data),
             "post",
             this.errorPrg,
