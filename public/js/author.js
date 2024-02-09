@@ -97,6 +97,7 @@ function processSaveResponse(responseData, newAuthorName) {
         }
     } catch(exception) {
         prgError.textContent = exception;
+        console.log(responseData);
     }
 }
 

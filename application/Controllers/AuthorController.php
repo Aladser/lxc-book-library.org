@@ -26,6 +26,8 @@ class AuthorController extends Controller
         $data['header_button_url'] = route('logout');
         $data['header_button_name'] = 'Выйти';
         $data['authors'] = $this->author->get();
+        $csrf = Controller::createCSRFToken();
+        $data['csrf'] = $csrf;
 
         // роуты
         $routes = [
@@ -33,7 +35,6 @@ class AuthorController extends Controller
         ];
 
         // доп.заголовки
-        $csrf = Controller::createCSRFToken();
         $csrf_meta = "<meta name='csrf' content=$csrf>";
 
         $this->view->generate(

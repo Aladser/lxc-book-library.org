@@ -5,9 +5,10 @@
 
         <article class='w-75 mx-auto'>
             <h5>Новый пользователь:</h5>
-            <form id='form-add-author' class='section-mb'>
-                <input type="text" name="name" placeholder='имя' required class='theme-bg-сolor-white theme-border p-1'>
-                <input type="text" name="surname" placeholder='фамилия' required class='theme-bg-сolor-white theme-border p-1'>
+            <form id='form-add-author' method='POST' action='/author/store' class='section-mb'>
+            <input type="hidden" name="CSRF" value="<?php echo $data['csrf']; ?>">
+                <input type="text" name="name" placeholder='имя' class='theme-border p-1' required>
+                <input type="text" name="surname" placeholder='фамилия' class='theme-border p-1' required>
                 <input type="submit" value="Добавить" class='theme-bg-сolor-white theme-border py-1 px-4'>
             </form>
         </article>
@@ -33,6 +34,7 @@
     </section>
     <a href="<?php echo $routes['show']; ?>" class="d-block button-basic theme-border theme-border-radius mx-auto mb-2">Назад</a>
 
+    <!-- контекстное меню -->
     <div class='author-context-menu position-absolute'>
         <button class='author-context-menu__btn author-context-menu__btn-edit theme-border-top theme-border-start theme-border-end theme-bg-сolor-white'>Изменить</button>
         <button class='author-context-menu__btn author-context-menu__btn-remove theme-border theme-bg-сolor-white'>Удалить</button>
