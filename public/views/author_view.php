@@ -4,7 +4,7 @@
         <h3 class='section-mb'>Авторы книг</h3>
 
         <article class='w-75 mx-auto'>
-            <h5>Новый пользователь:</h5>
+            <h5>Новый автор:</h5>
             <form id='form-add-author' class='section-mb'>
                 <input type="text" name="name" placeholder='имя' class='theme-border p-1' required>
                 <input type="text" name="surname" placeholder='фамилия' class='theme-border p-1' required>
