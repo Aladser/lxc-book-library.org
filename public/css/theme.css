@@ -25,9 +25,13 @@ html {
     background-color: var(--theme-color);
     color: white;
   }
+  .theme-bg-сolor-white:hover::placeholder {
+    color: #eee;
+  }
   
   .theme-border {
     border: var(--theme-border);
+    outline: none;
   }
   .theme-border-start {
     border-left: var(--theme-border);

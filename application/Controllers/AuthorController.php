@@ -48,6 +48,13 @@ class AuthorController extends Controller
         );
     }
 
+    // store
+    public function store($args)
+    {
+        var_dump($args);
+    }
+
+    // update
     public function update($args)
     {
         $new_name = $args['name'];
@@ -60,7 +67,7 @@ class AuthorController extends Controller
             $response['description'] = 'Указанный автор существует';
         } else {
             $isUpdated = $this->author->update($new_name, $new_surname, $old_name, $old_surname);
-            if ($isUpdated) {
+            if ($isUpdated === true) {
                 $response['is_updated'] = 1;
             } else {
                 $response['is_updated'] = 0;
