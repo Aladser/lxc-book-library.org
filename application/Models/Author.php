@@ -12,7 +12,7 @@ class Author extends Model
         parent::__construct();
     }
 
-    // список авторов
+    // список всех авторов
     public function get()
     {
         $sql = 'select name, surname from authors order by surname';
@@ -27,7 +27,7 @@ class Author extends Model
         return $authors;
     }
 
-    /** проверить существование автора*/
+    // проверить существование
     public function exists(string $name, string $surname): bool
     {
         $sql = 'select count(*) as count from authors 
@@ -37,7 +37,16 @@ class Author extends Model
         return $this->dbQuery->queryPrepared($sql, $args)['count'] > 0;
     }
 
-    // добавить нового автора
+    // добавить
+    public function add(string $name, string $surname): mixed
+    {
+        $sql = 'insert into authors(name, surname) values(:name, :surname)';
+        $args = ['name' => $name, 'surname' => $surname];
+
+        return $this->dbQuery->insert($sql, $args);
+    }
+
+    // изменить
     public function update(string $new_name, string $new_surname, string $old_name, string $old_surname): mixed
     {
         $sql = 'update authors set name=:new_name, surname=:new_surname 
@@ -50,5 +59,14 @@ class Author extends Model
         ];
 
         return $this->dbQuery->update($sql, $args);
+    }
+
+    // удалить
+    public function remove(string $name, string $surname): mixed
+    {
+        $sql = 'delete from authors where name=:name and surname=:surname';
+        $args = ['name' => $name, 'surname' => $surname];
+
+        return $this->dbQuery->delete($sql, $args);
     }
 }

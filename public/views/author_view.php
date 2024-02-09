@@ -5,7 +5,7 @@
 
         <article class='w-75 mx-auto'>
             <h5>Новый пользователь:</h5>
-            <form id='form-add-author' method='POST' action='/author/store' class='section-mb'>
+            <form id='form-add-author' class='section-mb'>
                 <input type="text" name="name" placeholder='имя' class='theme-border p-1' required>
                 <input type="text" name="surname" placeholder='фамилия' class='theme-border p-1' required>
                 <input type="submit" value="Добавить" class='theme-bg-сolor-white theme-border py-1 px-4'>
@@ -15,7 +15,7 @@
 
         <article class='w-75 mx-auto'>
             <h5>Авторы:</h5>
-            <table class='w-100'>
+            <table id='author-table' class='w-100'>
                 <?php for ($i = 0; $i < count($data['authors']); ++$i) {
                     // первой строке добавляется верхняя граница
                     $css_tr_style = 'table-row p-3 cursor-pointer theme-bg-сolor-white theme-border-bottom';

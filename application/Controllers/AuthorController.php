@@ -52,7 +52,16 @@ class AuthorController extends Controller
     // store
     public function store($args)
     {
-        var_dump($args);
+        [$name, $surname] = [$args['name'], $args['surname']];
+        $isExisted = $this->author->exists($name, $surname);
+        if ($isExisted) {
+            $response['is_added'] = 0;
+            $response['description'] = 'Указанный автор существует';
+        } else {
+            $id = $this->author->add($name, $surname);
+            $response['is_added'] = $id;
+        }
+        echo json_encode($response);
     }
 
     // update
@@ -75,6 +84,16 @@ class AuthorController extends Controller
                 $response['description'] = $isUpdated;
             }
         }
+        echo json_encode($response);
+    }
+
+    // destroy
+    public function destroy($args)
+    {
+        [$name, $surname] = explode(' ', $args['author_name']);
+        $isRemoved = $this->author->remove($name, $surname);
+        $response['is_removed'] = $isRemoved;
+
         echo json_encode($response);
     }
 }
