@@ -7,15 +7,12 @@ use App\Core\Model;
 /** таблица авторов */
 class Author extends Model
 {
-    public function __construct()
-    {
-        parent::__construct();
-    }
+    private string $tableName = 'authors';
 
     // список всех авторов
     public function get()
     {
-        $sql = 'select name, surname from authors order by surname';
+        $sql = "select name, surname from {$this->tableName} order by surname";
         $dbAuthors = $this->dbQuery->query($sql, false);
         foreach ($dbAuthors as $dbAuthor) {
             $authors[] = [
@@ -30,8 +27,8 @@ class Author extends Model
     // проверить существование
     public function exists(string $name, string $surname): bool
     {
-        $sql = 'select count(*) as count from authors 
-        where name=:name and surname=:surname';
+        $sql = "select count(*) as count from {$this->tableName} 
+        where name=:name and surname=:surname";
         $args = ['name' => $name, 'surname' => $surname];
 
         return $this->dbQuery->queryPrepared($sql, $args)['count'] > 0;
@@ -40,7 +37,7 @@ class Author extends Model
     // добавить
     public function add(string $name, string $surname): mixed
     {
-        $sql = 'insert into authors(name, surname) values(:name, :surname)';
+        $sql = "insert into {$this->tableName}(name, surname) values(:name, :surname)";
         $args = ['name' => $name, 'surname' => $surname];
 
         return $this->dbQuery->insert($sql, $args);
@@ -49,8 +46,8 @@ class Author extends Model
     // изменить
     public function update(string $new_name, string $new_surname, string $old_name, string $old_surname): mixed
     {
-        $sql = 'update authors set name=:new_name, surname=:new_surname 
-        where name=:old_name and surname=:old_surname';
+        $sql = "update {$this->tableName} set name=:new_name, surname=:new_surname 
+        where name=:old_name and surname=:old_surname";
         $args = [
             'new_name' => $new_name,
             'new_surname' => $new_surname,
@@ -64,7 +61,7 @@ class Author extends Model
     // удалить
     public function remove(string $name, string $surname): mixed
     {
-        $sql = 'delete from authors where name=:name and surname=:surname';
+        $sql = "delete from {$this->tableName} where name=:name and surname=:surname";
         $args = ['name' => $name, 'surname' => $surname];
 
         return $this->dbQuery->delete($sql, $args);
