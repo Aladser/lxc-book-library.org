@@ -1,5 +1,6 @@
 <div class='container w-50'>
     <section class='text-center mx-auto mb-3'>
+        <p id='prg-error' class='prg-error'></p>
         <h3 class='section-mb'>Жанры</h3>
 
         <article class='w-75 mx-auto'>
@@ -31,4 +32,9 @@
         </article>
     </section>
     <a href="<?php echo $routes['show']; ?>" class="d-block button-basic theme-border theme-border-radius mx-auto mb-2">Назад</a>
+
+    <!-- контекстное меню -->
+    <div class='genre-context-menu position-absolute'>
+        <button class='genre-context-menu__btn genre-context-menu__btn-remove theme-border theme-bg-сolor-white'>Удалить</button>
+    </div>
 </div>

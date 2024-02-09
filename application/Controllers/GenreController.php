@@ -31,12 +31,39 @@ class GenreController extends Controller
             'show' => route('show'),
         ];
 
+        // доп.заголовки
+        $csrf_meta = "<meta name='csrf' content=$csrf>";
+
         $this->view->generate(
             page_name: "{$this->site_name} - жанры",
             template_view: 'template_view.php',
             content_view: 'genre_view.php',
+            content_js: ['ServerRequest.js', 'ClientControllers/GenreClientController.js', 'genre.js'],
+            content_css: 'genre.css',
             data: $data,
             routes: $routes,
+            add_head: $csrf_meta,
         );
+    }
+
+    public function store($args)
+    {
+        $isExisted = $this->genre->exists($args['name']);
+        if ($isExisted) {
+            $response['is_added'] = 0;
+            $response['description'] = 'Указанный автор существует';
+        } else {
+            $id = $this->genre->add($args['name']);
+            $response['is_added'] = $id;
+        }
+        echo json_encode($response);
+    }
+
+    public function destroy($args)
+    {
+        $isRemoved = $this->genre->remove($args['genre_name']);
+        $response['is_removed'] = $isRemoved;
+
+        echo json_encode($response);
     }
 }

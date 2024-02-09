@@ -10,7 +10,7 @@ class GenreClientController {
     }
 
     /** установить выбранного автора */
-    setSelectedAuthor(selectedGenreElem) {
+    setSelectedGenre(selectedGenreElem) {
         this.#selectedGenreElem = selectedGenreElem;
         this.#selectedGenreName = selectedGenreElem.textContent.trim();
     }
@@ -45,7 +45,7 @@ class GenreClientController {
                 let tdElem = document.createElement('td');
                 trElem.append(tdElem);
                 tdElem.className = 'table-row p-3 cursor-pointer theme-bg-сolor-white theme-border-top theme-border-bottom';
-                tdElem.textContent = `${form.name.value} ${form.surname.value}`;
+                tdElem.textContent = form.name.value;
                 genreTable.prepend(trElem);
 
                 this.errorPrg.textContent = '';
@@ -75,46 +75,6 @@ class GenreClientController {
         `;
         document.querySelector('#table-row__form-edit').onsubmit = e => this.update(e);
         document.querySelector('#table-row__btn-cancel').onclick = e => this.restore(e);
-    }
-
-    /** обновить автора */
-    update(e) {
-        e.preventDefault();
-
-        // если не изменилось имя
-        if (this.#selectedGenreName === e.target.name.value) {
-            this.restore(e);
-            return;
-        }
-
-        let formData = new FormData(e.target);
-        formData.set('current_genre_name', this.#selectedGenreName);
-        ServerRequest.execute(
-            this.url.update,
-            data => this.#processUpdateGenreResponse(data, newAuthorName),
-            "post",
-            this.errorPrg,
-            formData
-        );
-    }
-
-    /** обработать ответ сервера на изменение автора
-     * @param {*} responseData ответ сервера
-     * @param {*} newGenreName новое имя
-     */
-    #processUpdateGenreResponse(responseData, newGenreName) {
-        try {
-            let response = JSON.parse(responseData);
-            if (response.is_updated == 1) {
-                this.#selectedGenreElem.innerHTML = newGenreName;
-                this.errorPrg.textContent = '';
-            } else {
-                this.errorPrg.textContent = response.description;
-            }
-        } catch(exception) {
-            this.errorPrg.textContent = exception;
-            console.log(responseData);
-        }
     }
     
     /** удалить автора */
