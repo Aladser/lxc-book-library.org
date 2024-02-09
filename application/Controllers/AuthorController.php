@@ -42,7 +42,7 @@ class AuthorController extends Controller
             template_view: 'template_view.php',
             content_view: 'author_view.php',
             content_css: 'author.css',
-            content_js: ['ServerRequest.js', 'author.js'],
+            content_js: ['ServerRequest.js', 'ClientControllers/AuthorClientController.js', 'author.js'],
             data: $data,
             routes: $routes,
             add_head: $csrf_meta,
