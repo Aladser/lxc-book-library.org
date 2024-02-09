@@ -24,3 +24,16 @@ window.addEventListener('DOMContentLoaded', function(e) {
         btn.addEventListener('click', e => authorClientController.destroy(e));
     });
 });
+
+/** форма добавления автора*/
+const addAuthorForm = document.querySelector('#form-add-author');
+addAuthorForm.onsubmit = async(e) => {
+    let tr = await authorClientController.store(e);
+    tr.oncontextmenu = e => {
+        authorClientController.authorContextMenu.style.left = (e.pageX - 10)+'px';
+        authorClientController.authorContextMenu.style.top = (e.pageY - 10)+'px';
+        authorClientController.authorContextMenu.classList.add('author-context-menu--active');
+        authorClientController.setSelectedAuthor(e.target);
+    };
+};
+

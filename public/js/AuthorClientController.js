@@ -18,9 +18,6 @@ class AuthorClientController {
         this.csrf = document.querySelector("meta[name='csrf']");
         /** блок ошибок */
         this.prgError = document.querySelector('#prg-error');
-        /** форма добавления автора*/
-        this.addAuthorForm = document.querySelector('#form-add-author');
-        this.addAuthorForm.onsubmit = e => this.store(e);
         /** контекстное меню строки*/
         this.authorContextMenu = document.querySelector('.author-context-menu');
     }
@@ -36,9 +33,9 @@ class AuthorClientController {
     }
 
     /** добавить нового автора */
-    store(e) {
+    async store(e) {
         e.preventDefault();
-        ServerRequest.execute(
+        return await ServerRequest.execute(
             this.url.store,
             data => this.#processStoreAuthorResponse(data, e.target),
             "post",
@@ -64,12 +61,16 @@ class AuthorClientController {
 
                 this.prgError.textContent = '';
                 form.reset();
+
+                return tdElem;
             } else {
                 this.prgError.textContent = response.description;
+                return false;
             }
         } catch(exception) {
             this.prgError.textContent = exception;
             console.log("#processStoreAuthorResponse: " + responseData);
+            return false;
         }
     }
 
