@@ -14,4 +14,13 @@ window.addEventListener('DOMContentLoaded', function(e) {
             authorClientController.setSelectedAuthor(this);
         });
     });
+
+    // изменить автора
+    document.querySelectorAll('.author-context-menu__btn-edit').forEach(btn => {
+        btn.onclick = e => authorClientController.edit(e);
+    });
+    // удалить автора
+    document.querySelectorAll('.author-context-menu__btn-remove').forEach(btn => {
+        btn.addEventListener('click', e => authorClientController.destroy(e));
+    });
 });

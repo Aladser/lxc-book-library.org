@@ -23,14 +23,6 @@ class AuthorClientController {
         this.addAuthorForm.onsubmit = e => this.store(e);
         /** контекстное меню строки*/
         this.authorContextMenu = document.querySelector('.author-context-menu');
-        // изменить автора
-        document.querySelectorAll('.author-context-menu__btn-edit').forEach(btn => {
-            btn.onclick = e => this.edit(e);
-        });
-        // удалить автора
-        document.querySelectorAll('.author-context-menu__btn-remove').forEach(btn => {
-            btn.addEventListener('click', e => this.destroy(e));
-        });
     }
 
     /** установить выбранного автора */
@@ -63,9 +55,13 @@ class AuthorClientController {
         try {
             let response = JSON.parse(responseData);
             if (response.is_added > 0) {
-                let cssClass = 'table-row p-3 cursor-pointer theme-bg-сolor-white theme-border-top theme-border-bottom';
-                let row = `<tr><td class='${cssClass}'>${form.name.value} ${form.surname.value}</td></tr>`;
-                this.authorTable.innerHTML = row + this.authorTable.innerHTML;
+                let trElem = document.createElement('tr');
+                let tdElem = document.createElement('td');
+                trElem.append(tdElem);
+                tdElem.className = 'table-row p-3 cursor-pointer theme-bg-сolor-white theme-border-top theme-border-bottom';
+                tdElem.textContent = `${form.name.value} ${form.surname.value}`;
+                this.authorTable.prepend(trElem);
+
                 this.prgError.textContent = '';
                 form.reset();
             } else {
