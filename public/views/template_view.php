@@ -15,14 +15,16 @@
     <link rel="stylesheet" href="http://<?php echo $site_address; ?>/public/css/theme.css">
     <!-- css -->
     <?php if (!empty($content_css)) { ?>
-        <link rel="stylesheet" href="http://<?php echo $site_address; ?>/public/css/<?php echo $content_css; ?>">
+        <?php foreach ($content_css as $css) {?>
+            <link rel="stylesheet" href="http://<?php echo $site_address; ?>/public/css/<?php echo $css; ?>">
+        <?php }?>
     <?php } ?>
     <!-- js -->
     <?php if (!empty($content_js)) { ?>
-    <?php foreach ($content_js as $script) {?>
-        <script type='text/javascript' src="http://<?php echo $site_address; ?>/public/js/<?php echo $script; ?>" defer></script>
-    <?php }?>
-<?php } ?>
+        <?php foreach ($content_js as $script) {?>
+            <script type='text/javascript' src="http://<?php echo $site_address; ?>/public/js/<?php echo $script; ?>" defer></script>
+        <?php }?>
+    <?php } ?>
 </head>
 <body>
 

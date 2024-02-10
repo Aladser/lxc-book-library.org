@@ -39,7 +39,7 @@ class GenreController extends Controller
             template_view: 'template_view.php',
             content_view: 'genre_view.php',
             content_js: ['Classes/ServerRequest.js', 'Classes/ContextMenu.js', 'ClientControllers/GenreClientController.js', 'genre.js'],
-            content_css: 'genre.css',
+            content_css: ['context_menu.css', 'genre.css'],
             data: $data,
             routes: $routes,
             add_head: $csrf_meta,

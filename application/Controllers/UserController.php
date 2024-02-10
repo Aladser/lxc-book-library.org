@@ -301,7 +301,7 @@ class UserController extends Controller
         if ($isAdmin) {
             $page_name = "{$this->site_name} - администрирование";
             $content_view = 'user/admin_view.php';
-            $content_css = 'admin_page.css';
+            $content_css = ['admin_page.css'];
         } else {
             $page_name = 'Пользователь ';
             $page_name .= $authUser['auth_type'] === 'vk' ? $data['user_name'] : $login;

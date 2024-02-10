@@ -1,16 +1,3 @@
-.genre-context-menu{
-    display: none;
-}
-.genre-context-menu--active{
-    display: block;
-}
-
-.genre-context-menu__btn {
-    display: block;
-    width: 10rem;
-    padding: 0.5rem;
-}
-
 .table-row__btn{
     background-color: white;
     padding-left: 0.5rem;

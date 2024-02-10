@@ -1,16 +1,3 @@
-.author-context-menu{
-    display: none;
-}
-.author-context-menu--active{
-    display: block;
-}
-
-.author-context-menu__btn {
-    display: block;
-    width: 10rem;
-    padding: 0.5rem;
-}
-
 .table-row__input-author{
     outline: none;
 }

@@ -36,7 +36,7 @@ class BookController extends Controller
             page_name: $this->site_name,
             template_view: 'template_view.php',
             content_view: 'book/index_view.php',
-            content_css: 'index.css',
+            content_css: ['index.css'],
             data: $data,
         );
     }

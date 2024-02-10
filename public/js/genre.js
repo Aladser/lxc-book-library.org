@@ -4,7 +4,7 @@ const errorPrg = document.querySelector("#prg-error");
 const genreClientController = new GenreClientController(errorPrg);
 
 /** базовое CSS имя контекстного меню жанра*/
-const genreContextMenuClassName = "genre-context-menu";
+const genreContextMenuClassName = "context-menu";
 /** контекстное меню жанра */
 const genreContextMenu = new ContextMenu(genreContextMenuClassName);
 
@@ -22,7 +22,7 @@ window.addEventListener("DOMContentLoaded", function () {
     row.oncontextmenu = (e) => openContextMenu(e);
   });
   // удалить жанр
-  document.querySelector(".genre-context-menu__btn-remove").onclick = () =>
+  document.querySelector(".context-menu__btn-remove").onclick = () =>
     genreClientController.destroy(csrf);
 });
 

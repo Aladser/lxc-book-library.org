@@ -8,7 +8,7 @@ const csrf = document.querySelector("meta[name='csrf']");
 /** таблица авторов */
 const authorTable = document.querySelector("#author-table").childNodes[1];
 /** базовое CSS имя контекстного меню автора*/
-const authorContextMenuClassName = "author-context-menu";
+const authorContextMenuClassName = "context-menu";
 /** контекстное меню автора */
 const authorContextMenu = new ContextMenu(authorContextMenuClassName);
 
@@ -21,10 +21,10 @@ window.addEventListener("DOMContentLoaded", function (e) {
     row.addEventListener("contextmenu", (e) => openContextMenu(e));
   });
   // изменить автора
-  document.querySelector(".author-context-menu__btn-edit").onclick = () =>
+  document.querySelector(".context-menu__btn-edit").onclick = () =>
     authorClientController.edit(csrf);
   // удалить автора
-  document.querySelector(".author-context-menu__btn-remove").onclick = () =>
+  document.querySelector(".context-menu__btn-remove").onclick = () =>
     authorClientController.destroy(csrf);
 });
 

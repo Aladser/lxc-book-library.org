@@ -41,7 +41,7 @@ class AuthorController extends Controller
             page_name: "{$this->site_name} - авторы",
             template_view: 'template_view.php',
             content_view: 'author_view.php',
-            content_css: 'author.css',
+            content_css: ['context_menu.css', 'author.css'],
             content_js: ['Classes/ServerRequest.js', 'Classes/ContextMenu.js', 'ClientControllers/AuthorClientController.js', 'author.js'],
             data: $data,
             routes: $routes,
