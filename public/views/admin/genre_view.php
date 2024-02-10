@@ -1,18 +1,18 @@
-<div class='container w-50'>
-    <section class='text-center mx-auto mb-3'>
+<div class='container'>
+    <section class='content-section section-mb'>
         <p id='prg-error' class='prg-error'></p>
         <h3 class='section-mb'>Жанры</h3>
 
-        <article class='w-75 mx-auto'>
+        <article>
             <h5>Новый жанр:</h5>
-            <form id='form-add-genre' class='section-mb'>
-                <input type="text" name="name" placeholder='название' class='theme-border p-1' required>
-                <input type="submit" value="Добавить" class='theme-bg-сolor-white theme-border py-1 px-4'>
+            <form id='form-add-genre' class='form-add section-mb'>
+                <input type="text" name="name" placeholder='название' class='form-add__input theme-border p-1' required>
+                <input type="submit" value="Добавить" class='form-add__input theme-bg-сolor-white theme-border py-1 px-4'>
                 <input type="hidden" name="CSRF" value="<?php echo $data['csrf']; ?>">
             </form>
         </article>
 
-        <article class='w-75 mx-auto'>
+        <article>
             <h5>Жанры:</h5>
             <table id='genre-table' class='w-100'>
                 <?php for ($i = 0; $i < count($data['genres']); ++$i) {
@@ -31,6 +31,7 @@
             </table>
         </article>
     </section>
+
     <a href="<?php echo $routes['show']; ?>" class="d-block button-basic theme-border theme-border-radius mx-auto mb-2">Назад</a>
 
     <!-- контекстное меню -->

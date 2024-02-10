@@ -40,8 +40,8 @@ class AuthorController extends Controller
         $this->view->generate(
             page_name: "{$this->site_name} - авторы",
             template_view: 'template_view.php',
-            content_view: 'author_view.php',
-            content_css: ['context_menu.css', 'table.css', 'author.css'],
+            content_view: 'admin/author_view.php',
+            content_css: ['context_menu.css', 'table.css', 'form-add.css'],
             content_js: [
                 'Classes/ServerRequest.js',
                 'Classes/ContextMenu.js',

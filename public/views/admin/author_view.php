@@ -1,15 +1,15 @@
 <div class='container'>
     <p id='prg-error' class='prg-error'></p>
-    <section class='content-section'>
+    <section class='content-section section-mb'>
         <h3 class='section-mb'>Авторы книг</h3>
 
         <!-- форма добавления автора -->
         <article>
             <h5>Новый автор:</h5>
             <form id='form-add-author' class='section-mb'>
-                <input type="text" name="name" placeholder='имя' class='form-add-author__input theme-border' required>
-                <input type="text" name="surname" placeholder='фамилия' class='form-add-author__input theme-border' required>
-                <input type="submit" value="Добавить" class=' form-add-author__input theme-bg-сolor-white theme-border px-4'>
+                <input type="text" name="name" placeholder='имя' class='form-add__input theme-border' required>
+                <input type="text" name="surname" placeholder='фамилия' class='form-add__input theme-border' required>
+                <input type="submit" value="Добавить" class=' form-add__input theme-bg-сolor-white theme-border px-4'>
                 <input type="hidden" name="CSRF" value="<?php echo $data['csrf']; ?>">
             </form>
         </article>

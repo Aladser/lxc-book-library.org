@@ -53,6 +53,11 @@ class UserController extends Controller
         $this->google_oauth = new \Google\Service\Oauth2($this->googleClient);
     }
 
+    public function view()
+    {
+        echo 'UserController->view()';
+    }
+
     // ----- АВТОРИЗАЦИЯ ЛОГИН-ПАРОЛЬ -----
     public function login(mixed $args): void
     {
@@ -293,6 +298,7 @@ class UserController extends Controller
             'home' => $this->home_url,
             'authors' => route('authors'),
             'genres' => route('genres'),
+            'users' => route('users'),
         ];
 
         // название страницы
@@ -300,7 +306,7 @@ class UserController extends Controller
         // контент страницы
         if ($isAdmin) {
             $page_name = "{$this->site_name} - администрирование";
-            $content_view = 'user/admin_view.php';
+            $content_view = 'admin/admin_view.php';
             $content_css = ['admin_page.css'];
         } else {
             $page_name = 'Пользователь ';

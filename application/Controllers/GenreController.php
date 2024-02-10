@@ -37,8 +37,8 @@ class GenreController extends Controller
         $this->view->generate(
             page_name: "{$this->site_name} - жанры",
             template_view: 'template_view.php',
-            content_view: 'genre_view.php',
-            content_css: ['context_menu.css', 'table.css'],
+            content_view: 'admin/genre_view.php',
+            content_css: ['context_menu.css', 'table.css', 'form-add.css'],
             content_js: [
                 'Classes/ServerRequest.js',
                 'Classes/ContextMenu.js',
