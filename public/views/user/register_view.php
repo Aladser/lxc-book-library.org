@@ -1,8 +1,8 @@
 <div class='container'>
-    <section class='text-center mx-auto w-50'>
+    <section class='content-section section-mb'>
         <h3 class='mb-4 theme-grey-color'>Регистрация нового пользователя</h3>
 
-        <form class='w-75 mx-auto mb-3' method="POST" action=<?php echo $routes['store']; ?>>
+        <form class='mx-auto mb-3' method="POST" action=<?php echo $routes['store']; ?>>
             <input type="email" name='email' value="<?php echo $data['user']; ?>" 
             class="d-block w-100 mb-2 p-3" placeholder="Почта" required>
 

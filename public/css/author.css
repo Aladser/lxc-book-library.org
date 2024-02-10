@@ -1,0 +1,15 @@
+.form-add-author__input {
+    padding: 0.25em;
+    border-radius: 0.25em;
+}
+
+@media(max-width: 700px) {
+    .form-add-author__input {
+        display: block;
+        width: 50%;
+
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 0.25em;
+    }
+}

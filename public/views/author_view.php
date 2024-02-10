@@ -1,19 +1,21 @@
-<div class='container w-50'>
+<div class='container'>
     <p id='prg-error' class='prg-error'></p>
-    <section class='text-center mx-auto mb-3'>
+    <section class='content-section'>
         <h3 class='section-mb'>Авторы книг</h3>
 
-        <article class='w-75 mx-auto'>
+        <!-- форма добавления автора -->
+        <article>
             <h5>Новый автор:</h5>
             <form id='form-add-author' class='section-mb'>
-                <input type="text" name="name" placeholder='имя' class='theme-border p-1' required>
-                <input type="text" name="surname" placeholder='фамилия' class='theme-border p-1' required>
-                <input type="submit" value="Добавить" class='theme-bg-сolor-white theme-border py-1 px-4'>
+                <input type="text" name="name" placeholder='имя' class='form-add-author__input theme-border' required>
+                <input type="text" name="surname" placeholder='фамилия' class='form-add-author__input theme-border' required>
+                <input type="submit" value="Добавить" class=' form-add-author__input theme-bg-сolor-white theme-border px-4'>
                 <input type="hidden" name="CSRF" value="<?php echo $data['csrf']; ?>">
             </form>
         </article>
 
-        <article class='w-75 mx-auto'>
+        <!-- авторы -->
+        <article class='section-mb'>
             <h5>Авторы:</h5>
             <table id='author-table' class='w-100'>
                 <?php for ($i = 0; $i < count($data['authors']); ++$i) {
@@ -32,6 +34,7 @@
             </table>
         </article>
     </section>
+
     <a href="<?php echo $routes['show']; ?>" class="d-block button-basic theme-border theme-border-radius mx-auto mb-2">Назад</a>
 
     <!-- контекстное меню -->

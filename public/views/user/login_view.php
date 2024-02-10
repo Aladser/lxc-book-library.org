@@ -1,9 +1,9 @@
 <div class='container'>
-    <section class='w-50 mx-auto text-center mb-3'>
+    <section class='content-section section-mb'>
         <h3>Авторизация</h3>
 
         <!-- логин-пароль -->
-        <form method="POST" class='w-75 mx-auto' action="<?php echo $routes['auth']; ?>">
+        <form method="POST" class='mx-auto' action="<?php echo $routes['auth']; ?>">
             <input type='text' class='d-block w-100 mb-2 p-3' name='login' placeholder="Почта" required>
             <input type="password" class='d-block w-100 mb-2 p-3' name='password' placeholder="Пароль" required>
             <input type='submit' value='Войти' class="button-basic theme-border theme-border-radius d-block mx-auto mb-2 w-100">
@@ -26,7 +26,7 @@
         </div>
 
 
-        <a href="<?php echo $routes['home']; ?>" class="d-block button-basic theme-border theme-border-radius mx-auto w-75">Назад</a>
+        <a href="<?php echo $routes['home']; ?>" class="d-block button-basic theme-border theme-border-radius mx-auto w-100">Назад</a>
     </section>
 
     <?php if (isset($data['error'])) { ?>

@@ -24,9 +24,20 @@ button {
   cursor: pointer;
 }
 
+
+/* общие классы секций */
+.content-section {
+  width: 95%;
+  max-width: 600px;
+
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
 .section-mb{
   margin-bottom: 2rem;
 }
+
 
 .button-basic {
   padding: 0.75rem;
