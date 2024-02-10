@@ -1,36 +1,9 @@
-class AuthorClientController {
-    /** DOM выбранного автора */
-    #selectedAuthorElem = false;
-    /** имя выбранного автора */
-    #selectedAuthorName = false;
-    /** URL методов*/
-    #url = {
-        'store': '/author/store',
-        'update': '/author/update',
-        'destroy': '/author/destroy'
-    };
-
-    constructor(errorPrg) {
-        this.errorPrg = errorPrg;
-    }
-
-    /** установить выбранного автора */
-    setSelectedAuthor(selectedAuthorElem) {
-        this.#selectedAuthorElem = selectedAuthorElem;
-        this.#selectedAuthorName = selectedAuthorElem.textContent.trim();
-    }
-    
-    /** отменить обновление автора */
-    restore() {
-        this.#selectedAuthorElem.innerHTML = this.#selectedAuthorName;
-        this.errorPrg.textContent = '';
-    }
-
+class AuthorClientController extends ClientController{
     /** добавить нового автора */
     async store(e, authorTable) {
         e.preventDefault();
         return await ServerRequest.execute(
-            this.#url.store,
+            this.url.store,
             data => this.#processStoreAuthorResponse(data, e.target, authorTable),
             "post",
             this.errorPrg,
@@ -70,8 +43,8 @@ class AuthorClientController {
 
     /** показать форму обновления автора */
     edit(csrf) {
-        let [name, surname] = this.#selectedAuthorName.split(' ');
-        this.#selectedAuthorElem.innerHTML = `
+        let [name, surname] = this.selectedElementContent.split(' ');
+        this.selectedElement.innerHTML = `
             <form id='table-row__form-edit'>
                 <input type='text' name='name' class='table-row__input-author theme-border' value='${name}'>
                 <input type='text' name='surname' class='table-row__input-author theme-border' value='${surname}'>
@@ -90,15 +63,15 @@ class AuthorClientController {
 
         let newAuthorName = `${e.target.name.value} ${e.target.surname.value}`;
         // если не изменилось имя
-        if (this.#selectedAuthorName === newAuthorName) {
+        if (this.selectedElementContent === newAuthorName) {
             this.restore(e);
             return;
         }
 
         let formData = new FormData(e.target);
-        formData.set('current_author_name', this.#selectedAuthorName);
+        formData.set('current_author_name', this.selectedElementContent);
         ServerRequest.execute(
-            this.#url.update,
+            this.url.update,
             data => this.#processUpdateAuthorResponse(data, newAuthorName),
             "post",
             this.errorPrg,
@@ -114,7 +87,7 @@ class AuthorClientController {
         try {
             let response = JSON.parse(responseData);
             if (response.is_updated == 1) {
-                this.#selectedAuthorElem.innerHTML = newAuthorName;
+                this.selectedElement.innerHTML = newAuthorName;
                 this.errorPrg.textContent = '';
             } else {
                 this.errorPrg.textContent = response.description;
@@ -128,11 +101,11 @@ class AuthorClientController {
     /** удалить автора */
     destroy(csrf) {
         let author_name = new URLSearchParams();
-        author_name.set('author_name', this.#selectedAuthorName);
+        author_name.set('author_name', this.selectedElementContent);
         author_name.set('CSRF', csrf.content);
 
         ServerRequest.execute(
-            this.#url.destroy,
+            this.url.destroy,
             data => this.#processRemoveResponse(data),
             "post",
             this.errorPrg,
@@ -147,8 +120,8 @@ class AuthorClientController {
         try {
             let response = JSON.parse(responseData);
             if (response.is_removed == 1) {
-                this.#selectedAuthorElem.remove();
-                this.#selectedAuthorElem = false;
+                this.selectedElement.remove();
+                this.selectedElement = false;
             } else {
                 this.errorPrg.textContent = response.description;
             }

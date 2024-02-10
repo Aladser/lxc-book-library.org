@@ -1,35 +1,9 @@
-class GenreClientController {
-    /** DOM выбранного автора */
-    #selectedGenreElem = false;
-    /** имя выбранного автора */
-    #selectedGenreName = false;
-    /** URL методов*/
-    #url = {
-        'store': '/genre/store',
-        'destroy': '/genre/destroy'
-    };
-
-    constructor(errorPrg) {
-        this.errorPrg = errorPrg;
-    }
-
-    /** установить выбранного автора */
-    setSelectedGenre(selectedGenreElem) {
-        this.#selectedGenreElem = selectedGenreElem;
-        this.#selectedGenreName = selectedGenreElem.textContent.trim();
-    }
-    
-    /** отменить обновление автора */
-    restore() {
-        this.#selectedGenreElem.innerHTML = this.#selectedGenreName;
-        this.errorPrg.textContent = '';
-    }
-
+class GenreClientController extends ClientController{
     /** добавить нового автора */
     async store(e, genreTable) {
         e.preventDefault();
         return await ServerRequest.execute(
-            this.#url.store,
+            this.url.store,
             data => this.#processStoreGenreResponse(data, e.target, genreTable),
             "post",
             this.errorPrg,
@@ -69,9 +43,9 @@ class GenreClientController {
 
     /** показать форму обновления автора */
     edit(csrf) {
-        this.#selectedGenreElem.innerHTML = `
+        this.selectedElement.innerHTML = `
             <form id='table-row__form-edit'>
-                <input type='text' name='name' class='table-row__input-author theme-border' value='${this.#selectedGenreName}'>
+                <input type='text' name='name' class='table-row__input-author theme-border' value='${this.selectedElementContent}'>
                 <input type='button' id='table-row__btn-cancel' class='table-row__btn theme-border' value='Отмена'>
                 <input type='submit' class='table-row__btn theme-border' value='OK'>
                 <input type="hidden" name="CSRF" value="${csrf.content}">
@@ -84,11 +58,11 @@ class GenreClientController {
     /** удалить автора */
     destroy(csrf) {
         let genre_name = new URLSearchParams();
-        genre_name.set('genre_name', this.#selectedGenreName);
+        genre_name.set('genre_name', this.selectedElementContent);
         genre_name.set('CSRF', csrf.content);
 
         ServerRequest.execute(
-            this.#url.destroy,
+            this.url.destroy,
             data => this.#processRemoveResponse(data),
             "post",
             this.errorPrg,
@@ -103,8 +77,8 @@ class GenreClientController {
         try {
             let response = JSON.parse(responseData);
             if (response.is_removed == 1) {
-                this.#selectedGenreElem.remove();
-                this.#selectedGenreElem = false;
+                this.selectedElement.remove();
+                this.selectedElementContent = false;
             } else {
                 this.errorPrg.textContent = response.description;
             }

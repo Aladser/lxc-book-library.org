@@ -1,7 +1,15 @@
+/* ==Клиентский контроллер жанров
+================================== */
+/** URL методов*/
+const url = {
+  'store': '/genre/store',
+  'destroy': '/genre/destroy'
+};
 /** блок ошибок */
 const errorPrg = document.querySelector("#prg-error");
 /** клиентский контроллер жанров */
-const genreClientController = new GenreClientController(errorPrg);
+const genreClientController = new GenreClientController(url, errorPrg);
+
 
 /** базовое CSS имя контекстного меню жанра*/
 const genreContextMenuClassName = "context-menu";
@@ -38,5 +46,5 @@ function openContextMenu(e) {
   addGenreForm.reset();
   errorPrg.textContent = "";
   genreContextMenu.show(e);
-  genreClientController.setSelectedGenre(e.target);
+  genreClientController.selectElement(e.target);
 }
