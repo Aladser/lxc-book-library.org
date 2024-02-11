@@ -19,9 +19,7 @@ const csrf = document.querySelector("meta[name='csrf']");
 const authorTable = document.querySelector("#author-table").childNodes[1];
 
 /** кнопки изменения жанра*/
-const editGenreButtons = document.querySelectorAll(
-  ".author-table__btn-edit"
-);
+const editGenreButtons = document.querySelectorAll(".author-table__btn-edit");
 
 /** кнопки удаления жанра*/
 const removeGenreButtons = document.querySelectorAll(
@@ -35,7 +33,9 @@ window.addEventListener("DOMContentLoaded", function (e) {
   };
   // изменение жанра
   editGenreButtons.forEach((btn) => {
-    btn.onclick = (e) => authorClientController.edit(e.target.closest(".table-row"), csrf);
+    btn.onclick = (e) => {
+      authorClientController.edit(e.target.closest(".table-row"), csrf);
+    };
   });
   // удаление жанра
   removeGenreButtons.forEach((btn) => {
