@@ -24,6 +24,7 @@ html {
   .theme-bg-сolor-white:hover {
     background-color: var(--theme-color);
     color: white;
+    font-weight: bold;
   }
   .theme-bg-сolor-white:hover::placeholder {
     color: #eee;
