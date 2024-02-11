@@ -58,7 +58,7 @@ class GenreClientController extends ClientController {
     }
   }
 
-  /**  удалить автора
+  /**  удалить жанр
    * @param {*} genreElem DOM жанра
    * @param {*} csrf
    */

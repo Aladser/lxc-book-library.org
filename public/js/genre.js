@@ -16,8 +16,10 @@ const removeGenreButtons = document.querySelectorAll(
   ".genre-table__btn-remove"
 );
 
+
 /** клиентский контроллер жанров */
 const genreClientController = new GenreClientController(url, errorPrg);
+
 
 window.addEventListener("DOMContentLoaded", function () {
   // добавление жанра

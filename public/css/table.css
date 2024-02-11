@@ -1,31 +1,32 @@
-.table-row__input-author{
-    outline: none;
+.table-row__input-author {
+  outline: none;
 }
 
-.table-row__btn{
-    background-color: white;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+.table-row__btn {
+  background-color: white;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
 }
 
-.genre-table__btn-remove {
-    background-color: transparent;
-    margin-left: 0.5rem;
-    font-size: 0.9em;
-    display: none;
+.genre-table__btn-remove,
+.author-table__btn {
+  background-color: transparent;
+  font-size: 0.9em;
+  display: none;
 }
-.table-row:hover .genre-table__btn-remove {
-    display: inline-block;
+.table-row:hover .genre-table__btn-remove,
+.table-row:hover .author-table__btn {
+  display: inline-block;
 }
 
 .prg-error {
-    position: absolute;
-    top: 5.5rem;
-    left: 1rem;
-    width: 15vw;
+  position: absolute;
+  top: 5.5rem;
+  left: 1rem;
+  width: 15vw;
 
-    color: var(--theme-red-color);
-    font-weight: bolder;
-    word-break: break-word;
-    padding: 0.5rem;
+  color: var(--theme-red-color);
+  font-weight: bolder;
+  word-break: break-word;
+  padding: 0.5rem;
 }

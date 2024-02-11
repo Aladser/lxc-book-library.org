@@ -98,7 +98,7 @@ class AuthorController extends Controller
     {
         [$name, $surname] = explode(' ', $args['author_name']);
         $isRemoved = $this->author->remove($name, $surname);
-        $response['is_removed'] = $isRemoved;
+        $response['is_removed'] = (int) $isRemoved;
 
         echo json_encode($response);
     }
