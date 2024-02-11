@@ -370,6 +370,19 @@ class UserController extends Controller
         );
     }
 
+    public function update(mixed $args)
+    {
+        var_dump($args);
+    }
+
+    public function destroy(mixed $args)
+    {
+        $isRemoved = $this->user->remove($args['user_name']);
+        $response['is_removed'] = (int) $isRemoved;
+
+        echo json_encode($response);
+    }
+
     // выйти из системы
     public function logout()
     {

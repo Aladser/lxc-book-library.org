@@ -30,7 +30,10 @@
 
                 <?php foreach ($data['users'] as $user) { ?>
                 <tr>
-                    <td class='table-row p-3 theme-border-bottom'><?php echo $user['login']; ?></td>
+                    <td class='table-row p-3 theme-border-bottom'>
+                        <button class='user-table__btn user-table__btn-remove' title='удалить автора'>✘</button>
+                        <span class='user-table__content'><?php echo $user['login']; ?></span>
+                    </td>
                     <td class='table-row p-3 theme-border-bottom'><?php echo $user['nickname']; ?></td>
                     <td class='table-row p-3 theme-border-bottom'><?php echo $user['is_admin'] ? 'есть' : 'нет'; ?></td>
                 </tr>

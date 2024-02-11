@@ -9,7 +9,8 @@
 }
 
 .genre-table__btn-remove,
-.author-table__btn {
+.author-table__btn,
+.user-table__btn {
   background-color: transparent;
   font-size: 0.9em;
   display: none;
@@ -21,7 +22,8 @@
 }
 
 .table-row:hover .genre-table__btn-remove,
-.table-row:hover .author-table__btn {
+.table-row:hover .author-table__btn, 
+.table-row:hover .user-table__btn {
   display: inline-block;
 }
 

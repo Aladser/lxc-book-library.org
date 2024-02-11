@@ -9,6 +9,7 @@ class User extends Model
 {
     // id сервисов авторизации в БД
     private array $authServiceIds;
+    private string $dbTableName = 'db_users';
 
     public function __construct()
     {
@@ -61,6 +62,14 @@ class User extends Model
         $user_id = $this->dbQuery->insert($sql, $args);
 
         return $user_id;
+    }
+
+    public function remove(string $login)
+    {
+        $sql = "delete from {$this->dbTableName} where login=:login";
+        $args = ['login' => $login];
+
+        return $this->dbQuery->delete($sql, $args);
     }
 
     public function getDBUsers()

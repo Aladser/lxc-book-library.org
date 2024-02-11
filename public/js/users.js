@@ -7,27 +7,28 @@ const url = {
 const errorPrg = document.querySelector("#prg-error");
 /** CSRF */
 const csrf = document.querySelector("meta[name='csrf']");
-/** таблица жанров */
-const userTable = document.querySelector("#user-table").childNodes[1];
-/** форма добавления жанра*/
-const addGenreForm = document.querySelector("#form-add-user");
-/** кнопки удаления жанра*/
-const removeGenreButtons = document.querySelectorAll(
-  ".user-table__btn-remove"
-);
 
-/** клиентский контроллер жанров */
+/** таблица пользователей */
+const userTable = document.querySelector("#user-table").childNodes[1];
+/** форма добавления пользователя*/
+const addUserForm = document.querySelector("#form-add-user");
+/** кнопки изменения пользователя*/
+const editUserButtons = document.querySelectorAll(".user-table__btn-edit");
+/** кнопки удаления пользователя*/
+const removeUserButtons = document.querySelectorAll(".user-table__btn-remove");
+
+/** клиентский контроллер пользователей */
 const userClientController = new UserClientController(url, errorPrg);
 
 window.addEventListener("DOMContentLoaded", function () {
   // добавление пользователя
-  addGenreForm.onsubmit = (e) => {
-    userClientController.store(e, userTable, csrf);
+  addUserForm.onsubmit = (e) => {
+    userClientController.store(e, userTable);
   };
   // удаление пользователя
-  removeGenreButtons.forEach((btn) => {
+  removeUserButtons.forEach((btn) => {
     btn.onclick = (e) => {
-      userClientController.destroy(e.target.closest(".table-row"), csrf);
+      userClientController.destroy(e.target.closest(".table-row").closest('tr'), csrf);
     };
   });
 });
