@@ -33,7 +33,7 @@ class GenreClientController extends ClientController {
         trElem.append(tdElem);
 
         tdElem.className =
-          "table-row p-3 theme-bg-сolor-white theme-border-bottom";
+          "table-row p-3 theme-bg-сolor-white theme-border-top theme-border-bottom";
         tdElem.innerHTML = `
                     <span class='genre-table__content'>${form.name.value}</span>
                     <button class='genre-table__btn-remove' title='удалить пользователя'>✘</button>

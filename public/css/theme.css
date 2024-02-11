@@ -3,8 +3,10 @@ html {
     --theme-darker-color: rgb(0, 150, 255, 1);
     --theme-red-color: rgb(202, 0, 0);
     --theme-border: 1.5px solid var(--theme-color);
+    --theme-grey-bgcolor: rgb(252, 252, 252);
   }
   
+
   .theme-color {
     color: var(--theme-color);
   }
@@ -14,17 +16,21 @@ html {
   .theme-red-color {
     color: var(--theme-red-color);
   }
+
+
+  .theme-grey-bgcolor {
+    background-color: var(--theme-grey-bgcolor);
+  }
   .theme-bg-сolor {
     background-color: var(--theme-color);
   }
   
   .theme-bg-сolor-white {
-    background-color: white;
+    background-color: var(--theme-grey-bgcolor)
   }
   .theme-bg-сolor-white:hover {
     background-color: var(--theme-color);
     color: white;
-    font-weight: bold;
   }
   .theme-bg-сolor-white:hover::placeholder {
     color: #eee;

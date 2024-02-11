@@ -1,18 +1,12 @@
-* {
-  margin: 0;
-  padding: 0;
-}
-
 html {
   font-size: 15px;
+  margin: 0;
+  padding: 0;
+  background-color: var(--theme-grey-bgcolor);
 }
 
-textarea {
-  resize: none;
-}
-
-a {
-  text-decoration: none;
+body {
+  background-color: transparent;
 }
 
 button {
@@ -20,9 +14,10 @@ button {
   background-color: white;
 }
 
-.cursor-pointer {
-  cursor: pointer;
-}
+
+textarea {resize: none;}
+a {text-decoration: none;}
+.cursor-pointer {cursor: pointer;}
 
 
 /* общие классы секций */
@@ -38,13 +33,12 @@ button {
   margin-bottom: 2rem;
 }
 
-
+/* кнопки */
 .button-basic {
   padding: 0.75rem;
   width: 10rem;
   text-align: center;
   color: var(--theme-color);
-  background-color: white;
 }
 .button-basic:hover {
   color: white;
@@ -54,10 +48,16 @@ button {
 .button-wide {
   width: 20rem;
 }
+@media(max-width:700px) {
+  .button-wide{
+    width: 100%;
+  }
+}
+
 .button-wide:hover {
   color: var(--theme-darker-color);
   font-weight: bolder;
-  background-color: white;
+  background-color: var(--theme-grey-bgcolor)
 }
 
 .button-small {
@@ -68,10 +68,4 @@ button {
   padding-left: 0.5em;
   padding-right: 0.5em;
   border-radius: 0.25em;
-}
-
-@media(max-width:700px) {
-  .button-wide{
-    width: 100%;
-  }
 }

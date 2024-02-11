@@ -40,7 +40,7 @@
                 </a>
                 <?php } ?> 
                 <!-- кнопка входа-выхода -->
-                <a href="<?php echo $data['header_button_url']; ?>" class='button-basic theme-border-start d-flex justify-content-center align-items-center'>
+                <a href="<?php echo $data['header_button_url']; ?>" class='button-basic theme-grey-bgcolor theme-border-start d-flex justify-content-center align-items-center'>
                     <?php echo $data['header_button_name']; ?>
                 </a>
             </div>
