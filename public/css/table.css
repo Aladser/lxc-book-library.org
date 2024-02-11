@@ -11,7 +11,7 @@
 .genre-table__btn-remove {
     background-color: transparent;
     margin-left: 0.5rem;
-    font-size: 1.2em;
+    font-size: 0.9em;
     display: none;
 }
 .table-row:hover .genre-table__btn-remove {
