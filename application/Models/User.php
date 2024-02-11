@@ -46,7 +46,11 @@ class User extends Model
     public function add($args, $authType = 'db'): int
     {
         if ($authType === 'db') {
-            $sql = 'insert into db_users(login, password) values(:email, :password)';
+            if (isset($args['is_admin'])) {
+                $sql = 'insert into db_users(login, password, is_admin) values(:email, :password, :is_admin)';
+            } else {
+                $sql = 'insert into db_users(login, password) values(:email, :password)';
+            }
             $args['password'] = password_hash($args['password'], PASSWORD_DEFAULT);
         } elseif ($authType === 'vk' || $authType === 'google') {
             $sql = 'insert into auth_service_users(login, token, auth_service_id) values(:login, :token, :auth_service_id)';
