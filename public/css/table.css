@@ -13,7 +13,13 @@
   background-color: transparent;
   font-size: 0.9em;
   display: none;
+  padding: 0;
 }
+
+.author-table__btn-edit {
+  padding-left: 0.5rem;
+}
+
 .table-row:hover .genre-table__btn-remove,
 .table-row:hover .author-table__btn {
   display: inline-block;

@@ -1,6 +1,3 @@
-/* ==Клиентский контроллер авторов
-================================== */
-/** URL серверного контроллера авторов */
 const url = {
   store: "/author/store",
   update: "/author/update",
@@ -8,23 +5,21 @@ const url = {
 };
 /** блок ошибок */
 const errorPrg = document.querySelector("#prg-error");
-/** клиентский контроллер авторов */
-const authorClientController = new AuthorClientController(url, errorPrg);
-
 /** форма добавления автора*/
 const addAuthorForm = document.querySelector("#form-add-author");
 /** CSRF */
 const csrf = document.querySelector("meta[name='csrf']");
 /** таблица авторов */
 const authorTable = document.querySelector("#author-table").childNodes[1];
-
 /** кнопки изменения жанра*/
 const editGenreButtons = document.querySelectorAll(".author-table__btn-edit");
-
 /** кнопки удаления жанра*/
 const removeGenreButtons = document.querySelectorAll(
   ".author-table__btn-remove"
 );
+
+/** клиентский контроллер авторов */
+const authorClientController = new AuthorClientController(url, errorPrg);
 
 window.addEventListener("DOMContentLoaded", function (e) {
   // добавление нового автора

@@ -65,6 +65,7 @@ class UserController extends Controller
         // роуты
         $routes = [
             'show' => route('show'),
+            'store' => route('store'),
         ];
 
         // доп.заголовки
@@ -74,7 +75,7 @@ class UserController extends Controller
             page_name: "{$this->site_name} - пользователи",
             template_view: 'template_view.php',
             content_view: 'admin/users_view.php',
-            content_css: ['context_menu.css', 'table.css'],
+            content_css: ['context_menu.css', 'table.css', 'form-add.css'],
             content_js: [
                 'Classes/ServerRequest.js',
                 'Classes/ContextMenu.js',
@@ -268,26 +269,40 @@ class UserController extends Controller
     {
         $email = $args['email'];
         $password = $args['password'];
+        $isAdmin = isset($args['is_admin']) ? $args['is_admin'] == 1 : false;
 
-        // проверка паролей
-        if ($password !== $args['password_confirm']) {
-            // проверка совпадения паролей
-            header("Location: {$this->register_url}?error=dp&user=$email");
-        } elseif (strlen($password) < 3) {
-            // длина пароля
-            header("Location:{$this->register_url}?error=sp&user=$email");
-        } elseif (!$this->user->exists($email, 'db')) {
-            // регистрация пользователя
-            unset($args['password_confirm']);
-            $isUserRegistered = $this->user->add($args);
-            if ($isUserRegistered) {
-                $this->saveAuth(['login' => $email], 'db');
-                header("Location: {$this->home_url}");
+        if (isset($args['password_confirm'])) {
+            // --- регистрация пользователем ---
+
+            // проверка паролей
+            if ($password !== $args['password_confirm']) {
+                // проверка совпадения паролей
+                header("Location: {$this->register_url}?error=dp&user=$email");
+            } elseif (strlen($password) < 3) {
+                // длина пароля
+                header("Location:{$this->register_url}?error=sp&user=$email");
+            } elseif (!$this->user->exists($email, 'db')) {
+                // регистрация пользователя
+                unset($args['password_confirm']);
+                $isUserRegistered = $this->user->add($args);
+                if ($isUserRegistered) {
+                    $this->saveAuth(['login' => $email], 'db');
+                    header("Location: {$this->home_url}");
+                } else {
+                    header("Location: {$this->register_url}?error=system_error");
+                }
             } else {
-                header("Location: {$this->register_url}?error=system_error");
+                header("Location: {$this->register_url}?error=usrexsts&user=$email");
             }
         } else {
-            header("Location: {$this->register_url}?error=usrexsts&user=$email");
+            // --- регистрация администратором ---
+
+            if (!$this->user->exists($email, 'db')) {
+                $isUserRegistered = $this->user->add($args) ? 'system_success' : 'system_error';
+                echo json_encode(['response' => $isUserRegistered]);
+            } else {
+                echo json_encode(['response' => 'user_exists']);
+            }
         }
     }
 
