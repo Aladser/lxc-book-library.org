@@ -1,90 +1,73 @@
 class UserClientController extends ClientController {
-  constructor(url, errorPrg) {
-    super(url, errorPrg);
-    this.selectedUserName = false;
-  }
-  
-  /** добавить нового автора
-   * @param {*} e
-   * @param {*} genreTable таблица жанров
-   * @param {*} csrf
-   * @returns
-   */
-  async store(e, genreTable) {
+  async store(e, authorTable) {
     e.preventDefault();
+
     return await ServerRequest.execute(
       this.url.store,
-      (data) => this.#processStoreResponse(data, e.target, genreTable),
+      (data) => this.#processStoreResponse(data, e.target, authorTable),
       "post",
       this.errorPrg,
       new FormData(e.target)
     );
   }
 
-  /** обработать ответ сервера о добавлении нового автора
-   * @param {*} responseData ответ сервера
-   * @param {*} form форма добавления
-   * @param {*} authorTable таблица жанров
-   * @param {*} csrf
-   * @returns
-   */
-  #processStoreResponse(responseData, form, authorTable) {
+  #processStoreResponse(responseData, form, genreTable) {
     try {
       let response = JSON.parse(responseData);
+      console.log(response);
       if (response.is_added > 0) {
         let trElem = document.createElement("tr");
+        let tdElem = document.createElement("td");
+        trElem.append(tdElem);
 
-        let isAdmin = form.is_admin.value == 1 ? "есть" : "нет";
-        trElem.className =
+        tdElem.className =
           "table-row p-3 theme-bg-сolor-white theme-border-top theme-border-bottom";
-        trElem.innerHTML = `
-              <td class='table-row p-3 theme-border-bottom'>${form.email.value}</td>
-              <td class='table-row p-3 theme-border-bottom'></td>
-              <td class='table-row p-3 theme-border-bottom'>${isAdmin}</td>
-              `;
-        authorTable.prepend(trElem);
+        tdElem.innerHTML = `
+                    <span class='genre-table__content'>${form.name.value}</span>
+                    <button class='genre-table__btn-remove' title='удалить пользователя'>✘</button>
+                `;
+        tdElem.querySelector("button").onclick = (e) =>
+          this.destroy(tdElem, csrf);
+
+        genreTable.prepend(trElem);
 
         this.errorPrg.textContent = "";
         form.reset();
+
+        return tdElem;
       } else {
         this.errorPrg.textContent = response.description;
+        return false;
       }
     } catch (exception) {
-      this.errorPrg.textContent = response.description;
+      this.errorPrg.textContent = 'JSON ошибка. Подробности см. в консоли';
       console.log("processStoreGenreResponse: " + responseData);
+      return false;
     }
   }
 
-  /**  удалить жанр
-   * @param {*} userElem DOM жанра
-   * @param {*} csrf
-   */
-  destroy(userElem, csrf) {
-    let user_name = new URLSearchParams();
-    user_name.set(
-      "user_name",
-      userElem.querySelector(".user-table__content").textContent
+  destroy(genreElem, csrf) {
+    let genre_name = new URLSearchParams();
+    genre_name.set(
+      "genre_name",
+      genreElem.querySelector(".genre-table__content").textContent
     );
-    user_name.set("CSRF", csrf.content);
+    genre_name.set("CSRF", csrf.content);
 
     ServerRequest.execute(
       this.url.destroy,
-      (data) => this.#processRemoveResponse(data, userElem),
+      (data) => this.#processRemoveResponse(data, genreElem),
       "post",
       this.errorPrg,
-      user_name
+      genre_name
     );
   }
 
-  /** обработать ответ сервера об удалении автора
-   * @param {*} responseData ответа сервера
-   * @param {*} userElem DOM жанра
-   */
-  #processRemoveResponse(responseData, userElem) {
+  #processRemoveResponse(responseData, genreElem) {
     try {
       let response = JSON.parse(responseData);
       if (response.is_removed == 1) {
-        userElem.remove();
+        genreElem.remove();
         this.errorPrg.textContent = "";
       } else {
         this.errorPrg.textContent = response.description;

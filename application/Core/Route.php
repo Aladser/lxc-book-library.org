@@ -18,25 +18,21 @@ class Route
     {
         session_start();
 
-        // проверка ошибки access_denied из Javascript-класса ServerRequest
-        if ($_SERVER['REQUEST_URI'] === '/access_denied') {
-            $controller = new MainController();
-            $controller->error('Access denied');
-
-            return;
-        }
-
         // проверка CSRF
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if (isset($_POST['CSRF'])) {
+            if (isset($_POST['CSRF_JS'])) {
+                if ($_POST['CSRF_JS'] !== $_SESSION['CSRF']) {
+                    echo 'access_is_denied';
+
+                    return;
+                }
+            } elseif (isset($_POST['CSRF'])) {
                 if ($_POST['CSRF'] !== $_SESSION['CSRF']) {
                     http_response_code(419);
                     $controller = new MainController();
                     $controller->error('Access is denied');
 
                     return;
-                } else {
-                    unset($_POST['CSRF']);
                 }
             } else {
                 http_response_code(419);
@@ -45,6 +41,7 @@ class Route
 
                 return;
             }
+            unset($_POST['CSRF']);
         }
 
         $url = mb_substr($_SERVER['REQUEST_URI'], 1);

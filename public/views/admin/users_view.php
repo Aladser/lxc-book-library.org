@@ -14,7 +14,7 @@
                     <option value=1>Да</option>
                 </select>
                 <input type="submit" value="Добавить" class='form-add__input theme-bg-сolor-white theme-border px-4'>
-                <input type="hidden" name="CSRF" value="<?php echo $data['csrf']; ?>">
+                <input type="hidden" name="CSRF_JS" value="<?php echo $data['csrf']; ?>">
             </form>
             <p><i>Пароль по умолчанию: 111</i></p>
         </article>
