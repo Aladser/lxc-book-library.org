@@ -55,7 +55,37 @@ class UserController extends Controller
 
     public function view()
     {
-        echo 'UserController->view()';
+        // данные
+        $data['header_button_url'] = route('logout');
+        $data['header_button_name'] = 'Выйти';
+        $data['users'] = $this->user->getDBUsers();
+        $csrf = Controller::createCSRFToken();
+        $data['csrf'] = $csrf;
+
+        // роуты
+        $routes = [
+            'show' => route('show'),
+        ];
+
+        // доп.заголовки
+        $csrf_meta = "<meta name='csrf' content=$csrf>";
+
+        $this->view->generate(
+            page_name: "{$this->site_name} - пользователи",
+            template_view: 'template_view.php',
+            content_view: 'admin/users_view.php',
+            content_css: ['context_menu.css', 'table.css'],
+            content_js: [
+                'Classes/ServerRequest.js',
+                'Classes/ContextMenu.js',
+                'ClientControllers/ClientController.js',
+                'ClientControllers/UserClientController.js',
+                'users.js',
+            ],
+            data: $data,
+            routes: $routes,
+            add_head: $csrf_meta,
+        );
     }
 
     // ----- АВТОРИЗАЦИЯ ЛОГИН-ПАРОЛЬ -----

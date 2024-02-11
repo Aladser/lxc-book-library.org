@@ -59,6 +59,11 @@ class User extends Model
         return $user_id;
     }
 
+    public function getDBUsers()
+    {
+        return $this->dbQuery->query('select * from db_users', false);
+    }
+
     public function getDBUser(string $login)
     {
         $sql = 'select * from db_users where login = :login';
