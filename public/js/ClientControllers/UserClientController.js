@@ -10,7 +10,7 @@ class UserClientController extends ClientController {
     return await ServerRequest.execute(
       this.url.store,
       (data) =>
-        this.#processStoreGenreResponse(data, e.target, genreTable, csrf),
+        this.#processStoreResponse(data, e.target, genreTable, csrf),
       "post",
       this.errorPrg,
       new FormData(e.target)
@@ -20,41 +20,34 @@ class UserClientController extends ClientController {
   /** обработать ответ сервера о добавлении нового автора
    * @param {*} responseData ответ сервера
    * @param {*} form форма добавления
-   * @param {*} genreTable таблица жанров
+   * @param {*} authorTable таблица жанров
    * @param {*} csrf 
    * @returns 
    */
-  #processStoreGenreResponse(responseData, form, genreTable, csrf) {
+  #processStoreResponse(responseData, form, authorTable, csrf) {
     try {
       let response = JSON.parse(responseData);
       if (response.is_added > 0) {
         let trElem = document.createElement("tr");
-        let tdElem = document.createElement("td");
-        trElem.append(tdElem);
 
-        tdElem.className =
+        let isAdmin = form.is_admin.value == 1 ? 'есть' : 'нет';
+        trElem.className =
           "table-row p-3 theme-bg-сolor-white theme-border-top theme-border-bottom";
-        tdElem.innerHTML = `
-                    <span class='genre-table__content'>${form.name.value}</span>
-                    <button class='genre-table__btn-remove' title='удалить пользователя'>✘</button>
-                `;
-        tdElem.querySelector("button").onclick = (e) =>
-          this.destroy(tdElem, csrf);
-
-        genreTable.prepend(trElem);
+        trElem.innerHTML = `
+              <td class='table-row p-3 theme-border-bottom'>${form.email.value}</td>
+              <td class='table-row p-3 theme-border-bottom'></td>
+              <td class='table-row p-3 theme-border-bottom'>${isAdmin}</td>
+              `;
+        authorTable.prepend(trElem);
 
         this.errorPrg.textContent = "";
         form.reset();
-
-        return tdElem;
       } else {
         this.errorPrg.textContent = response.description;
-        return false;
       }
     } catch (exception) {
       this.errorPrg.textContent = response.description;
       console.log("processStoreGenreResponse: " + responseData);
-      return false;
     }
   }
 

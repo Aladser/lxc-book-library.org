@@ -296,11 +296,12 @@ class UserController extends Controller
             }
         } else {
             // --- регистрация администратором ---
+
             if (!$this->user->exists($email, 'db')) {
-                $isUserRegistered = $this->user->add($args) > 0 ? 'system_success' : 'system_error';
-                echo json_encode(['response' => $isUserRegistered]);
+                $isAdded = $this->user->add($args);
+                echo json_encode(['is_added' => $isAdded]);
             } else {
-                echo json_encode(['response' => 'user_exists']);
+                echo json_encode(['is_added' => 0, 'description' => 'Пользователь существует']);
             }
         }
     }
