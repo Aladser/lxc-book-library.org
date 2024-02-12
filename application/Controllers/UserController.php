@@ -134,7 +134,9 @@ class UserController extends Controller
             // проверка введенных данных
             $isAuth = $this->user->is_correct_password($login, $password);
             if ($isAuth) {
-                $this->saveAuth(['login' => $login], 'db');
+                $userData = $this->user->getDBUser($login);
+                $nickname = $userData['nickname'];
+                $this->saveAuth(['login' => $login, 'nickname' => $nickname], 'db');
                 header("Location: {$this->home_url}");
             } else {
                 header("Location: {$this->login_url}?user=$login&error=wp");
@@ -462,8 +464,9 @@ class UserController extends Controller
             setcookie($key, $value, time() + 60 * 60 * 24, '/');
         }
         if ($authType === 'db') {
-            $_SESSION['user_name'] = $params['login'];
-            setcookie('user_name', $params['login'], time() + 60 * 60 * 24, '/');
+            $user_name = !empty($params['nickname']) ? $params['nickname'] : $params['login'];
+            $_SESSION['user_name'] = $user_name;
+            setcookie('user_name', $user_name, time() + 60 * 60 * 24, '/');
         }
     }
 }

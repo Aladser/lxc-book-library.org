@@ -18,7 +18,7 @@ class BookController extends Controller
 
     public function index(mixed $args): void
     {
-        // кнопка Войти-Выйти, данные авт.пользователя
+        // кнопка Войти-Выйти, данные авториз.пользователя
         if (!empty($this->auth_user)) {
             $data['header_button_name'] = 'Выйти';
             $data['header_button_url'] = route('logout');
