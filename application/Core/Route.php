@@ -7,17 +7,7 @@ use App\Controllers\UserController;
 
 class Route
 {
-    // специфичные роуты
-    //  $specificRoutes[роут] - контроллер, роут - действие
-    private static $specificRoutes = [
-        'login' => 'User',
-        'register' => 'User',
-        'index' => 'Book',
-       ];
-
-    private static $authUserRoutes = ['/user/show', '/user/view', '/author/view', '/genre/view'];
-
-    public static function start()
+    public static function start($specificRoutes, $authUserRoutes)
     {
         session_start();
 
@@ -56,15 +46,15 @@ class Route
         $funcArgs = null;
 
         // проверка аутентифицированного пользователя
-        if (in_array($_SERVER['REQUEST_URI'], self::$authUserRoutes)) {
+        if (in_array($_SERVER['REQUEST_URI'], $authUserRoutes)) {
             if (!UserController::getAuthUser()) {
                 header('Location: /');
             }
         }
 
-        if (array_key_exists($url, self::$specificRoutes)) {
+        if (array_key_exists($url, $specificRoutes)) {
             // проверка наличия аутентификации
-            $controller_name = self::$specificRoutes[$url];
+            $controller_name = $specificRoutes[$url];
             $action = self::convertName($url);
         } else {
             // URL - [контроллер, функция, аргумент]

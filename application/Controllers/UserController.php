@@ -209,7 +209,7 @@ class UserController extends Controller
     // страница регистрации
     public function register(mixed $args): void
     {
-        $args['csrf'] = $this->csrf;
+        $args['csrf'] = Controller::createCSRFToken();
         // ошибки регистрации
         if (isset($args['error'])) {
             if ($args['error'] == 'usrexsts') {

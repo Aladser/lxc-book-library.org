@@ -12,4 +12,15 @@ if (!file_exists(dirname(__DIR__, 1).'/logs/access.log')) {
     exec("echo > $rootDir/logs/error.log");
 }
 
-Route::start();
+// специфичные роуты
+//  key - действие, value - контролллер
+$specificRoutes = [
+    'login' => 'User',
+    'register' => 'User',
+    'index' => 'Book',
+   ];
+
+// роуты, требующие аутентификации
+$authUserRoutes = ['/user/show', '/user/view', '/author/view', '/genre/view'];
+
+Route::start($specificRoutes, $authUserRoutes);
