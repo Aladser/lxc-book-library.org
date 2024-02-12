@@ -35,6 +35,7 @@ class UserController extends Controller
     {
         parent::__construct();
         $this->user = new User();
+        $this->auth_user = UserController::getAuthUser();
 
         $this->register_url = route('register');
         $this->home_url = route('home');
@@ -57,6 +58,9 @@ class UserController extends Controller
         // данные
         $data['header_button_url'] = route('logout');
         $data['header_button_name'] = 'Выйти';
+        $data['auth_user_name'] = $this->auth_user['user_name'];
+        $data['auth_user_page'] = route('show');
+
         $data['users'] = $this->user->getDBUsers();
         $csrf = Controller::createCSRFToken();
         $data['csrf'] = $csrf;

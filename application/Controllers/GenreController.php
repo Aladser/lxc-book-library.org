@@ -23,6 +23,9 @@ class GenreController extends Controller
     {
         $data['header_button_url'] = route('logout');
         $data['header_button_name'] = 'Выйти';
+        $data['auth_user_name'] = $this->auth_user['user_name'];
+        $data['auth_user_page'] = route('show');
+
         $data['genres'] = $this->genre->get();
         $csrf = Controller::createCSRFToken();
         $data['csrf'] = $csrf;
