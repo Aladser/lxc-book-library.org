@@ -3,6 +3,7 @@
 namespace App\Core;
 
 use App\Controllers\MainController;
+use App\Controllers\UserController;
 
 class Route
 {
@@ -13,6 +14,8 @@ class Route
         'register' => 'User',
         'index' => 'Book',
        ];
+
+    private static $authUserRoutes = ['/user/show', '/user/view', '/author/view', '/genre/view'];
 
     public static function start()
     {
@@ -52,7 +55,15 @@ class Route
         // аргументы функции контроллера
         $funcArgs = null;
 
+        // проверка аутентифицированного пользователя
+        if (in_array($_SERVER['REQUEST_URI'], self::$authUserRoutes)) {
+            if (!UserController::getAuthUser()) {
+                header('Location: /');
+            }
+        }
+
         if (array_key_exists($url, self::$specificRoutes)) {
+            // проверка наличия аутентификации
             $controller_name = self::$specificRoutes[$url];
             $action = self::convertName($url);
         } else {
