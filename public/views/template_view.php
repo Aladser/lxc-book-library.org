@@ -28,23 +28,25 @@
 </head>
 <body>
 
-<header class='mb-4'>
-    <div class='d-flex justify-content-between theme-border theme-color'>
-        <div class='d-inline-block p-3 fw-bold'><?php echo $page_name; ?></div>
-        <?php if (!empty($data['header_button_url'])) { ?>
-            <div class='d-flex'>
+<header class='theme-border-bottom mb-4'>
+    <div class='container'>
+        <div class='d-flex justify-content-between theme-color'>
+            <div class='d-inline-block p-3 fw-bold w-100'><?php echo $page_name; ?></div>
+            <?php if (!empty($data['header_button_url'])) { ?>
+            <div class='d-flex align-items-center justify-content-end w-100'>
                 <!-- имя пользователя -->
                 <?php if (!empty($data['auth_user_name'])) { ?>
-                <a href=<?php echo $data['auth_user_page']; ?> class='button-basic button-wide theme-border-start d-flex justify-content-center align-items-center' title='Профиль'>
+                <a href=<?php echo $data['auth_user_page']; ?> class='header-nav-btn theme-color' title='Профиль'>
                     <?php echo $data['auth_user_name']; ?>
                 </a>
                 <?php } ?> 
                 <!-- кнопка входа-выхода -->
-                <a href="<?php echo $data['header_button_url']; ?>" class='button-basic theme-grey-bgcolor theme-border-start d-flex justify-content-center align-items-center'>
+                <a href="<?php echo $data['header_button_url']; ?>" class='header-nav-btn theme-color me-1'>
                     <?php echo $data['header_button_name']; ?>
                 </a>
             </div>
-        <?php } ?>
+            <?php } ?>
+        </div>
     </div>
 </header>
 

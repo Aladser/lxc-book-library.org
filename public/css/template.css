@@ -69,3 +69,11 @@ a {text-decoration: none;}
   padding-right: 0.5em;
   border-radius: 0.25em;
 }
+
+.header-nav-btn {
+  text-align: end;
+  padding-left: 1rem;
+}
+.header-nav-btn:hover {
+  text-shadow: 1px 1px 1px var(--theme-darker-color);
+}
