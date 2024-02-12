@@ -35,7 +35,7 @@
                         <span class='user-table__content'><?php echo $user['login']; ?></span>
                     </td>
                     <td class='table-row p-3 theme-border-bottom'><?php echo $user['nickname']; ?></td>
-                    <td class='table-row p-3 theme-border-bottom'><?php echo $user['is_admin'] ? 'есть' : 'нет'; ?></td>
+                    <td class='table-row p-3 theme-border-bottom'><?php echo $user['is_admin'] ? 'да' : 'нет'; ?></td>
                 </tr>
                 <?php }?>
             </table>

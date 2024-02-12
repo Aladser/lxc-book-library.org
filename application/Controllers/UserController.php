@@ -35,7 +35,6 @@ class UserController extends Controller
     {
         parent::__construct();
         $this->user = new User();
-        $this->csrf = Controller::createCSRFToken();
 
         $this->register_url = route('register');
         $this->home_url = route('home');
@@ -69,7 +68,7 @@ class UserController extends Controller
         ];
 
         // доп.заголовки
-        $csrf_meta = "<meta name='csrf' content=$csrf>";
+        $csrf_meta = "<meta name='csrf' content={$csrf}>";
 
         $this->view->generate(
             page_name: "{$this->site_name} - пользователи",
@@ -92,7 +91,7 @@ class UserController extends Controller
     // ----- АВТОРИЗАЦИЯ ЛОГИН-ПАРОЛЬ -----
     public function login(mixed $args): void
     {
-        $args['csrf'] = $this->csrf;
+        $args['csrf'] = Controller::createCSRFToken();
 
         // ошибки авторизации
         if (isset($args['error'])) {
@@ -164,33 +163,6 @@ class UserController extends Controller
         }
 
         header("Location: $url");
-    }
-
-    public function auth_service($args)
-    {
-        var_dump($args);
-
-        return;
-        if (!isset($_GET['code'])) {
-            return;
-        }
-        $authType = $_GET['service'];
-        $accessTokenResponse = self::getAccessToken($_GET['code'], $authType);
-        switch ($authType) {
-            case 'vk':
-                $user_id = $accessTokenResponse['user_id'];
-                $access_token = $accessTokenResponse['access_token'];
-                $userData = self::getVKUserInfo($user_id, $access_token);
-                break;
-            case 'google':
-                $access_token = $accessTokenResponse['access_token'];
-                $this->googleClient->setAccessToken($access_token);
-                $userData = self::getGoogleUserInfo($access_token);
-                $user_id = $userData['user_id'];
-        }
-        $user_name = $userData['user_name'];
-        self::saveToken($authType, $access_token, $user_id, $user_name);
-        // header('Location: '.route('home'));
     }
 
     public function auth_vk()
@@ -299,6 +271,7 @@ class UserController extends Controller
 
             if (!$this->user->exists($email, 'db')) {
                 $isAdded = $this->user->add($args);
+
                 echo json_encode(['is_added' => $isAdded]);
             } else {
                 echo json_encode(['is_added' => 0, 'description' => 'Пользователь существует']);

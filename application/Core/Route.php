@@ -25,6 +25,8 @@ class Route
                     echo 'access_is_denied';
 
                     return;
+                } else {
+                    unset($_POST['CSRF_JS']);
                 }
             } elseif (isset($_POST['CSRF'])) {
                 if ($_POST['CSRF'] !== $_SESSION['CSRF']) {
@@ -33,6 +35,8 @@ class Route
                     $controller->error('Access is denied');
 
                     return;
+                } else {
+                    unset($_POST['CSRF']);
                 }
             } else {
                 http_response_code(419);
@@ -41,7 +45,6 @@ class Route
 
                 return;
             }
-            unset($_POST['CSRF']);
         }
 
         $url = mb_substr($_SERVER['REQUEST_URI'], 1);

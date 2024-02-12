@@ -28,7 +28,7 @@ window.addEventListener("DOMContentLoaded", function () {
   // удаление пользователя
   removeUserButtons.forEach((btn) => {
     btn.onclick = (e) => {
-      userClientController.destroy(e.target.closest(".table-row").closest('tr'));
+      userClientController.destroy(e.target.closest(".table-row").closest('tr'), csrf);
     };
   });
 });
