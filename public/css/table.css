@@ -13,18 +13,17 @@
 .user-table__btn {
   background-color: transparent;
   font-size: 0.9em;
-  display: none;
+  visibility: hidden;
   padding: 0;
+}
+.table-row:hover .genre-table__btn-remove,
+.table-row:hover .author-table__btn, 
+.table-row:hover .user-table__btn {
+  visibility: visible;
 }
 
 .author-table__btn-edit {
   padding-left: 0.5rem;
-}
-
-.table-row:hover .genre-table__btn-remove,
-.table-row:hover .author-table__btn, 
-.table-row:hover .user-table__btn {
-  display: inline-block;
 }
 
 .prg-error {
