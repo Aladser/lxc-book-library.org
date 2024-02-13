@@ -6,10 +6,7 @@ use App\Core\Controller;
 use App\Models\User;
 use App\Services\UserAuthService;
 use VK\Client\VKApiClient;
-use VK\OAuth\Scopes\VKOAuthUserScope;
 use VK\OAuth\VKOAuth;
-use VK\OAuth\VKOAuthDisplay;
-use VK\OAuth\VKOAuthResponseType;
 
 use function App\config;
 use function App\route;
@@ -160,24 +157,7 @@ class UserController extends Controller
     public function login_service($args)
     {
         $service_type = $args['id'];
-        switch ($service_type) {
-            case 'vk':
-                $url = $this->vkOAuth->getAuthorizeUrl(
-                    VKOAuthResponseType::CODE,
-                    config('VK_CLIENT_ID'),
-                    config('VK_REDIRECT_URI'),
-                    VKOAuthDisplay::PAGE,
-                    [VKOAuthUserScope::PHOTOS, VKOAuthUserScope::OFFLINE],
-                    config('VK_CLIENT_SECRET')
-                );
-                break;
-            case 'google':
-                $url = $this->googleClient->createAuthUrl();
-                break;
-            default:
-                throw new \Exception('HTTP request failed: неверный тип сервиса авторизации');
-        }
-
+        $url = $this->authService->createAuthUrl($service_type);
         header("Location: $url");
     }
 
@@ -188,7 +168,7 @@ class UserController extends Controller
         }
         $authType = 'vk';
 
-        $accessTokenResponse = self::getAccessToken($_GET['code'], $authType);
+        $accessTokenResponse = $this->authService->getAccessToken($_GET['code'], $authType);
         $access_token = $accessTokenResponse['access_token'];
         $user_id = $accessTokenResponse['user_id'];
 
@@ -207,7 +187,7 @@ class UserController extends Controller
         }
         $authType = 'google';
 
-        $accessTokenResponse = self::getAccessToken($_GET['code'], $authType);
+        $accessTokenResponse = $this->authService->getAccessToken($_GET['code'], $authType);
         $access_token = $accessTokenResponse['access_token'];
 
         $this->googleClient->setAccessToken($access_token);
@@ -361,11 +341,6 @@ class UserController extends Controller
         );
     }
 
-    public function update(mixed $args)
-    {
-        var_dump($args);
-    }
-
     public function destroy(mixed $args)
     {
         $isRemoved = $this->user->remove($args['user_name']);
@@ -382,24 +357,6 @@ class UserController extends Controller
         setcookie('login', '', time() - 3600, '/');
         setcookie('user_name', '', time() - 3600, '/');
         header("Location: {$this->home_url}");
-    }
-
-    // получить access_token
-    private function getAccessToken(string $code, string $serviceName): array
-    {
-        switch ($serviceName) {
-            case 'vk':
-                return $this->vkOAuth->getAccessToken(
-                    config('VK_CLIENT_ID'),
-                    config('VK_CLIENT_SECRET'),
-                    config('VK_REDIRECT_URI'),
-                    $code
-                );
-            case 'google':
-                return $this->googleClient->fetchAccessTokenWithAuthCode($code);
-            default:
-                throw new \Exception('UserController::getAccessToken(): неверный тип сервиса');
-        }
     }
 
     // данные  пользователя ВК
