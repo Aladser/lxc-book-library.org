@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Core\Controller;
 use App\Models\User;
+use App\Services\UserAuthService;
 use VK\Client\VKApiClient;
 use VK\OAuth\Scopes\VKOAuthUserScope;
 use VK\OAuth\VKOAuth;
@@ -17,6 +18,7 @@ use function App\route;
 class UserController extends Controller
 {
     private User $user;
+    private UserAuthService $authService;
     private string $csrf;
 
     private string $register_url;
@@ -35,6 +37,7 @@ class UserController extends Controller
     {
         parent::__construct();
         $this->user = new User();
+        $this->authService = new UserAuthService();
         $this->auth_user = UserController::getAuthUser();
 
         $this->register_url = route('register');
@@ -192,7 +195,8 @@ class UserController extends Controller
         $userData = self::getVKUserInfo($user_id, $access_token);
         $user_name = $userData['user_name'];
 
-        self::saveAccessToken($authType, $access_token, $user_id, $user_name);
+        $this->authService->saveAccessToken($authType, $access_token, $user_id, $user_name);
+        $this->saveAuth(['login' => $user_id, 'user_name' => $user_name], $authType);
         header('Location: '.route('home'));
     }
 
@@ -211,7 +215,8 @@ class UserController extends Controller
         $user_login = $userData['user_login'];
         $user_name = $userData['user_name'];
 
-        self::saveAccessToken($authType, $access_token, $user_login, $user_name);
+        $this->authService->saveAccessToken($authType, $access_token, $user_login, $user_name);
+        $this->saveAuth(['login' => $user_login, 'user_name' => $user_name], $authType);
         header('Location: '.route('home'));
     }
 
@@ -395,17 +400,6 @@ class UserController extends Controller
             default:
                 throw new \Exception('UserController::getAccessToken(): неверный тип сервиса');
         }
-    }
-
-    private function saveAccessToken(string $authType, string $access_token, string $user_id, string $user_name): void
-    {
-        // запись токена в БД
-        if ($this->user->exists($user_id, $authType)) {
-            $this->user->writeToken($user_id, $access_token, $authType);
-        } else {
-            $this->user->add(['login' => $user_id, 'token' => $access_token], $authType);
-        }
-        $this->saveAuth(['login' => $user_id, 'user_name' => $user_name], $authType);
     }
 
     // данные  пользователя ВК
