@@ -3,17 +3,20 @@
 namespace App\Controllers;
 
 use App\Core\Controller;
+use App\Services\UserAuthService;
 
 use function App\route;
 
 class BookController extends Controller
 {
     private mixed $auth_user;
+    private UserAuthService $authService;
 
     public function __construct()
     {
         parent::__construct();
-        $this->auth_user = UserController::getAuthUser();
+        $this->authService = new UserAuthService();
+        $this->auth_user = $this->authService->getAuthUser();
     }
 
     public function index(mixed $args): void

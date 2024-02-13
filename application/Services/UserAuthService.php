@@ -12,7 +12,9 @@ use VK\OAuth\VKOAuthResponseType;
 use function App\config;
 
 /**
- * --- Сервис авторизации во внешнем сервисе ---.
+ * ----------------------------
+ * --- Сервис авторизации -----
+ * ----------------------------.
  */
 class UserAuthService
 {
@@ -125,5 +127,66 @@ class UserAuthService
             'user_name' => $google_account_info->name,
             'user_photo' => $google_account_info->picture,
         ];
+    }
+
+    // получить авторизованного пользователя
+    public static function getAuthUser(): mixed
+    {
+        $store = null;
+        if (isset($_SESSION['auth_type'])) {
+            $store = $_SESSION;
+        } elseif (isset($_COOKIE['auth_type'])) {
+            $store = $_COOKIE;
+        } else {
+            return false;
+        }
+        $userData = [
+            'login' => $store['login'],
+            'user_name' => $store['user_name'],
+            'auth_type' => $store['auth_type'],
+        ];
+
+        return $userData;
+    }
+
+    // Сохранить авторизацию в куки и сессии
+    public function saveAuth(array $params, $authType): void
+    {
+        if ($authType !== 'db' && $authType !== 'vk' && $authType != 'google') {
+            throw new Exception('Неверный тип авторизации');
+        }
+
+        $_SESSION['auth_type'] = $authType;
+        setcookie('auth_type', $authType, time() + 60 * 60 * 24, '/');
+        foreach ($params as $key => $value) {
+            $_SESSION[$key] = $value;
+            setcookie($key, $value, time() + 60 * 60 * 24, '/');
+        }
+        if ($authType === 'db') {
+            $user_name = !empty($params['nickname']) ? $params['nickname'] : $params['login'];
+            $_SESSION['user_name'] = $user_name;
+            setcookie('user_name', $user_name, time() + 60 * 60 * 24, '/');
+        }
+    }
+
+    // проверка прав администратора
+    public function isAuthAdmin()
+    {
+        $auth_user = self::getAuthUser();
+
+        if (!$auth_user) {
+            return false;
+        }
+
+        if ($auth_user['auth_type'] == 'google') {
+            return false;
+        } else {
+            $userData = $this->user->getDBUser($auth_user['login']);
+            if ($userData['is_admin'] == 0) {
+                return false;
+            }
+
+            return true;
+        }
     }
 }

@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Core\Controller;
 use App\Models\Genre;
+use App\Services\UserAuthService;
 
 use function App\route;
 
@@ -11,18 +12,20 @@ class GenreController extends Controller
 {
     private mixed $auth_user;
     private Genre $genre;
+    private UserAuthService $authService;
 
     public function __construct()
     {
         parent::__construct();
-        $this->auth_user = UserController::getAuthUser();
+        $this->auth_user = UserAuthService::getAuthUser();
         $this->genre = new Genre();
+        $this->authService = new UserAuthService();
     }
 
     public function view(mixed $args): void
     {
         // проверка прав администратора
-        $authUser = UserController::isAuthAdmin();
+        $authUser = $this->authService->isAuthAdmin();
         if (!$authUser) {
             $mainControl = new MainController();
             $mainControl->error('Доступ запрещен');

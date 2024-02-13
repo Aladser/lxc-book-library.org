@@ -3,7 +3,7 @@
 namespace App\Core;
 
 use App\Controllers\MainController;
-use App\Controllers\UserController;
+use App\Services\UserAuthService;
 
 class Route
 {
@@ -47,7 +47,7 @@ class Route
 
         // проверка аутентифицированного пользователя
         if (in_array($_SERVER['REQUEST_URI'], $authUserRoutes)) {
-            if (!UserController::getAuthUser()) {
+            if (!UserAuthService::getAuthUser()) {
                 header('Location: /');
             }
         }

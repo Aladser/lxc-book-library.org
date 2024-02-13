@@ -26,17 +26,18 @@ class UserController extends Controller
         parent::__construct();
         $this->user = new User();
         $this->authService = new UserAuthService();
-        $this->auth_user = UserController::getAuthUser();
+        $this->auth_user = $this->authService->getAuthUser();
 
         $this->register_url = route('register');
         $this->home_url = route('home');
         $this->login_url = route('login');
     }
 
+    // страница пользователей
     public function view()
     {
         // проверка прав администратора
-        $authUser = self::isAuthAdmin();
+        $authUser = $this->authService->isAuthAdmin();
         if (!$authUser) {
             $mainControl = new MainController();
             $mainControl->error('Доступ запрещен');
@@ -123,7 +124,7 @@ class UserController extends Controller
             if ($isAuth) {
                 $userData = $this->user->getDBUser($login);
                 $nickname = $userData['nickname'];
-                $this->saveAuth(['login' => $login, 'nickname' => $nickname], 'db');
+                $this->authService->saveAuth(['login' => $login, 'nickname' => $nickname], 'db');
                 header("Location: {$this->home_url}");
             } else {
                 header("Location: {$this->login_url}?user=$login&error=wp");
@@ -154,7 +155,7 @@ class UserController extends Controller
         $user_name = $this->authService->getVKUserInfo($user_id, $access_token)['user_name'];
 
         $this->authService->saveAccessToken($authType, $access_token, $user_id, $user_name);
-        $this->saveAuth(['login' => $user_id, 'user_name' => $user_name], $authType);
+        $this->authService->saveAuth(['login' => $user_id, 'user_name' => $user_name], $authType);
         header('Location: '.route('home'));
     }
 
@@ -172,7 +173,7 @@ class UserController extends Controller
         $user_name = $userData['user_name'];
 
         $this->authService->saveAccessToken($authType, $access_token, $user_login, $user_name);
-        $this->saveAuth(['login' => $user_login, 'user_name' => $user_name], $authType);
+        $this->authService->saveAuth(['login' => $user_login, 'user_name' => $user_name], $authType);
         header('Location: '.route('home'));
     }
 
@@ -256,7 +257,7 @@ class UserController extends Controller
     // страница пользователя
     public function show()
     {
-        $authUser = self::getAuthUser();
+        $authUser = UserAuthService::getAuthUser();
         $login = $authUser['login'];
 
         // данные
@@ -293,8 +294,6 @@ class UserController extends Controller
             'users' => route('users'),
         ];
 
-        // название страницы
-
         // контент страницы
         if ($isAdmin) {
             $page_name = "{$this->site_name} - администрирование";
@@ -317,6 +316,7 @@ class UserController extends Controller
         );
     }
 
+    // удалить пользователя
     public function destroy(mixed $args)
     {
         $isRemoved = $this->user->remove($args['user_name']);
@@ -333,67 +333,5 @@ class UserController extends Controller
         setcookie('login', '', time() - 3600, '/');
         setcookie('user_name', '', time() - 3600, '/');
         header("Location: {$this->home_url}");
-    }
-
-    // получить авторизованного пользователя
-    public static function getAuthUser(): mixed
-    {
-        $store = null;
-        if (isset($_SESSION['auth_type'])) {
-            $store = $_SESSION;
-        } elseif (isset($_COOKIE['auth_type'])) {
-            $store = $_COOKIE;
-        } else {
-            return false;
-        }
-        $userData = [
-            'login' => $store['login'],
-            'user_name' => $store['user_name'],
-            'auth_type' => $store['auth_type'],
-        ];
-
-        return $userData;
-    }
-
-    // Сохранить авторизацию в куки и сессии
-    private function saveAuth(array $params, $authType): void
-    {
-        if ($authType !== 'db' && $authType !== 'vk' && $authType != 'google') {
-            throw new Exception('Неверный тип авторизации');
-        }
-
-        $_SESSION['auth_type'] = $authType;
-        setcookie('auth_type', $authType, time() + 60 * 60 * 24, '/');
-        foreach ($params as $key => $value) {
-            $_SESSION[$key] = $value;
-            setcookie($key, $value, time() + 60 * 60 * 24, '/');
-        }
-        if ($authType === 'db') {
-            $user_name = !empty($params['nickname']) ? $params['nickname'] : $params['login'];
-            $_SESSION['user_name'] = $user_name;
-            setcookie('user_name', $user_name, time() + 60 * 60 * 24, '/');
-        }
-    }
-
-    // проверка прав администратора
-    public static function isAuthAdmin()
-    {
-        $auth_user = self::getAuthUser();
-
-        if (!$auth_user) {
-            return false;
-        }
-
-        if ($auth_user['auth_type'] == 'google') {
-            return false;
-        } else {
-            $user = new User();
-            $userData = $user->getDBUser($auth_user['login']);
-            if ($userData['is_admin'] == 0) {
-                return false;
-            }
-
-            return true;
-        }
     }
 }
