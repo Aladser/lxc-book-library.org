@@ -81,6 +81,7 @@ class UserController extends Controller
     }
 
     // ----- АВТОРИЗАЦИЯ ЛОГИН-ПАРОЛЬ -----
+    // ------------------------------------
     public function login(mixed $args): void
     {
         $args['csrf'] = Controller::createCSRFToken();
@@ -135,6 +136,7 @@ class UserController extends Controller
     }
 
     // ----- АВТОРИЗАЦИЯ В СТОРОННЕМ СЕРВИСЕ -----
+    // -------------------------------------------
     public function login_service($args)
     {
         $service_type = $args['id'];
@@ -325,7 +327,7 @@ class UserController extends Controller
         echo json_encode($response);
     }
 
-    // выйти из системы
+    // разлогиниться
     public function logout()
     {
         session_destroy();

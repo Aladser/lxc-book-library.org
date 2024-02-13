@@ -2,7 +2,7 @@
     <div class='book theme-border'>
         <div class='book__content'>
             <article class='image-block mx-auto'>
-                <img class='d-block mx-auto h-100 object-fit-cover' src="public/data/images/buduschee.jpeg" alt="Будущее">
+                <img class='d-block mx-auto h-100 object-fit-cover' src="storage/data/images/buduschee.jpeg" alt="Будущее">
             </article>
             <div class='w-50'>
                 <p class='h3 theme-darker-color'>Будущее</p>
@@ -22,7 +22,7 @@
     <div class='book theme-border'>
         <div class='book__content'>
             <article class='image-block mx-auto'>
-                <img class='d-block mx-auto h-100 object-fit-cover' src="public/data/images/zelenaya_milya.jpeg" alt="Зеленая миля">
+                <img class='d-block mx-auto h-100 object-fit-cover' src="storage/data/images/zelenaya_milya.jpeg" alt="Зеленая миля">
             </article>
             <div class='w-50'>
                 <p class='h3 theme-darker-color'>Зеленая миля</p>
