@@ -55,15 +55,22 @@ class UserController extends Controller
 
     public function view()
     {
+        // проверка прав администратора
+        $authUser = self::isAuthAdmin();
+        if (!$authUser) {
+            $mainControl = new MainController();
+            $mainControl->error('Доступ запрещен');
+        }
+
         // данные
         $data['header_button_url'] = route('logout');
         $data['header_button_name'] = 'Выйти';
         $data['auth_user_name'] = $this->auth_user['user_name'];
         $data['auth_user_page'] = route('show');
 
-        $data['users'] = $this->user->getDBUsers();
         $csrf = Controller::createCSRFToken();
         $data['csrf'] = $csrf;
+        $data['users'] = $this->user->getDBUsers();
 
         // роуты
         $routes = [
@@ -467,6 +474,28 @@ class UserController extends Controller
             $user_name = !empty($params['nickname']) ? $params['nickname'] : $params['login'];
             $_SESSION['user_name'] = $user_name;
             setcookie('user_name', $user_name, time() + 60 * 60 * 24, '/');
+        }
+    }
+
+    // проверка прав администратора
+    public static function isAuthAdmin()
+    {
+        $auth_user = self::getAuthUser();
+
+        if (!$auth_user) {
+            return false;
+        }
+
+        if ($auth_user['auth_type'] == 'google') {
+            return false;
+        } else {
+            $user = new User();
+            $userData = $user->getDBUser($auth_user['login']);
+            if ($userData['is_admin'] == 0) {
+                return false;
+            }
+
+            return true;
         }
     }
 }

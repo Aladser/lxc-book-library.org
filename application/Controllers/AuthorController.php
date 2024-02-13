@@ -22,15 +22,22 @@ class AuthorController extends Controller
     // index
     public function view(mixed $args): void
     {
+        // проверка прав администратора
+        $authUser = UserController::isAuthAdmin();
+        if (!$authUser) {
+            $mainControl = new MainController();
+            $mainControl->error('Доступ запрещен');
+        }
+
         // данные
         $data['header_button_url'] = route('logout');
         $data['header_button_name'] = 'Выйти';
         $data['auth_user_name'] = $this->auth_user['user_name'];
         $data['auth_user_page'] = route('show');
 
-        $data['authors'] = $this->author->get();
         $csrf = Controller::createCSRFToken();
         $data['csrf'] = $csrf;
+        $data['authors'] = $this->author->get();
 
         // роуты
         $routes = [
