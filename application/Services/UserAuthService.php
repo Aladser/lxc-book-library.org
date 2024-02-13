@@ -97,4 +97,33 @@ class UserAuthService
             $this->user->add(['login' => $user_id, 'token' => $access_token], $authType);
         }
     }
+
+    // данные  пользователя ВК
+    public function getVKUserInfo(string $user_id, string $access_token): array
+    {
+        $userDataResponse = $this->vkApiClient->users()->get($access_token, [
+            'user_ids' => $user_id,
+            'fields' => ['photo_100'],
+        ])[0];
+        $user_name = "{$userDataResponse['first_name']} {$userDataResponse['last_name']}";
+
+        return [
+            'user_login' => $userDataResponse['id'],
+            'user_name' => $user_name,
+            'user_photo' => $userDataResponse['photo_100'],
+        ];
+    }
+
+    // данные пользователя Google
+    public function getGoogleUserInfo(string $access_token)
+    {
+        $this->googleClient->setAccessToken($access_token);
+        $google_account_info = $this->google_oauth->userinfo->get();
+
+        return [
+            'user_login' => $google_account_info->email,
+            'user_name' => $google_account_info->name,
+            'user_photo' => $google_account_info->picture,
+        ];
+    }
 }

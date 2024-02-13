@@ -5,10 +5,7 @@ namespace App\Controllers;
 use App\Core\Controller;
 use App\Models\User;
 use App\Services\UserAuthService;
-use VK\Client\VKApiClient;
-use VK\OAuth\VKOAuth;
 
-use function App\config;
 use function App\route;
 
 // пользователи
@@ -23,12 +20,6 @@ class UserController extends Controller
     private string $login_url;
     // параметры запроса получения кода (ВК, Google)
     private array $codeParams;
-    // ВК авторизация
-    private VKApiClient $vkApiClient;
-    private VKOAuth $vkOAuth;
-    // Google авторизация
-    private \Google\Client $googleClient;
-    private \Google\Service\Oauth2 $google_oauth;
 
     public function __construct()
     {
@@ -40,17 +31,6 @@ class UserController extends Controller
         $this->register_url = route('register');
         $this->home_url = route('home');
         $this->login_url = route('login');
-
-        $this->vkApiClient = new VKApiClient();
-        $this->vkOAuth = new VKOAuth();
-
-        $this->googleClient = new \Google\Client();
-        $this->googleClient->setClientId(config('GOOGLE_CLIENT_ID'));
-        $this->googleClient->setClientSecret(config('GOOGLE_CLIENT_SECRET'));
-        $this->googleClient->setRedirectUri(config('GOOGLE_REDIRECT_URI'));
-        $this->googleClient->addScope('email');
-        $this->googleClient->addScope('profile');
-        $this->google_oauth = new \Google\Service\Oauth2($this->googleClient);
     }
 
     public function view()
@@ -166,14 +146,12 @@ class UserController extends Controller
         if (!isset($_GET['code'])) {
             return;
         }
-        $authType = 'vk';
 
+        $authType = 'vk';
         $accessTokenResponse = $this->authService->getAccessToken($_GET['code'], $authType);
         $access_token = $accessTokenResponse['access_token'];
         $user_id = $accessTokenResponse['user_id'];
-
-        $userData = self::getVKUserInfo($user_id, $access_token);
-        $user_name = $userData['user_name'];
+        $user_name = $this->authService->getVKUserInfo($user_id, $access_token)['user_name'];
 
         $this->authService->saveAccessToken($authType, $access_token, $user_id, $user_name);
         $this->saveAuth(['login' => $user_id, 'user_name' => $user_name], $authType);
@@ -185,13 +163,11 @@ class UserController extends Controller
         if (!isset($_GET['code'])) {
             return;
         }
-        $authType = 'google';
 
+        $authType = 'google';
         $accessTokenResponse = $this->authService->getAccessToken($_GET['code'], $authType);
         $access_token = $accessTokenResponse['access_token'];
-
-        $this->googleClient->setAccessToken($access_token);
-        $userData = self::getGoogleUserInfo($access_token);
+        $userData = $this->authService->getGoogleUserInfo($access_token);
         $user_login = $userData['user_login'];
         $user_name = $userData['user_name'];
 
@@ -290,10 +266,10 @@ class UserController extends Controller
         if ($authUser['auth_type'] == 'vk' || $authUser['auth_type'] == 'google') {
             $token = $this->user->getToken($login, $authUser['auth_type']);
             if ($authUser['auth_type'] == 'vk') {
-                $userData = self::getVKUserInfo($login, $token);
+                $userData = $this->authService->getVKUserInfo($login, $token);
                 $data['user_login'] = "VK_ID {$userData['user_login']}";
             } else {
-                $userData = self::getGoogleUserInfo($token);
+                $userData = $this->authService->getGoogleUserInfo($token);
                 $login = $userData['user_login'];
                 $data['user_login'] = $userData['user_login'];
             }
@@ -357,35 +333,6 @@ class UserController extends Controller
         setcookie('login', '', time() - 3600, '/');
         setcookie('user_name', '', time() - 3600, '/');
         header("Location: {$this->home_url}");
-    }
-
-    // данные  пользователя ВК
-    private function getVKUserInfo(string $user_id, string $access_token): array
-    {
-        $userDataResponse = $this->vkApiClient->users()->get($access_token, [
-            'user_ids' => $user_id,
-            'fields' => ['photo_100'],
-        ])[0];
-        $user_name = "{$userDataResponse['first_name']} {$userDataResponse['last_name']}";
-
-        return [
-            'user_login' => $userDataResponse['id'],
-            'user_name' => $user_name,
-            'user_photo' => $userDataResponse['photo_100'],
-        ];
-    }
-
-    // данные пользователя Gmail
-    private function getGoogleUserInfo(string $access_token)
-    {
-        $this->googleClient->setAccessToken($access_token);
-        $google_account_info = $this->google_oauth->userinfo->get();
-
-        return [
-            'user_login' => $google_account_info->email,
-            'user_name' => $google_account_info->name,
-            'user_photo' => $google_account_info->picture,
-        ];
     }
 
     // получить авторизованного пользователя
