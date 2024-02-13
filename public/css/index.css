@@ -3,8 +3,15 @@
     width: 50%;
 }
 
-.book-content {
+.book {
+    padding: 3rem;
+    margin-bottom: 3rem;
+    box-shadow: 2px 2px 4px var(--theme-darker-color);
+}
+
+.book__content {
     display: flex;
+    margin-bottom: 1rem
 }
 
 @media (max-width: 500px) {

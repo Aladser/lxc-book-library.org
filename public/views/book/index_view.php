@@ -1,6 +1,6 @@
 <div class='container'>
-    <div class='p-3 mb-3 theme-border'>
-        <div class='book-content mb-3'>
+    <div class='book theme-border'>
+        <div class='book__content'>
             <article class='image-block mx-auto'>
                 <img class='d-block mx-auto h-100 object-fit-cover' src="public/data/images/buduschee.jpeg" alt="Будущее">
             </article>
@@ -19,8 +19,8 @@
         </div>
     </div>
 
-    <div class='p-3 mb-3 theme-border'>
-        <div class='book-content mb-3'>
+    <div class='book theme-border'>
+        <div class='book__content'>
             <article class='image-block mx-auto'>
                 <img class='d-block mx-auto h-100 object-fit-cover' src="public/data/images/zelenaya_milya.jpeg" alt="Зеленая миля">
             </article>
