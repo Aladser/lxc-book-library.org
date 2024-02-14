@@ -235,7 +235,7 @@ class UserController extends Controller
                 unset($args['password_confirm']);
                 $isUserRegistered = $this->user->add($args);
                 if ($isUserRegistered) {
-                    $this->saveAuth(['login' => $email], 'db');
+                    $this->authService->saveAuth(['login' => $email], 'db');
                     header("Location: {$this->home_url}");
                 } else {
                     header("Location: {$this->register_url}?error=system_error");

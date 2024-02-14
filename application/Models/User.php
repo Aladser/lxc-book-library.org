@@ -17,6 +17,10 @@ class User extends Model
     {
         parent::__construct();
         $this->authServiceIds = ['vk' => 1, 'google' => 2];
+
+        R::ext('xdispense', function ($type) {
+            return R::getRedBean()->dispense($type);
+        });
     }
 
     // ---получить пользователей внутренней авторизации---
@@ -67,21 +71,21 @@ class User extends Model
     public function add($args, $authType = 'db'): int
     {
         if ($authType === 'db') {
+            $user = R::xdispense('db_users');
             if (isset($args['is_admin'])) {
-                $sql = 'insert into db_users(login, password, is_admin) values(:email, :password, :is_admin)';
-            } else {
-                $sql = 'insert into db_users(login, password) values(:email, :password)';
+                $user->is_admin = 1;
             }
-            $args['password'] = password_hash($args['password'], PASSWORD_DEFAULT);
+            $user->login = $args['email'];
+            $user->password = password_hash($args['password'], PASSWORD_DEFAULT);
         } elseif ($authType === 'vk' || $authType === 'google') {
-            $sql = 'insert into auth_service_users(login, token, auth_service_id) values(:login, :token, :auth_service_id)';
-            $args['auth_service_id'] = $this->authServiceIds[$authType];
+            $user = R::xdispense('auth_service_users');
+            $user->token = $args['token'];
+            $user->auth_service_id = $this->authServiceIds[$authType];
         } else {
             throw new Exception('Неверный тип авторизации');
         }
-        $user_id = $this->dbQuery->insert($sql, $args);
 
-        return $user_id;
+        return R::store($user);
     }
 
     public function remove(string $login)
