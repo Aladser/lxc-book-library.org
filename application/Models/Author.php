@@ -53,8 +53,7 @@ class Author extends Model
             'old_name' => $old_name,
             'old_surname' => $old_surname,
         ];
-        $respArr = R::find($this->tableName, $condition, $args);
-        $author = array_values($respArr)[0];
+        $author = Model::find($this->tableName, $condition, $args);
 
         $author->name = $new_name;
         $author->surname = $new_surname;
@@ -70,8 +69,7 @@ class Author extends Model
             'name' => $name,
             'surname' => $surname,
         ];
-        $respArr = R::find($this->tableName, $condition, $args);
-        $author = array_values($respArr)[0];
+        $author = Model::find($this->tableName, $condition, $args);
 
         return R::trash($author);
     }

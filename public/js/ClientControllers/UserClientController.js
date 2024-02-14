@@ -28,8 +28,8 @@ class UserClientController extends ClientController {
         let trElem = document.createElement("tr");
         trElem.innerHTML = `
           <td class='table-row p-3 theme-border-bottom'>
-            <button class='user-table__btn user-table__btn-remove' title='удалить автора'>✘</button>
             <span class='user-table__content'>${form.email.value}</span>
+            <button class='user-table__btn user-table__btn-remove' title='удалить автора'>✘</button>
           </td>
           <td class='table-row p-3 theme-border-bottom'></td>
           <td class='table-row p-3 theme-border-bottom'>${

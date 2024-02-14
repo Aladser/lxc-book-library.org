@@ -25,9 +25,10 @@ class Genre extends Model
     // проверить существование
     public function exists(string $name): bool
     {
+        $condition = 'name = :name';
         $args = ['name' => $name];
 
-        return R::count($this->tableName, 'name = :name', $args) > 0;
+        return R::count($this->tableName, $condition, $args) > 0;
     }
 
     // добавить
@@ -42,8 +43,9 @@ class Genre extends Model
     // удалить
     public function remove(string $name)
     {
-        $queryResult = R::find($this->tableName, 'name = :name', ['name' => $name]);
-        $genre = array_values($queryResult)[0];
+        $condition = 'name = :name';
+        $args = ['name' => $name];
+        $genre = Model::find($this->tableName, $condition, $args);
 
         return R::trash($genre);
     }

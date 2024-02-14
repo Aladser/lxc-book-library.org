@@ -91,8 +91,9 @@ class User extends Model
     // удалить пользователя
     public function remove(string $login)
     {
-        $respArr = R::find($this->dbTableName, 'login = :login', ['login' => $login]);
-        $user = array_values($respArr)[0];
+        $condition = 'login = :login';
+        $args = ['login' => $login];
+        $user = Model::find($this->dbTableName, $condition, $args);
 
         return R::trash($user);
     }
@@ -111,8 +112,7 @@ class User extends Model
         } else {
             throw new Exception('Неверный тип авторизации');
         }
-        $respArr = R::find($dbTableName, $condition, $args);
-        $user = array_values($respArr)[0];
+        $user = Model::find($dbTableName, $condition, $args);
         $user->token = $token;
 
         return R::store($user);

@@ -2,6 +2,9 @@
 
 namespace App\Core;
 
+use RedBeanPHP\OODBBean;
+use RedBeanPHP\R;
+
 use function App\config;
 
 class Model
@@ -12,8 +15,16 @@ class Model
     {
         $hostDB = config('HOST_DB');
         $nameDB = config('NAME_DB');
-        if (!\RedBeanPHP\R::testConnection()) {
-            \RedBeanPHP\R::setup("mysql:host=$hostDB;dbname=$nameDB", config('USER_DB'), config('PASS_DB'), false);
+        if (!R::testConnection()) {
+            R::setup("mysql:host=$hostDB;dbname=$nameDB", config('USER_DB'), config('PASS_DB'), false);
         }
+    }
+
+    // получить bean строки
+    public static function find(string $table_name, string $condition, array $args): OODBBean
+    {
+        $respArr = R::find($table_name, $condition, $args);
+
+        return array_values($respArr)[0];
     }
 }
