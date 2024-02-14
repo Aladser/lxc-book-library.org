@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Core\Model;
+use RedBeanPHP\R;
 
 /** таблица авторов */
 class Author extends Model
@@ -13,8 +14,9 @@ class Author extends Model
     public function get()
     {
         $sql = "select name, surname from {$this->tableName} order by surname";
-        $dbAuthors = $this->dbQuery->query($sql, false);
-        foreach ($dbAuthors as $dbAuthor) {
+        $queryResult = R::getAll($sql);
+
+        foreach ($queryResult as $dbAuthor) {
             $authors[] = [
                 'name' => $dbAuthor['name'],
                 'surname' => $dbAuthor['surname'],
@@ -27,43 +29,50 @@ class Author extends Model
     // проверить существование
     public function exists(string $name, string $surname): bool
     {
-        $sql = "select count(*) as count from {$this->tableName} 
-        where name=:name and surname=:surname";
+        $condition = 'name=:name and surname=:surname';
         $args = ['name' => $name, 'surname' => $surname];
 
-        return $this->dbQuery->queryPrepared($sql, $args)['count'] > 0;
+        return R::count($this->tableName, $condition, $args) > 0;
     }
 
     // добавить
     public function add(string $name, string $surname): mixed
     {
-        $sql = "insert into {$this->tableName}(name, surname) values(:name, :surname)";
-        $args = ['name' => $name, 'surname' => $surname];
+        $author = R::dispense($this->tableName);
+        $author->name = $name;
+        $author->surname = $surname;
 
-        return $this->dbQuery->insert($sql, $args);
+        return R::store($author);
     }
 
     // изменить
     public function update(string $new_name, string $new_surname, string $old_name, string $old_surname): mixed
     {
-        $sql = "update {$this->tableName} set name=:new_name, surname=:new_surname 
-        where name=:old_name and surname=:old_surname";
+        $condition = 'where name=:old_name and surname=:old_surname';
         $args = [
-            'new_name' => $new_name,
-            'new_surname' => $new_surname,
             'old_name' => $old_name,
             'old_surname' => $old_surname,
         ];
+        $respArr = R::find($this->tableName, $condition, $args);
+        $author = array_values($respArr)[0];
 
-        return $this->dbQuery->update($sql, $args);
+        $author->name = $new_name;
+        $author->surname = $new_surname;
+
+        return R::store($author) > 0;
     }
 
     // удалить
     public function remove(string $name, string $surname): mixed
     {
-        $sql = "delete from {$this->tableName} where name=:name and surname=:surname";
-        $args = ['name' => $name, 'surname' => $surname];
+        $condition = 'where name=:name and surname=:surname';
+        $args = [
+            'name' => $name,
+            'surname' => $surname,
+        ];
+        $respArr = R::find($this->tableName, $condition, $args);
+        $author = array_values($respArr)[0];
 
-        return $this->dbQuery->delete($sql, $args);
+        return R::trash($author);
     }
 }

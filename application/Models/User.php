@@ -118,12 +118,12 @@ class User extends Model
         return R::store($user);
     }
 
-    public function getToken(string $login, string $authType): string
+    public function getToken(string $login, string $authType): mixed
     {
         $sql = 'select token from auth_service_users where login = :login and auth_service_id = :auth_service_id';
         $args = ['login' => $login, 'auth_service_id' => $this->authServiceIds[$authType]];
         $queryResult = R::getAll($sql, $args);
 
-        return empty($queryResult) ? false : $queryResult[0];
+        return !empty($queryResult) ? $queryResult[0]['token'] : false;
     }
 }

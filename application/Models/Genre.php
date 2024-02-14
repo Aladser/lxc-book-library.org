@@ -13,9 +13,9 @@ class Genre extends Model
     // все авторы
     public function get()
     {
-        $response = R::getAll("select name from {$this->tableName} order by name");
+        $queryResult = R::getAll("select name from {$this->tableName} order by name");
         $genres = [];
-        foreach ($response as $row) {
+        foreach ($queryResult as $row) {
             $genres[] = $row['name'];
         }
 
@@ -42,8 +42,8 @@ class Genre extends Model
     // удалить
     public function remove(string $name)
     {
-        $respArr = R::find($this->tableName, 'name = :name', ['name' => $name]);
-        $genre = array_values($respArr)[0];
+        $queryResult = R::find($this->tableName, 'name = :name', ['name' => $name]);
+        $genre = array_values($queryResult)[0];
 
         return R::trash($genre);
     }

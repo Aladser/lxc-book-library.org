@@ -57,7 +57,6 @@ class AuthorController extends Controller
             content_css: ['context_menu.css', 'table.css', 'form-add.css'],
             content_js: [
                 'Classes/ServerRequest.js',
-                'Classes/ContextMenu.js',
                 'ClientControllers/ClientController.js',
                 'ClientControllers/AuthorClientController.js',
                 'author.js',
