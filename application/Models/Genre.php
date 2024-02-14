@@ -3,20 +3,20 @@
 namespace App\Models;
 
 use App\Core\Model;
+use RedBeanPHP\R;
 
 /** таблица авторов */
 class Genre extends Model
 {
     private string $tableName = 'genres';
 
-    // список всех авторов
+    // все авторы
     public function get()
     {
-        $sql = "select name from {$this->tableName} order by name";
-        $sqlResult = $this->dbQuery->query($sql, false);
+        $response = R::getAll("select name from {$this->tableName} order by name");
         $genres = [];
-        foreach ($sqlResult as $genre) {
-            $genres[] = $genre['name'];
+        foreach ($response as $row) {
+            $genres[] = $row['name'];
         }
 
         return $genres;
@@ -27,25 +27,26 @@ class Genre extends Model
     {
         $sql = "select count(*) as count from {$this->tableName} where name=:name";
         $args = ['name' => $name];
+        $count = (int) R::getCell($sql, $args);
 
-        return $this->dbQuery->queryPrepared($sql, $args)['count'] > 0;
+        return $count > 0;
     }
 
     // добавить
-    public function add(string $name): mixed
+    public function add(string $name): int
     {
-        $sql = "insert into {$this->tableName}(name) values(:name)";
-        $args = ['name' => $name];
+        $genre = R::dispense($this->tableName);
+        $genre->name = $name;
 
-        return $this->dbQuery->insert($sql, $args);
+        return R::store($genre);
     }
 
     // удалить
-    public function remove(string $name): mixed
+    public function remove(string $name)
     {
-        $sql = "delete from {$this->tableName} where name=:name";
-        $args = ['name' => $name];
+        $respArr = R::find($this->tableName, "name = $name");
+        $genre = array_values($respArr)[0];
 
-        return $this->dbQuery->delete($sql, $args);
+        return R::trash($genre);
     }
 }
