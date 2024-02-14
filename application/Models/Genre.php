@@ -27,7 +27,7 @@ class Genre extends Model
     {
         $args = ['name' => $name];
 
-        return R::count($this->tableName, 'name=:name', $args) > 0;
+        return R::count($this->tableName, 'name = :name', $args) > 0;
     }
 
     // добавить
@@ -42,7 +42,7 @@ class Genre extends Model
     // удалить
     public function remove(string $name)
     {
-        $respArr = R::find($this->tableName, "name = $name");
+        $respArr = R::find($this->tableName, 'name = :name', ['name' => $name]);
         $genre = array_values($respArr)[0];
 
         return R::trash($genre);

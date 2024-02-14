@@ -88,12 +88,13 @@ class User extends Model
         return R::store($user);
     }
 
+    // удалить пользователя
     public function remove(string $login)
     {
-        $sql = "delete from {$this->dbTableName} where login=:login";
-        $args = ['login' => $login];
+        $respArr = R::find($this->dbTableName, 'login = :login', ['login' => $login]);
+        $user = array_values($respArr)[0];
 
-        return $this->dbQuery->delete($sql, $args);
+        return R::trash($user);
     }
 
     // запись ВК-токена
