@@ -28,7 +28,7 @@
 </head>
 <body>
 
-<header class='theme-border-bottom mb-4'>
+<header class='theme-border-bottom theme-shadow section-mb'>
     <div class='container'>
         <div class='d-flex justify-content-between theme-color'>
             <div class='d-inline-block p-3 fw-bold w-100'><?php echo $page_name; ?></div>

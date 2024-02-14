@@ -1,58 +1,62 @@
 html {
-    --theme-color: rgba(0, 150, 255, 0.75);
-    --theme-darker-color: rgb(0, 150, 255, 1);
-    --theme-red-color: rgb(202, 0, 0);
-    --theme-border: 1.5px solid var(--theme-color);
-    --theme-grey-bgcolor: rgb(252, 252, 252);
-  }
-  
+  --theme-color: rgba(0, 150, 255, 0.75);
+  --theme-darker-color: rgb(0, 150, 255, 1);
+  --theme-red-color: rgb(202, 0, 0);
+  --theme-border: 1.5px solid var(--theme-color);
+  --theme-grey-bgcolor: rgb(252, 252, 252);
+}
 
-  .theme-color {
-    color: var(--theme-color);
-  }
-  .theme-darker-color {
-    color: var(--theme-darker-color);
-  }
-  .theme-red-color {
-    color: var(--theme-red-color);
-  }
+/* --- цвет шрифта ---*/
+.theme-color {
+  color: var(--theme-color);
+}
+.theme-darker-color {
+  color: var(--theme-darker-color);
+}
+.theme-red-color {
+  color: var(--theme-red-color);
+}
 
+/* --- цвет фона ---*/
+.theme-bg-сolor {
+  background-color: var(--theme-color);
+}
+.theme-bg-сolor-white {
+  background-color: var(--theme-grey-bgcolor);
+}
+.theme-grey-bgcolor {
+  background-color: var(--theme-grey-bgcolor);
+}
+.theme-bg-сolor-white:hover {
+  background-color: var(--theme-color);
+  color: white;
+}
+.theme-bg-сolor-white:hover::placeholder {
+  color: #eee;
+}
 
-  .theme-grey-bgcolor {
-    background-color: var(--theme-grey-bgcolor);
-  }
-  .theme-bg-сolor {
-    background-color: var(--theme-color);
-  }
-  
-  .theme-bg-сolor-white {
-    background-color: var(--theme-grey-bgcolor)
-  }
-  .theme-bg-сolor-white:hover {
-    background-color: var(--theme-color);
-    color: white;
-  }
-  .theme-bg-сolor-white:hover::placeholder {
-    color: #eee;
-  }
-  
-  .theme-border {
-    border: var(--theme-border);
-    outline: none;
-  }
-  .theme-border-start {
-    border-left: var(--theme-border);
-  }
-  .theme-border-top {
-    border-top: var(--theme-border);
-  }
-  .theme-border-end {
-    border-right: var(--theme-border);
-  }
-  .theme-border-bottom {
-    border-bottom: var(--theme-border);
-  }
+/* --- границы ---*/
+.theme-border {
+  border: var(--theme-border);
+  outline: none;
+}
+.theme-border-start {
+  border-left: var(--theme-border);
+}
+.theme-border-top {
+  border-top: var(--theme-border);
+}
+.theme-border-end {
+  border-right: var(--theme-border);
+}
+.theme-border-bottom {
+  border-bottom: var(--theme-border);
+}
+.theme-border-radius {
+  border-radius: 0.25em;
+}
 
-  .theme-border-radius {
-    border-radius: 0.25em;
-  }
+/* --- тень ---*/
+.theme-shadow {
+  box-shadow: 2px 1px 4px var(--theme-darker-color);
+}

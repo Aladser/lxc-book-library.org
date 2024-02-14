@@ -101,24 +101,29 @@ class User extends Model
     public function writeToken(string $login, string $token, string $authType): bool
     {
         if ($authType === 'db') {
-            $sql = 'update db_users set token = :token where login = :login';
-            $args = ['login' => $login, 'token' => $token];
+            $dbTableName = $this->dbTableName;
+            $condition = 'login = :login';
+            $args = ['login' => $login];
         } elseif ($authType === 'vk' || $authType === 'google') {
-            $sql = 'update auth_service_users set token = :token where login = :login and auth_service_id = :auth_service_id';
-            $args = ['login' => $login, 'token' => $token, 'auth_service_id' => $this->authServiceIds[$authType]];
+            $dbTableName = $this->authServiceUsers;
+            $condition = 'login = :login and auth_service_id = :auth_service_id';
+            $args = ['login' => $login, 'auth_service_id' => $this->authServiceIds[$authType]];
         } else {
             throw new Exception('Неверный тип авторизации');
         }
+        $respArr = R::find($dbTableName, $condition, $args);
+        $user = array_values($respArr)[0];
+        $user->token = $token;
 
-        return $this->dbQuery->update($sql, $args);
+        return R::store($user);
     }
 
     public function getToken(string $login, string $authType): string
     {
         $sql = 'select token from auth_service_users where login = :login and auth_service_id = :auth_service_id';
         $args = ['login' => $login, 'auth_service_id' => $this->authServiceIds[$authType]];
-        $token = $this->dbQuery->queryPrepared($sql, $args)['token'];
+        $queryResult = R::getAll($sql, $args);
 
-        return $token;
+        return empty($queryResult) ? false : $queryResult[0];
     }
 }

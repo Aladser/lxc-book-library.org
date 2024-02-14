@@ -1,5 +1,5 @@
 <div class='container'>
-    <div class='book theme-border'>
+    <div class='book theme-border theme-shadow'>
         <div class='book__content'>
             <article class='image-block mx-auto'>
                 <img class='d-block mx-auto h-100 object-fit-cover' src="storage/data/images/buduschee.jpeg" alt="Будущее">
@@ -19,7 +19,7 @@
         </div>
     </div>
 
-    <div class='book theme-border'>
+    <div class='book theme-border theme-shadow'>
         <div class='book__content'>
             <article class='image-block mx-auto'>
                 <img class='d-block mx-auto h-100 object-fit-cover' src="storage/data/images/zelenaya_milya.jpeg" alt="Зеленая миля">

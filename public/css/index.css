@@ -6,7 +6,6 @@
 .book {
     padding: 3rem;
     margin-bottom: 3rem;
-    box-shadow: 2px 2px 4px var(--theme-darker-color);
 }
 
 .book__content {

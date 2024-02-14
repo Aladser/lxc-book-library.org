@@ -1,5 +1,5 @@
 <div class='container'>
-    <section class='theme-border p-4'>
+    <section class='theme-border p-4 theme-shadow'>
         <?php if (isset($data['user_photo'])) {?>
             <img src=<?php echo $data['user_photo']; ?>>
         <?php } ?>
