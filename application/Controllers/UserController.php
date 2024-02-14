@@ -34,7 +34,7 @@ class UserController extends Controller
     }
 
     // страница пользователей
-    public function view()
+    public function index()
     {
         // проверка прав администратора
         $authUser = $this->authService->isAuthAdmin();

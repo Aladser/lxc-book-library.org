@@ -22,7 +22,7 @@ class GenreController extends Controller
         $this->authService = new UserAuthService();
     }
 
-    public function view(mixed $args): void
+    public function index(mixed $args): void
     {
         // проверка прав администратора
         $authUser = $this->authService->isAuthAdmin();

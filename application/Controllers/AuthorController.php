@@ -23,7 +23,7 @@ class AuthorController extends Controller
     }
 
     // index
-    public function view(mixed $args): void
+    public function index(mixed $args): void
     {
         // проверка прав администратора
         $authUser = $this->authService->isAuthAdmin();
