@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Core\Model;
+use RedBeanPHP\R;
 
 /** таблица пользователей */
 class User extends Model
@@ -10,6 +11,7 @@ class User extends Model
     // id сервисов авторизации в БД
     private array $authServiceIds;
     private string $dbTableName = 'db_users';
+    private string $authServiceUsers = 'auth_service_users';
 
     public function __construct()
     {
@@ -17,20 +19,38 @@ class User extends Model
         $this->authServiceIds = ['vk' => 1, 'google' => 2];
     }
 
+    // ---получить пользователей внутренней авторизации---
+    public function getDBUsers()
+    {
+        return R::getAll("select * from $this->dbTableName");
+    }
+
+    // ---получить пользователя внутренней авторизации по логину---
+    public function getDBUser(string $login)
+    {
+        $sql = "select * from $this->dbTableName where login = :login";
+        $args = ['login' => $login];
+        $queryResult = R::getAll($sql, $args);
+
+        return empty($queryResult) ? false : $queryResult[0];
+    }
+
     /** проверить существование пользователя */
     public function exists($login, $authType): bool
     {
         if ($authType === 'db') {
-            $sql = 'select count(*) as count from db_users where login = :login';
+            $tableName = $this->dbTableName;
+            $condition = 'login = :login';
             $args = ['login' => $login];
         } elseif ($authType === 'vk' || $authType === 'google') {
-            $sql = 'select count(*) as count from auth_service_users where login = :login and auth_service_id = :auth_service_id';
+            $tableName = $this->authServiceUsers;
+            $condition = 'login = :login and auth_service_id = :auth_service_id';
             $args = ['login' => $login, 'auth_service_id' => $this->authServiceIds[$authType]];
         } else {
             throw new Exception('Неверный тип авторизации');
         }
 
-        return $this->dbQuery->queryPrepared($sql, $args)['count'] == 1;
+        return R::count($tableName, $condition, $args) > 0;
     }
 
     // проверка авторизации
@@ -38,7 +58,7 @@ class User extends Model
     {
         $sql = 'select password from db_users where login=:login';
         $args = ['login' => $login];
-        $passHash = $this->dbQuery->queryPrepared($sql, $args)['password'];
+        $passHash = R::getCell($sql, $args);
 
         return password_verify($password, $passHash);
     }
@@ -70,19 +90,6 @@ class User extends Model
         $args = ['login' => $login];
 
         return $this->dbQuery->delete($sql, $args);
-    }
-
-    public function getDBUsers()
-    {
-        return $this->dbQuery->query('select * from db_users', false);
-    }
-
-    public function getDBUser(string $login)
-    {
-        $sql = 'select * from db_users where login = :login';
-        $args = ['login' => $login];
-
-        return $this->dbQuery->queryPrepared($sql, $args);
     }
 
     // запись ВК-токена

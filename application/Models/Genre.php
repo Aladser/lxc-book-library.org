@@ -25,11 +25,9 @@ class Genre extends Model
     // проверить существование
     public function exists(string $name): bool
     {
-        $sql = "select count(*) as count from {$this->tableName} where name=:name";
         $args = ['name' => $name];
-        $count = (int) R::getCell($sql, $args);
 
-        return $count > 0;
+        return R::count($this->tableName, 'name=:name', $args) > 0;
     }
 
     // добавить
