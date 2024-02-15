@@ -4,30 +4,30 @@
 
         <!-- логин-пароль -->
         <form method="POST" class='mx-auto' action="<?php echo $routes['auth']; ?>">
-            <input type='text' class='d-block w-100 mb-2 p-3' name='login' placeholder="Почта" required>
-            <input type="password" class='d-block w-100 mb-2 p-3' name='password' placeholder="Пароль" required>
-            <input type='submit' value='Войти' class="button-basic theme-grey-bgcolor theme-border theme-border-radius d-block mx-auto mb-2 w-100">
-            <a href="<?php echo $routes['register']; ?>" class="button-basic theme-border theme-border-radius d-block mx-auto mb-2 w-100">Регистрация</a>
-            <input type="checkbox" name="save_auth" checked/> Запомнить меня
             <input type="hidden" name="CSRF" value="<?php echo $data['csrf']; ?>">
+            <input type='text' class='d-block w-100 mb-2 p-3' name='login' placeholder="Почта" title="Почта" required>
+            <input type="password" class='d-block w-100 mb-2 p-3' name='password' placeholder="Пароль" title="Пароль" required>
+            <!-- кнопки формы -->
+            <input type='submit' value='Войти' class="button-basic d-block w-100 mb-2">
+            <a href="<?php echo $routes['register']; ?>" class="button-basic d-block w-100 mb-2">Регистрация</a>
         </form>
 
         <div class='my-3'>
             <!-- авторизация ВК -->
             <form method="POST" class='d-inline' action="<?php echo $routes['login_vk']; ?>">
-                <input type="image" src='/public/images/vk_logo.ico' alt='ВК'>
                 <input type="hidden" name="CSRF" value="<?php echo $data['csrf']; ?>">
+                <input type="image" src='/public/images/vk_logo.ico' alt='ВК'>
             </form>
             <!-- авторизация google -->
             <form method="POST" class='d-inline' action="<?php echo $routes['login_google']; ?>">
-                <input type="image" src='/public/images/google_logo.ico' alt='google'>
                 <input type="hidden" name="CSRF" value="<?php echo $data['csrf']; ?>">
+                <input type="image" src='/public/images/google_logo.ico' alt='google'>
             </form>
         </div>
 
-
-        <a href="<?php echo $routes['home']; ?>" class="d-block button-basic theme-border theme-border-radius mx-auto w-100">Назад</a>
+        <a href="<?php echo $routes['home']; ?>" class="button-basic d-block w-100">Назад</a>
     </section>
+
 
     <?php if (isset($data['error'])) { ?>
         <div class='mx-auto text-center text-danger fw-bolder'><?php echo $data['error']; ?></div>

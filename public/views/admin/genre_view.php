@@ -6,8 +6,8 @@
         <article>
             <h5>Новый жанр:</h5>
             <form id='form-add-genre' class='form-add section-mb'>
-                <input type="text" name="name" placeholder='название' class='form-add__input theme-border p-1' required>
-                <input type="submit" value="Добавить" class='form-add__input theme-bg-сolor-with-hover theme-border py-1 px-4'>
+                <input type="text" name="name" placeholder='название' class='form-add__input theme-border' required>
+                <input type="submit" value="Добавить" class='form-add__btn'>
                 <input type="hidden" name="CSRF" value="<?php echo $data['csrf']; ?>">
             </form>
         </article>

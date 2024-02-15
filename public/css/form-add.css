@@ -1,6 +1,16 @@
-.form-add__input {
-  padding: 0.25em;
-  border-radius: 0.25em;
+.form-add__input, .form-add__btn{
+  padding: 0.5em;
+  background-color: white;
+  border-radius: 0.35em;
+}
+
+.form-add__btn {
+  padding: 0.5em 1.5em;
+  color: var(--theme-darker-color);
+  border: var(--theme-border);
+}
+.form-add__btn:hover {
+  text-shadow: 0.04em 0.02em 0.06em var(--theme-darker-color);
 }
 
 .form-add-user__row {

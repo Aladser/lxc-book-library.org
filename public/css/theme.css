@@ -1,9 +1,10 @@
 html {
   --theme-color: rgba(0, 150, 255, 0.7);
-  --theme-darker-color: rgb(0, 150, 255, 0.7);
+  --theme-darker-color: rgba(0, 120, 206, 0.7);
   --theme-red-color: rgb(202, 0, 0);
+  --theme-grey-color: rgb(252, 252, 252);
   --theme-border: 1.5px solid var(--theme-color);
-  --theme-grey-bgcolor: rgb(252, 252, 252);
+  --theme-text-shadow: 0.1em 0.08em 0.08em var(--theme-darker-color);
 }
 
 /* --- цвет шрифта ---*/
@@ -24,14 +25,6 @@ html {
 .theme-grey-bgcolor {
   background-color: var(--theme-grey-bgcolor);
 }
-.theme-bg-сolor-with-hover{
-  background-color: var(--theme-grey-bgcolor);
-}
-.theme-bg-сolor-with-hover:hover{
-  background-color: var(--theme-color);
-  color:white;
-}
-
 
 /* --- границы ---*/
 .theme-border {
@@ -50,8 +43,9 @@ html {
 .theme-border-bottom {
   border-bottom: var(--theme-border);
 }
+/* круглые границы */
 .theme-border-radius {
-  border-radius: 0.25em;
+  border-radius: 0.35em;
 }
 
 /* --- тень ---*/

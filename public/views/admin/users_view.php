@@ -16,15 +16,15 @@
                     <input type="password" name="password" placeholder='пароль' class='form-add__input theme-border' value='111' required>
                     <p class='ps-3'><i>Пароль по умолчанию: 111</i></p>
                 </div>
-                <div class='form-add-user__row'>
+                <div class='form-add-user__row mb-3'>
                     <label for="is_admin">Админ.права</label>
-                    <select name="is_admin" class='form-add__input theme-border pe-4'>
+                    <select name="is_admin" class='form-add__input theme-border'>
                         <option value=0>Нет</option>
                         <option value=1>Да</option>
                     </select>
                 </div>
 
-                <input type="submit" value="Добавить" class='form-add__input theme-bg-сolor-white theme-bg-сolor-with-hover theme-border px-4 mt-1'>
+                <input type="submit" value="Добавить" class='form-add__btn'>
                 <input type="hidden" name="CSRF_JS" value="<?php echo $data['csrf']; ?>">
             </form>
         </article>

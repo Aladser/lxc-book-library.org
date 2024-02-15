@@ -8,6 +8,7 @@ html {
 body {background-color: transparent;}
 textarea {resize: none;}
 a {text-decoration: none;}
+input {outline: none;}
 
 button {
   border: none;
@@ -37,19 +38,16 @@ button {
   width: 10rem;
   text-align: center;
   color: var(--theme-color);
+  background-color: white;
+  border: var(--theme-border);
 }
-.button-basic:hover {
-  color: white;
-  background-color: var(--theme-color);
+.button-basic:hover, .header-nav-btn:hover {
+  text-shadow: var(--theme-text-shadow);
 }
+
 
 .button-wide {
   width: 20rem;
-}
-.button-wide:hover {
-  color: var(--theme-darker-color);
-  font-weight: bolder;
-  background-color: var(--theme-grey-bgcolor)
 }
 @media(max-width:700px) {
   .button-wide{
@@ -72,9 +70,6 @@ button {
 .header-nav-btn {
   text-align: end;
   padding-left: 1rem;
-}
-.header-nav-btn:hover {
-  text-shadow: 1px 1px 1px var(--theme-darker-color);
 }
 
 .prg-error {
