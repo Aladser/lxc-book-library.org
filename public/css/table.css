@@ -1,15 +1,14 @@
 /* поля ввода таблицы */
-.table-row__input-author {
-  outline: none;
+.table-row td{
+  padding: 1em 0;
+}
+
+.table-row:hover{
+  background-color: var(--theme-lighter-color);
 }
 
 /* кнопки таблицы */
 .table-row__btn {
-  background-color: white;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-}
-.author-table__btn-edit {
   padding-left: 0.5rem;
 }
 

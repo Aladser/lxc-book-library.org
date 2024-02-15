@@ -2,7 +2,7 @@ html {
   font-size: 15px;
   margin: 0;
   padding: 0;
-  background-color: var(--theme-grey-bgcolor);
+  background-color: var(--theme-grey-color);
 }
 
 body {background-color: transparent;}

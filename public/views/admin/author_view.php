@@ -20,7 +20,7 @@
             <table id='author-table' class='w-100'>
                 <?php for ($i = 0; $i < count($data['authors']); ++$i) {
                     // первой строке добавляется верхняя граница
-                    $css_tr_style = 'table-row p-3 cursor-pointer theme-bg-сolor-with-hover theme-border-bottom';
+                    $css_tr_style = 'table-row p-3 cursor-pointer theme-border-bottom';
                     if ($i === 0) {
                         $css_tr_style .= ' theme-border-top';
                     }

@@ -40,13 +40,13 @@
                 </tr>
 
                 <?php foreach ($data['users'] as $user) { ?>
-                <tr class='theme-bg-сolor-with-hover'>
-                    <td class='table-row p-3 theme-border-bottom'>
+                <tr class='table-row theme-border-bottom'>
+                    <td class=''>
                         <span class='user-table__content'><?php echo $user['login']; ?></span>
                         <button class='user-table__btn user-table__btn-remove' title='удалить пользователя'>✘</button>
                     </td>
-                    <td class='table-row p-3 theme-border-bottom'><?php echo $user['nickname']; ?></td>
-                    <td class='table-row p-3 theme-border-bottom'><?php echo $user['is_admin'] ? 'да' : 'нет'; ?></td>
+                    <td class=''><?php echo $user['nickname']; ?></td>
+                    <td class=''><?php echo $user['is_admin'] ? 'да' : 'нет'; ?></td>
                 </tr>
                 <?php }?>
             </table>
