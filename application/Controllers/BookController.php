@@ -39,13 +39,17 @@ class BookController extends Controller
         }
         // серверные данные о книгах
         $data['books'] = $this->books->get_all(false);
+        // роуты
+        $routes = [
+            'book_show' => route('book_show'),
+        ];
 
         $this->view->generate(
             page_name: $this->site_name,
             template_view: 'template_view.php',
             content_view: 'book/index_view.php',
-            content_js: ['book_index.js'],
             content_css: ['index.css'],
+            routes: $routes,
             data: $data,
         );
     }

@@ -3,11 +3,11 @@
         <article class='theme-border theme-shadow section-mb p-4'>
             <h4 class='text-center'>Библиография</h4>
             <table class='book-table section-mb w-100'>
-                <tr><th>Автор</th><th>Название</th><th>Жанр</th></tr>
                 <?php foreach ($data['books'] as $book) { ?>
                     <tr class='book-table__row theme-border-bottom'>
-                        <td class='py-2'><?php echo $book['author_name']; ?></td>
-                        <td><?php echo $book['name']; ?></td>
+                        <td class='book-table__author'>
+                            <a href="<?php echo $routes['book_show'].$book['id']; ?>"><?php echo $book['author_name'].' - '.$book['name']; ?></a>
+                        </td>
                         <td><?php echo $book['genre']; ?></td>
                     </tr>
                 <?php }?>

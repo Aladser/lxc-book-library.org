@@ -26,7 +26,7 @@ class User extends Model
     // ---получить пользователей внутренней авторизации---
     public function getDBUsers()
     {
-        return R::getAll("select * from $this->innerUserTableName");
+        return R::getAll("select * from $this->innerUserTableName order by login");
     }
 
     // ---получить пользователя внутренней авторизации по логину---

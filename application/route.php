@@ -19,6 +19,7 @@ function route($page_name)
         'users' => '/user',
         'authors' => '/author',
         'genres' => '/genre',
+        'book_show' => '/book/show/',
     ];
 
     try {

@@ -33,7 +33,7 @@ class Book extends Model
             from books 
             join authors on author_id = authors.id
             join genres on genre_id = genres.id
-            order by id
+            order by author_surname
         ';
 
         $queryResult = R::getAll($sql);

@@ -13,11 +13,16 @@
     margin-bottom: 1rem
 }
 
-/* строка таблицы */
-.book-table__row{
+.book-table__author {
+    padding: 0.8rem 0;
     cursor: pointer;
 }
-.book-table__row:hover{
+.book-table__author a {
+    color: var(--theme-darker-color);
+    text-decoration: underline;
+}
+/* строка таблицы */
+.book-table__author:hover{
     text-shadow: var(--theme-text-shadow);
 }
 
