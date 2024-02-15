@@ -66,7 +66,7 @@ class UserController extends Controller
             page_name: "{$this->site_name} - пользователи",
             template_view: 'template_view.php',
             content_view: 'admin/users_view.php',
-            content_css: ['context_menu.css', 'table.css', 'form-add.css'],
+            content_css: ['table.css', 'form-add.css'],
             content_js: [
                 'Classes/ServerRequest.js',
                 'ClientControllers/ClientController.js',

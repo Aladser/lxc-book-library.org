@@ -71,7 +71,7 @@ class Book extends Model
         $book['author_name'] = "$authorRecord->name $authorRecord->surname";
         // жанр
         $genreRecord = R::load('genres', $bookRecod->author_id);
-        $book['genre_id'] = $genreRecord->name;
+        $book['genre'] = mb_strtoupper(mb_substr($genreRecord->name, 0, 1)).mb_substr($genreRecord->name, 1);
 
         return $book;
     }

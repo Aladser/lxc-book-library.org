@@ -26,6 +26,8 @@ function config($param)
         'GOOGLE_REDIRECT_URI' => "http://$site_address/user/auth_google",
         'GOOGLE_CLIENT_ID' => '682336466170-iab6q6gonoi2qm7rvipgph7f4enk0tbi.apps.googleusercontent.com',
         'GOOGLE_CLIENT_SECRET' => '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',
+        // no image изображение
+        'NO_IMAGE' => '/public/images/no-image.png',
     ];
 
     try {

@@ -6,6 +6,7 @@ use App\Core\Controller;
 use App\Models\Book;
 use App\Services\UserAuthService;
 
+use function App\config;
 use function App\route;
 
 class BookController extends Controller
@@ -48,7 +49,7 @@ class BookController extends Controller
             page_name: $this->site_name,
             template_view: 'template_view.php',
             content_view: 'book/index_view.php',
-            content_css: ['index.css'],
+            content_css: ['book.css'],
             routes: $routes,
             data: $data,
         );
@@ -58,6 +59,7 @@ class BookController extends Controller
     {
         $id = $args['id'];
         $data['book'] = $this->books->get($id);
+        $data['book']['picture'] = !empty($data['book']['picture']) ? $data['book']['picture'] : config('NO_IMAGE');
 
         // роуты
         $routes = [

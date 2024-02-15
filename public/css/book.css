@@ -1,6 +1,20 @@
+/* контейнер изображения */
 .image-block {
     height: 30rem;
     width: 50%;
+}
+
+/* строка таблицы */
+.book-table__author {
+    cursor: pointer;
+    padding: 1em;
+}
+.book-table__author a {
+    color: var(--theme-darker-color);
+    text-decoration: underline;
+}
+.book-table__author:hover{
+    text-shadow: var(--theme-text-shadow);
 }
 
 .book {
@@ -10,20 +24,7 @@
 
 .book__content {
     display: flex;
-    margin-bottom: 1rem
-}
-
-.book-table__author {
-    padding: 0.8rem 0;
-    cursor: pointer;
-}
-.book-table__author a {
-    color: var(--theme-darker-color);
-    text-decoration: underline;
-}
-/* строка таблицы */
-.book-table__author:hover{
-    text-shadow: var(--theme-text-shadow);
+    margin-bottom: 1rem;
 }
 
 @media (max-width: 500px) {
