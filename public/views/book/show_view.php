@@ -22,4 +22,5 @@
             Нужна ли душа людям, тело которых не стареет?.
         </div>
     </div>
+    <a href="<?php echo $routes['home']; ?>" class="button-basic button-wide d-block mx-auto">Назад</a>
 </div>
