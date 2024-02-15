@@ -10,8 +10,8 @@ class User extends Model
 {
     // id сервисов авторизации в БД
     private array $authServiceIds;
-    private string $dbTableName = 'db_users';
-    private string $authServiceUsers = 'auth_service_users';
+    private string $innerUserTableName = 'db_users';
+    private string $authServiceUserTableName = 'auth_service_users';
 
     public function __construct()
     {
@@ -26,13 +26,13 @@ class User extends Model
     // ---получить пользователей внутренней авторизации---
     public function getDBUsers()
     {
-        return R::getAll("select * from $this->dbTableName");
+        return R::getAll("select * from $this->innerUserTableName");
     }
 
     // ---получить пользователя внутренней авторизации по логину---
     public function getDBUser(string $login)
     {
-        $sql = "select * from $this->dbTableName where login = :login";
+        $sql = "select * from $this->innerUserTableName where login = :login";
         $args = ['login' => $login];
         $queryResult = R::getAll($sql, $args);
 
@@ -43,11 +43,11 @@ class User extends Model
     public function exists($login, $authType): bool
     {
         if ($authType === 'db') {
-            $tableName = $this->dbTableName;
+            $tableName = $this->innerUserTableName;
             $condition = 'login = :login';
             $args = ['login' => $login];
         } elseif ($authType === 'vk' || $authType === 'google') {
-            $tableName = $this->authServiceUsers;
+            $tableName = $this->authServiceUserTableName;
             $condition = 'login = :login and auth_service_id = :auth_service_id';
             $args = ['login' => $login, 'auth_service_id' => $this->authServiceIds[$authType]];
         } else {
@@ -93,7 +93,7 @@ class User extends Model
     {
         $condition = 'login = :login';
         $args = ['login' => $login];
-        $user = Model::find($this->dbTableName, $condition, $args);
+        $user = Model::find($this->innerUserTableName, $condition, $args);
 
         return R::trash($user);
     }
@@ -102,17 +102,17 @@ class User extends Model
     public function writeToken(string $login, string $token, string $authType): bool
     {
         if ($authType === 'db') {
-            $dbTableName = $this->dbTableName;
+            $innerUserTableName = $this->innerUserTableName;
             $condition = 'login = :login';
             $args = ['login' => $login];
         } elseif ($authType === 'vk' || $authType === 'google') {
-            $dbTableName = $this->authServiceUsers;
+            $innerUserTableName = $this->authServiceUserTableName;
             $condition = 'login = :login and auth_service_id = :auth_service_id';
             $args = ['login' => $login, 'auth_service_id' => $this->authServiceIds[$authType]];
         } else {
             throw new Exception('Неверный тип авторизации');
         }
-        $user = Model::find($dbTableName, $condition, $args);
+        $user = Model::find($innerUserTableName, $condition, $args);
         $user->token = $token;
 
         return R::store($user);

@@ -1,6 +1,6 @@
 html {
   --theme-color: rgba(0, 150, 255, 0.7);
-  --theme-darker-color: rgb(0, 150, 255, 1);
+  --theme-darker-color: rgb(0, 150, 255, 0.7);
   --theme-red-color: rgb(202, 0, 0);
   --theme-border: 1.5px solid var(--theme-color);
   --theme-grey-bgcolor: rgb(252, 252, 252);
