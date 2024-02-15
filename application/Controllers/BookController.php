@@ -57,7 +57,20 @@ class BookController extends Controller
     public function show(mixed $args)
     {
         $id = $args['id'];
-        $book = $this->books->get($id);
-        var_dump($book);
+        $data['book'] = $this->books->get($id);
+
+        // роуты
+        $routes = [
+            'home' => route('home'),
+        ];
+
+        $this->view->generate(
+            page_name: $this->site_name,
+            template_view: 'template_view.php',
+            content_view: 'book/show_view.php',
+            content_css: ['book.css'],
+            routes: $routes,
+            data: $data,
+        );
     }
 }
