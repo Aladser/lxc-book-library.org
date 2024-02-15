@@ -18,13 +18,13 @@
                 </div>
                 <div class='form-add-user__row'>
                     <label for="is_admin">Админ.права</label>
-                    <select name="is_admin" class='form-add__input theme-bg-сolor-white theme-border pe-4'>
+                    <select name="is_admin" class='form-add__input theme-border pe-4'>
                         <option value=0>Нет</option>
                         <option value=1>Да</option>
                     </select>
                 </div>
 
-                <input type="submit" value="Добавить" class='form-add__input theme-bg-сolor-white theme-border px-4 mt-1'>
+                <input type="submit" value="Добавить" class='form-add__input theme-bg-сolor-white theme-bg-сolor-with-hover theme-border px-4 mt-1'>
                 <input type="hidden" name="CSRF_JS" value="<?php echo $data['csrf']; ?>">
             </form>
         </article>
@@ -40,7 +40,7 @@
                 </tr>
 
                 <?php foreach ($data['users'] as $user) { ?>
-                <tr>
+                <tr class='theme-bg-сolor-with-hover'>
                     <td class='table-row p-3 theme-border-bottom'>
                         <span class='user-table__content'><?php echo $user['login']; ?></span>
                         <button class='user-table__btn user-table__btn-remove' title='удалить пользователя'>✘</button>

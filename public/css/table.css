@@ -1,13 +1,19 @@
+/* поля ввода таблицы */
 .table-row__input-author {
   outline: none;
 }
 
+/* кнопки таблицы */
 .table-row__btn {
   background-color: white;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
 }
+.author-table__btn-edit {
+  padding-left: 0.5rem;
+}
 
+/* кнопки удаления */
 .genre-table__btn-remove,
 .author-table__btn,
 .user-table__btn {
@@ -20,20 +26,4 @@
 .table-row:hover .author-table__btn, 
 .table-row:hover .user-table__btn {
   visibility: visible;
-}
-
-.author-table__btn-edit {
-  padding-left: 0.5rem;
-}
-
-.prg-error {
-  position: absolute;
-  top: 5.5rem;
-  left: 1rem;
-  width: 15vw;
-
-  color: var(--theme-red-color);
-  font-weight: bolder;
-  word-break: break-word;
-  padding: 0.5rem;
 }

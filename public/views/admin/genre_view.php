@@ -7,7 +7,7 @@
             <h5>Новый жанр:</h5>
             <form id='form-add-genre' class='form-add section-mb'>
                 <input type="text" name="name" placeholder='название' class='form-add__input theme-border p-1' required>
-                <input type="submit" value="Добавить" class='form-add__input theme-bg-сolor-white theme-border py-1 px-4'>
+                <input type="submit" value="Добавить" class='form-add__input theme-bg-сolor-with-hover theme-border py-1 px-4'>
                 <input type="hidden" name="CSRF" value="<?php echo $data['csrf']; ?>">
             </form>
         </article>
@@ -17,7 +17,7 @@
             <table id='genre-table' class='w-100'>
                 <?php for ($i = 0; $i < count($data['genres']); ++$i) {
                     // первой строке добавляется верхняя граница
-                    $css_tr_style = 'table-row p-3 theme-bg-сolor-white theme-border-bottom';
+                    $css_tr_style = 'table-row p-3 theme-bg-сolor-with-hover theme-border-bottom';
                     if ($i === 0) {
                         $css_tr_style .= ' theme-border-top';
                     }

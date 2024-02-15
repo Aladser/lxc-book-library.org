@@ -76,3 +76,15 @@ button {
 .header-nav-btn:hover {
   text-shadow: 1px 1px 1px var(--theme-darker-color);
 }
+
+.prg-error {
+  position: absolute;
+  top: 5.5rem;
+  left: 1rem;
+  width: 15vw;
+
+  color: var(--theme-red-color);
+  font-weight: bolder;
+  word-break: break-word;
+  padding: 0.5rem;
+}

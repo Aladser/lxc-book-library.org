@@ -30,6 +30,7 @@ class GenreClientController extends ClientController {
       if (response.is_added > 0) {
         let trElem = document.createElement("tr");
         let tdElem = document.createElement("td");
+        trElem.className = 'theme-bg-сolor-with-hover';
         trElem.append(tdElem);
 
         tdElem.className =

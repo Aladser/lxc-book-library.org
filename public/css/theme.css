@@ -1,5 +1,5 @@
 html {
-  --theme-color: rgba(0, 150, 255, 0.75);
+  --theme-color: rgba(0, 150, 255, 0.7);
   --theme-darker-color: rgb(0, 150, 255, 1);
   --theme-red-color: rgb(202, 0, 0);
   --theme-border: 1.5px solid var(--theme-color);
@@ -21,19 +21,17 @@ html {
 .theme-bg-сolor {
   background-color: var(--theme-color);
 }
-.theme-bg-сolor-white {
-  background-color: var(--theme-grey-bgcolor);
-}
 .theme-grey-bgcolor {
   background-color: var(--theme-grey-bgcolor);
 }
-.theme-bg-сolor-white:hover {
+.theme-bg-сolor-with-hover{
+  background-color: var(--theme-grey-bgcolor);
+}
+.theme-bg-сolor-with-hover:hover{
   background-color: var(--theme-color);
-  color: white;
+  color:white;
 }
-.theme-bg-сolor-white:hover::placeholder {
-  color: #eee;
-}
+
 
 /* --- границы ---*/
 .theme-border {

@@ -49,7 +49,7 @@ class AuthorClientController extends ClientController {
         trElem.append(tdElem);
 
         tdElem.className =
-          "table-row p-3 theme-bg-сolor-white theme-border-top theme-border-bottom";
+          "table-row p-3 theme-bg-сolor-with-hover theme-border-top theme-border-bottom";
         tdElem.innerHTML = `
                   <span class='author-table__content'>${form.name.value} ${form.surname.value}</span>
                   <button class='author-table__btn author-table__btn-edit' title='изменить автора'>✏</button>

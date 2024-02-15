@@ -9,7 +9,7 @@
             <form id='form-add-author' class='section-mb'>
                 <input type="text" name="name" placeholder='имя' class='form-add__input theme-border' required>
                 <input type="text" name="surname" placeholder='фамилия' class='form-add__input theme-border' required>
-                <input type="submit" value="Добавить" class=' form-add__input theme-bg-сolor-white theme-border px-4'>
+                <input type="submit" value="Добавить" class=' form-add__input theme-bg-сolor-with-hover theme-border px-4'>
                 <input type="hidden" name="CSRF" value="<?php echo $data['csrf']; ?>">
             </form>
         </article>
@@ -20,7 +20,7 @@
             <table id='author-table' class='w-100'>
                 <?php for ($i = 0; $i < count($data['authors']); ++$i) {
                     // первой строке добавляется верхняя граница
-                    $css_tr_style = 'table-row p-3 cursor-pointer theme-bg-сolor-white theme-border-bottom';
+                    $css_tr_style = 'table-row p-3 cursor-pointer theme-bg-сolor-with-hover theme-border-bottom';
                     if ($i === 0) {
                         $css_tr_style .= ' theme-border-top';
                     }

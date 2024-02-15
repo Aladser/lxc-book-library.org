@@ -26,6 +26,7 @@ class UserClientController extends ClientController {
       let response = JSON.parse(responseData);
       if (response.is_added > 0) {
         let trElem = document.createElement("tr");
+        trElem.className = 'theme-bg-сolor-with-hover';
         trElem.innerHTML = `
           <td class='table-row p-3 theme-border-bottom'>
             <span class='user-table__content'>${form.email.value}</span>
