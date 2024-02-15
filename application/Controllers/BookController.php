@@ -50,13 +50,10 @@ class BookController extends Controller
         );
     }
 
-    public function create()
-    {
-    }
-
     public function show(mixed $args)
     {
-        $id = (int) $args['id'];
-        var_dump($this->books->get($id));
+        $id = $args['id'];
+        $book = $this->books->get($id);
+        var_dump($book);
     }
 }

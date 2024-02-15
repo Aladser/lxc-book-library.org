@@ -55,9 +55,25 @@ class Book extends Model
         return $books;
     }
 
+    // получить данные о книге
     public function get(int $id)
     {
-        $book = R::load('books', $id);
+        $bookRecod = R::load($this->tableName, $id);
+
+        $book = [];
+        $book['id'] = (int) $bookRecod->id;
+        $book['name'] = $bookRecod->name;
+        $book['picture'] = $bookRecod->picture;
+        $book['year'] = (int) $bookRecod->year;
+        $book['description'] = $bookRecod->description;
+        // имя автора
+        $authorRecord = R::load('authors', $bookRecod->author_id);
+        $book['author_name'] = "$authorRecord->name $authorRecord->surname";
+        // жанр
+        $genreRecord = R::load('genres', $bookRecod->author_id);
+        $book['genre_id'] = $genreRecord->name;
+
+        return $book;
     }
 
     // проверить существование

@@ -2,7 +2,7 @@ const url = {
   'show': '/book/show/',
 };
 
-/** таблица строк */
+/** таблица DOM книг таблицы */
 const bookTableRows = Array.from(document.querySelectorAll(".book-table__row"));
 /** переходы на страницы книг */
 bookTableRows.forEach((row) => {
