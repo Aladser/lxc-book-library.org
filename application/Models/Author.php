@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Core\Model;
 use RedBeanPHP\R;
 
-/** таблица авторов */
+/** Автор */
 class Author extends Model
 {
     private string $tableName = 'authors';

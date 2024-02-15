@@ -3,18 +3,21 @@
 namespace App\Controllers;
 
 use App\Core\Controller;
+use App\Models\Book;
 use App\Services\UserAuthService;
 
 use function App\route;
 
 class BookController extends Controller
 {
+    private Book $books;
     private mixed $auth_user;
     private UserAuthService $authService;
 
     public function __construct()
     {
         parent::__construct();
+        $this->books = new Book();
         $this->authService = new UserAuthService();
         $this->auth_user = $this->authService->getAuthUser();
     }
@@ -34,11 +37,14 @@ class BookController extends Controller
             $data['header_button_name'] = 'Войти';
             $data['header_button_url'] = route('login');
         }
+        // серверные данные о книгах
+        $data['books'] = $this->books->get_all(false);
 
         $this->view->generate(
             page_name: $this->site_name,
             template_view: 'template_view.php',
             content_view: 'book/index_view.php',
+            content_js: ['book_index.js'],
             content_css: ['index.css'],
             data: $data,
         );
@@ -48,7 +54,9 @@ class BookController extends Controller
     {
     }
 
-    public function show()
+    public function show(mixed $args)
     {
+        $id = (int) $args['id'];
+        var_dump($this->books->get($id));
     }
 }

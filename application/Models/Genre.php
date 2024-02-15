@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Core\Model;
 use RedBeanPHP\R;
 
-/** таблица авторов */
+/** Жанр */
 class Genre extends Model
 {
     private string $tableName = 'genres';

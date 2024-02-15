@@ -13,6 +13,14 @@
     margin-bottom: 1rem
 }
 
+/* строка таблицы */
+.book-table__row{
+    cursor: pointer;
+}
+.book-table__row:hover{
+    text-shadow: var(--theme-text-shadow);
+}
+
 @media (max-width: 500px) {
     .book-content {
         display: block;

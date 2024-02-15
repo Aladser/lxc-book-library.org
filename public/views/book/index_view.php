@@ -1,4 +1,21 @@
 <div class='container'>
+    <?php if (!empty($data['books'])) {?>
+        <article class='theme-border theme-shadow section-mb p-4'>
+            <h4 class='text-center'>Библиография</h4>
+            <table class='book-table section-mb w-100'>
+                <tr><th>Автор</th><th>Название</th><th>Жанр</th></tr>
+                <?php foreach ($data['books'] as $book) { ?>
+                    <tr class='book-table__row theme-border-bottom'>
+                        <td class='py-2'><?php echo $book['author_name']; ?></td>
+                        <td><?php echo $book['name']; ?></td>
+                        <td><?php echo $book['genre']; ?></td>
+                    </tr>
+                <?php }?>
+            </table>
+        </article>
+    <?php } ?>
+
+
     <div class='book theme-border theme-shadow'>
         <div class='book__content'>
             <article class='image-block mx-auto'>

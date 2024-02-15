@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Core\Model;
 use RedBeanPHP\R;
 
-/** таблица пользователей */
+/** Пользователь */
 class User extends Model
 {
     // id сервисов авторизации в БД
