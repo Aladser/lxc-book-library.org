@@ -84,6 +84,7 @@ class BookController extends Controller
         // роуты
         $routes = [
             'home' => route('home'),
+            'book_edit' => route('book_edit'),
             'book_delete' => route('book_delete'),
         ];
 
@@ -167,5 +168,35 @@ class BookController extends Controller
             $mainControl = new MainController();
             $mainControl->error("Серверная ошибка удаления книги. $isRemove");
         }
+    }
+
+    public function edit(mixed $args)
+    {
+        $data['csrf'] = Controller::createCSRFToken();
+        $data['authors'] = $this->author->get_all();
+        $data['genres'] = $this->genre->get_all();
+        $data['book'] = $this->book->get($args['id']);
+        $genre = $data['book']['genre'];
+        $data['book']['genre'] = mb_strtolower($genre);
+
+        // роуты
+        $routes = [
+            'book_update' => route('book_update'),
+            'home' => route('home'),
+        ];
+
+        $this->view->generate(
+            page_name: 'Редактирование книги',
+            template_view: 'template_view.php',
+            content_view: 'book/edit_view.php',
+            content_css: ['form-add.css'],
+            routes: $routes,
+            data: $data,
+        );
+    }
+
+    public function update(mixed $args)
+    {
+        var_dump($args);
     }
 }

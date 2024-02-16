@@ -19,10 +19,13 @@ function route($param)
         'users' => '/user',
         'authors' => '/author',
         'genres' => '/genre',
+
         'book_show' => '/book/show/',
         'book_delete' => '/book/destroy/',
         'book_create' => '/book/create',
         'book_store' => '/book/store',
+        'book_edit' => '/book/edit/',
+        'book_update' => '/book/update',
     ];
 
     try {
