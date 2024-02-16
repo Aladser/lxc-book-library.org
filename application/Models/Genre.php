@@ -10,7 +10,7 @@ class Genre extends Model
 {
     private string $tableName = 'genres';
 
-    // все авторы
+    // все жанры
     public function get_all()
     {
         $queryResult = R::getAll("select name from {$this->tableName} order by name");
@@ -38,15 +38,6 @@ class Genre extends Model
         }
     }
 
-    // проверить существование
-    public function exists(string $name): bool
-    {
-        $condition = 'name = :name';
-        $args = ['name' => $name];
-
-        return R::count($this->tableName, $condition, $args) > 0;
-    }
-
     // добавить
     public function add(string $name): int
     {
@@ -64,5 +55,14 @@ class Genre extends Model
         $genre = Model::find($this->tableName, $condition, $args);
 
         return R::trash($genre);
+    }
+
+    // проверить существование
+    public function exists(string $name): bool
+    {
+        $condition = 'name = :name';
+        $args = ['name' => $name];
+
+        return R::count($this->tableName, $condition, $args) > 0;
     }
 }

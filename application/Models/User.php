@@ -39,34 +39,6 @@ class User extends Model
         return empty($queryResult) ? false : $queryResult[0];
     }
 
-    /** проверить существование пользователя */
-    public function exists($login, $authType): bool
-    {
-        if ($authType === 'db') {
-            $tableName = $this->innerUserTableName;
-            $condition = 'login = :login';
-            $args = ['login' => $login];
-        } elseif ($authType === 'vk' || $authType === 'google') {
-            $tableName = $this->authServiceUserTableName;
-            $condition = 'login = :login and auth_service_id = :auth_service_id';
-            $args = ['login' => $login, 'auth_service_id' => $this->authServiceIds[$authType]];
-        } else {
-            throw new Exception('Неверный тип авторизации');
-        }
-
-        return R::count($tableName, $condition, $args) > 0;
-    }
-
-    // проверка авторизации
-    public function is_correct_password($login, $password): bool
-    {
-        $sql = 'select password from db_users where login=:login';
-        $args = ['login' => $login];
-        $passHash = R::getCell($sql, $args);
-
-        return password_verify($password, $passHash);
-    }
-
     // добавить нового пользователя
     public function add($args, $authType = 'db'): int
     {
@@ -99,7 +71,35 @@ class User extends Model
         return R::trash($user);
     }
 
-    // запись ВК-токена
+    /** проверить существование пользователя */
+    public function exists($login, $authType): bool
+    {
+        if ($authType === 'db') {
+            $tableName = $this->innerUserTableName;
+            $condition = 'login = :login';
+            $args = ['login' => $login];
+        } elseif ($authType === 'vk' || $authType === 'google') {
+            $tableName = $this->authServiceUserTableName;
+            $condition = 'login = :login and auth_service_id = :auth_service_id';
+            $args = ['login' => $login, 'auth_service_id' => $this->authServiceIds[$authType]];
+        } else {
+            throw new Exception('Неверный тип авторизации');
+        }
+
+        return R::count($tableName, $condition, $args) > 0;
+    }
+
+    // проверка авторизации
+    public function is_correct_password($login, $password): bool
+    {
+        $sql = 'select password from db_users where login=:login';
+        $args = ['login' => $login];
+        $passHash = R::getCell($sql, $args);
+
+        return password_verify($password, $passHash);
+    }
+
+    // запись токена
     public function writeToken(string $login, string $token, string $authType): bool
     {
         if ($authType === 'db') {
@@ -119,6 +119,7 @@ class User extends Model
         return R::store($user);
     }
 
+    // получить токен
     public function getToken(string $login, string $authType): mixed
     {
         $sql = 'select token from auth_service_users where login = :login and auth_service_id = :auth_service_id';

@@ -10,7 +10,7 @@ class Author extends Model
 {
     private string $tableName = 'authors';
 
-    // список всех авторов
+    // все авторы
     public function get_all()
     {
         $sql = "select name, surname from {$this->tableName} order by surname";
@@ -26,6 +26,7 @@ class Author extends Model
         return $authors;
     }
 
+    // получить автора
     public function get($id)
     {
         return R::load($this->tableName, $id);
@@ -45,15 +46,6 @@ class Author extends Model
         foreach ($rows as $key => $value) {
             return $key;
         }
-    }
-
-    // проверить существование
-    public function exists(string $name, string $surname): bool
-    {
-        $condition = 'name=:name and surname=:surname';
-        $args = ['name' => $name, 'surname' => $surname];
-
-        return R::count($this->tableName, $condition, $args) > 0;
     }
 
     // добавить
@@ -93,5 +85,14 @@ class Author extends Model
         $author = Model::find($this->tableName, $condition, $args);
 
         return R::trash($author);
+    }
+
+    // проверить существование
+    public function exists(string $name, string $surname): bool
+    {
+        $condition = 'name=:name and surname=:surname';
+        $args = ['name' => $name, 'surname' => $surname];
+
+        return R::count($this->tableName, $condition, $args) > 0;
     }
 }

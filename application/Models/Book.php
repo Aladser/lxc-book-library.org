@@ -76,15 +76,6 @@ class Book extends Model
         return $book;
     }
 
-    // проверить существование
-    public function exists(string $name): bool
-    {
-        $condition = 'name = :name';
-        $args = ['name' => $name];
-
-        return R::count($this->tableName, $condition, $args) > 0;
-    }
-
     // добавить
     public function add(array $fields): int
     {
@@ -103,5 +94,10 @@ class Book extends Model
         $book = R::load($this->tableName, $id);
 
         return R::trash($book) > 0;
+    }
+
+    // проверить существование
+    public function exists(string $name): bool
+    {
     }
 }
