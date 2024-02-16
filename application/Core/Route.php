@@ -7,15 +7,25 @@ use App\Services\UserAuthService;
 
 class Route
 {
-    public static function start($specificRoutes, $authUserRoutes, $adminActionArr)
+    /**
+     * парсить URL.
+     *
+     * @param bool $specificRoutes специфичные роуты
+     * @param bool $authUserRoutes роуты, требующие аутентификации
+     * @param bool $adminActionArr роуты для администратора
+     *
+     * @return void
+     */
+    public static function start($specificRoutes = false, $authUserRoutes = false, $adminActionArr = false)
     {
         session_start();
 
-        // проверка CSRF
+        // --- проверка CSRF ---
+        $csrfError = 'Невалидный CSRF';
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (isset($_POST['CSRF_JS'])) {
                 if ($_POST['CSRF_JS'] !== $_SESSION['CSRF']) {
-                    echo 'access_is_denied';
+                    echo $csrfError;
 
                     return;
                 } else {
@@ -25,7 +35,7 @@ class Route
                 if ($_POST['CSRF'] !== $_SESSION['CSRF']) {
                     http_response_code(419);
                     $controller = new MainController();
-                    $controller->error('Access is denied');
+                    $controller->error($csrfError);
 
                     return;
                 } else {
@@ -34,7 +44,7 @@ class Route
             } else {
                 http_response_code(419);
                 $controller = new MainController();
-                $controller->error('Не отправлен csrf-токен');
+                $controller->error($csrfError);
 
                 return;
             }
@@ -46,22 +56,23 @@ class Route
         // аргументы функции контроллера
         $funcArgs = null;
 
-        // проверка аутентифицированного пользователя
+        // --- проверка аутентифицированного пользователя ---
         if (in_array($_SERVER['REQUEST_URI'], $authUserRoutes)) {
             if (!UserAuthService::getAuthUser()) {
                 header('Location: /');
             }
         }
 
+        // --- парсинг URL ---
         if (array_key_exists($url, $specificRoutes)) {
             // проверка специфичности роутера
-            $controller_name = $specificRoutes[$url];
+            $controllerName = $specificRoutes[$url];
             $action = self::convertName($url);
         } else {
             // URL - [контроллер, функция, аргумент]
             $urlAsArray = explode('/', $url);
             // получение контроллера
-            $controller_name = !empty($url) ? ucfirst($urlAsArray[0]) : 'book';
+            $controllerName = !empty($url) ? ucfirst($urlAsArray[0]) : 'book';
             // получение функции
             $action = count($urlAsArray) > 1 ? self::convertName($urlAsArray[1]) : 'index';
             // проверка наличия аргумента
@@ -69,14 +80,14 @@ class Route
                 $funcArgs['id'] = $urlAsArray[2];
             }
         }
-        $controller_name = self::convertName($controller_name);
+        $controllerName = self::convertName($controllerName);
 
-        // создаем контроллер
-        $controller_name .= 'Controller';
-        $controller_path = dirname(__DIR__, 1).DIRECTORY_SEPARATOR.'Controllers'.DIRECTORY_SEPARATOR.$controller_name.'.php';
+        // --- создаем контроллер ---
+        $controllerName .= 'Controller';
+        $controller_path = dirname(__DIR__, 1).DIRECTORY_SEPARATOR.'Controllers'.DIRECTORY_SEPARATOR.$controllerName.'.php';
         if (file_exists($controller_path)) {
             require_once $controller_path;
-            $fullControllerName = '\\App\\Controllers\\'.$controller_name;
+            $fullControllerName = '\\App\\Controllers\\'.$controllerName;
             $controller = new $fullControllerName();
         } else {
             $controller = new MainController();
@@ -85,7 +96,7 @@ class Route
             return;
         }
 
-        // декодирование аргументов
+        // --- получение аргументов ---
         // поиск POST-параметров
         if (count($_POST) > 0) {
             foreach ($_POST as $key => $value) {
@@ -99,8 +110,8 @@ class Route
             }
         }
 
-        // проверка страниц администратора
-        if (in_array("$controller_name $action", $adminActionArr)) {
+        // --- проверка прав для страниц администратора ---
+        if (in_array("$controllerName $action", $adminActionArr)) {
             if (!UserAuthService::isAuthAdmin()) {
                 $controller = new MainController();
                 $controller->error('Доступ запрещен');
