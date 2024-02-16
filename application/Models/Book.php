@@ -95,12 +95,12 @@ class Book extends Model
     }
 
     // удалить
-    public function remove(string $name)
+    public function remove(string $id): bool
     {
-        $condition = 'name = :name';
-        $args = ['name' => $name];
+        $condition = 'id = :id';
+        $args = ['id' => $id];
         $genre = Model::find($this->tableName, $condition, $args);
 
-        return R::trash($genre);
+        return R::trash($genre) > 0;
     }
 }

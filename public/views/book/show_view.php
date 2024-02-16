@@ -1,6 +1,7 @@
 <div class='container'>
 
     <div class='book theme-border theme-shadow'>
+        <!-- контейнер книги -->
         <div class='book__content'>
             <article class='image-block mx-auto'>
                 <img class='d-block mx-auto h-100 object-fit-cover' src="<?php echo 'http://'.$site_address.'/'.$data['book']['picture']; ?>" alt="<?php echo $data['book']['name']; ?>">
@@ -12,12 +13,16 @@
                 <p class="fst-italic">2013 год</p>
             </div>
         </div>
-        <div class='p-2'>
+        <div class='p-2 pb-4'>
             НА ЧТО ТЫ ГОТОВ РАДИ ВЕЧНОЙ ЖИЗНИ? Уже при нашей жизни будут сделаны открытия, которые позволят людям оставаться вечно молодыми. 
             Смерти больше нет. Наши дети не умрут никогда. Добро пожаловать в будущее. В мир, населенный вечно юными, совершенно здоровыми, счастливыми людьми. 
             Но будут ли они такими же, как мы? Нужны ли дети, если за них придется пожертвовать бессмертием? Нужна ли семья тем, кто не может завести детей? 
             Нужна ли душа людям, тело которых не стареет?.
         </div>
+        <!-- кнопка удаления -->
+        <?php if ($data['is_admin']) {?>
+            <a href="<?php echo $routes['book_delete'].$data['book']['id']; ?>" class="button-basic d-block">Удалить</a>
+        <?php } ?>
     </div>
 
     <a href="<?php echo $routes['home']; ?>" class="button-basic button-wide d-block mx-auto">Назад</a>

@@ -20,6 +20,7 @@ function route($page_name)
         'authors' => '/author',
         'genres' => '/genre',
         'book_show' => '/book/show/',
+        'book_delete' => '/book/destroy/',
     ];
 
     try {

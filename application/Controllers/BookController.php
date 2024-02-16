@@ -11,18 +11,19 @@ use function App\route;
 
 class BookController extends Controller
 {
-    private Book $books;
+    private Book $book;
     private mixed $auth_user;
     private UserAuthService $authService;
 
     public function __construct()
     {
         parent::__construct();
-        $this->books = new Book();
+        $this->book = new Book();
         $this->authService = new UserAuthService();
         $this->auth_user = $this->authService->getAuthUser();
     }
 
+    // список книг
     public function index(mixed $args): void
     {
         // кнопка Войти-Выйти, данные авториз.пользователя
@@ -39,7 +40,7 @@ class BookController extends Controller
             $data['header_button_url'] = route('login');
         }
         // серверные данные о книгах
-        $data['books'] = $this->books->get_all(false);
+        $data['books'] = $this->book->get_all(false);
         // роуты
         $routes = [
             'book_show' => route('book_show'),
@@ -55,16 +56,30 @@ class BookController extends Controller
         );
     }
 
+    // страница книги
     public function show(mixed $args)
     {
+        $data['header_button_name'] = 'Выйти';
+        $data['header_button_url'] = route('logout');
+        $data['auth_user_name'] = $this->auth_user['user_name'];
+        $data['auth_user_page'] = route('show');
+
+        $userAuthService = new UserAuthService();
+        $data['is_admin'] = $userAuthService->isAuthAdmin();
+
         $id = $args['id'];
-        $data['book'] = $this->books->get($id);
+        $data['book'] = $this->book->get($id);
         $data['book']['picture'] = !empty($data['book']['picture']) ? $data['book']['picture'] : config('NO_IMAGE');
 
         // роуты
         $routes = [
             'home' => route('home'),
+            'book_delete' => route('book_delete'),
         ];
+
+        // доп.заголовки
+        $csrf = Controller::createCSRFToken();
+        $csrf_meta = "<meta name='csrf' content=$csrf>";
 
         $this->view->generate(
             page_name: $this->site_name,
@@ -73,6 +88,26 @@ class BookController extends Controller
             content_css: ['book.css'],
             routes: $routes,
             data: $data,
+            add_head: $csrf_meta,
         );
+    }
+
+    // удаление книги
+    public function destroy(mixed $args)
+    {
+        // проверка прав администратора
+        $authUser = $this->authService->isAuthAdmin();
+        if (!$authUser) {
+            $mainControl = new MainController();
+            $mainControl->error('Доступ запрещен');
+        }
+        // удаление
+        $isRemoved = $this->book->remove($args['id']);
+        if ($isRemoved) {
+            header('Location: /');
+        } else {
+            $mainControl = new MainController();
+            $mainControl->error("Серверная ошибка удаления книги. $isRemove");
+        }
     }
 }
