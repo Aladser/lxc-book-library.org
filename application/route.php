@@ -22,6 +22,7 @@ function route($param)
         'book_show' => '/book/show/',
         'book_delete' => '/book/destroy/',
         'book_create' => '/book/create',
+        'book_store' => '/book/store',
     ];
 
     try {

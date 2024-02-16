@@ -28,6 +28,7 @@ class Author extends Model
 
     public function get($id)
     {
+        return R::load($this->tableName, $id);
     }
 
     // проверить существование

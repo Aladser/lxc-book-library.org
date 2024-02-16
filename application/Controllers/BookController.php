@@ -103,10 +103,21 @@ class BookController extends Controller
     // форма добавления книги
     public function create(mixed $args)
     {
+        $data['csrf'] = Controller::createCSRFToken();
+
+        // роуты
+        $routes = [
+            'book_store' => route('book_store'),
+            'home' => route('home'),
+        ];
+
         $this->view->generate(
             page_name: 'Добавление книги',
             template_view: 'template_view.php',
             content_view: 'book/create_view.php',
+            content_css: ['form-add.css'],
+            routes: $routes,
+            data: $data,
         );
     }
 
@@ -120,5 +131,10 @@ class BookController extends Controller
             $mainControl = new MainController();
             $mainControl->error("Серверная ошибка удаления книги. $isRemove");
         }
+    }
+
+    public function store(mixed $args)
+    {
+        var_dump($args);
     }
 }

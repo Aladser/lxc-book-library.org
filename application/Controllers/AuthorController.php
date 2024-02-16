@@ -47,7 +47,7 @@ class AuthorController extends Controller
             page_name: 'Авторы',
             template_view: 'template_view.php',
             content_view: 'admin/author_view.php',
-            content_css: ['context_menu.css', 'table.css', 'form-add.css'],
+            content_css: ['table.css', 'form-add.css'],
             content_js: [
                 'Classes/ServerRequest.js',
                 'ClientControllers/ClientController.js',
