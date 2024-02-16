@@ -11,7 +11,7 @@ class Genre extends Model
     private string $tableName = 'genres';
 
     // все авторы
-    public function get()
+    public function get_all()
     {
         $queryResult = R::getAll("select name from {$this->tableName} order by name");
         $genres = [];

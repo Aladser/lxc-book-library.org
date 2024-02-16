@@ -12,14 +12,12 @@ class AuthorController extends Controller
 {
     private mixed $auth_user;
     private Author $author;
-    private UserAuthService $authService;
 
     public function __construct()
     {
         parent::__construct();
         $this->auth_user = UserAuthService::getAuthUser();
         $this->author = new Author();
-        $this->authService = new UserAuthService();
     }
 
     // index

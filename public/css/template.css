@@ -37,6 +37,7 @@ button {
   color: var(--theme-color);
   background-color: white;
   border: var(--theme-border);
+  border-radius: 0.35em;
 }
 .button-basic:hover, .header-nav-btn:hover {
   text-shadow: var(--theme-text-shadow);

@@ -9,7 +9,7 @@
             <form id='form-add-author' class='theme-mb'>
                 <input type="text" name="name" placeholder='имя' class='form-add__input theme-border' required>
                 <input type="text" name="surname" placeholder='фамилия' class='form-add__input theme-border' required>
-                <input type="submit" value="Добавить" class='form-add__btn'>
+                <input type="submit" value="Добавить" class='form-add__btn mt-2'>
                 <input type="hidden" name="CSRF" value="<?php echo $data['csrf']; ?>">
             </form>
         </article>

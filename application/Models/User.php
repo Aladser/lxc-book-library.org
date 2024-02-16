@@ -81,6 +81,7 @@ class User extends Model
             $user = R::xdispense('auth_service_users');
             $user->token = $args['token'];
             $user->auth_service_id = $this->authServiceIds[$authType];
+            $user->login = $args['login'];
         } else {
             throw new Exception('Неверный тип авторизации');
         }

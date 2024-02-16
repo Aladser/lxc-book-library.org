@@ -3,7 +3,9 @@
 namespace App\Controllers;
 
 use App\Core\Controller;
+use App\Models\Author;
 use App\Models\Book;
+use App\Models\Genre;
 use App\Services\UserAuthService;
 
 use function App\config;
@@ -12,15 +14,19 @@ use function App\route;
 class BookController extends Controller
 {
     private Book $book;
+    private Author $author;
+    private Genre $genre;
+
     private mixed $auth_user;
-    private UserAuthService $authService;
 
     public function __construct()
     {
         parent::__construct();
         $this->book = new Book();
-        $this->authService = new UserAuthService();
-        $this->auth_user = $this->authService->getAuthUser();
+        $this->author = new Author();
+        $this->genre = new Genre();
+
+        $this->auth_user = UserAuthService::getAuthUser();
     }
 
     // список книг
@@ -104,6 +110,8 @@ class BookController extends Controller
     public function create(mixed $args)
     {
         $data['csrf'] = Controller::createCSRFToken();
+        $data['authors'] = $this->author->get_all();
+        $data['genres'] = $this->genre->get_all();
 
         // роуты
         $routes = [

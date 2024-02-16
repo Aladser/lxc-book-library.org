@@ -178,7 +178,7 @@ class UserAuthService
             return false;
         }
 
-        if ($auth_user['auth_type'] == 'google') {
+        if ($auth_user['auth_type'] == 'google' || $auth_user['auth_type'] == 'vk') {
             return false;
         } else {
             $user = new User();

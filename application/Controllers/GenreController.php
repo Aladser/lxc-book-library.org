@@ -12,14 +12,12 @@ class GenreController extends Controller
 {
     private mixed $auth_user;
     private Genre $genre;
-    private UserAuthService $authService;
 
     public function __construct()
     {
         parent::__construct();
         $this->auth_user = UserAuthService::getAuthUser();
         $this->genre = new Genre();
-        $this->authService = new UserAuthService();
     }
 
     public function index(mixed $args): void
@@ -32,7 +30,7 @@ class GenreController extends Controller
 
         $csrf = Controller::createCSRFToken();
         $data['csrf'] = $csrf;
-        $data['genres'] = $this->genre->get();
+        $data['genres'] = $this->genre->get_all();
 
         // роуты
         $routes = [
