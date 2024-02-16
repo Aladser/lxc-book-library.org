@@ -33,7 +33,6 @@ class UserController extends Controller
         $this->login_url = route('login');
     }
 
-    // страница пользователей
     public function index()
     {
         // данные
@@ -171,7 +170,6 @@ class UserController extends Controller
         header('Location: '.route('home'));
     }
 
-    // страница регистрации
     public function register(mixed $args): void
     {
         $args['csrf'] = Controller::createCSRFToken();
@@ -206,7 +204,6 @@ class UserController extends Controller
         );
     }
 
-    // регистрация пользователя
     public function store(mixed $args): void
     {
         $email = $args['email'];
@@ -249,7 +246,6 @@ class UserController extends Controller
         }
     }
 
-    // страница пользователя
     public function show()
     {
         $authUser = UserAuthService::getAuthUser();
@@ -311,7 +307,6 @@ class UserController extends Controller
         );
     }
 
-    // удалить пользователя
     public function destroy(mixed $args)
     {
         $isRemoved = $this->user->remove($args['user_name']);

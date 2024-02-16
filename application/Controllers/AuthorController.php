@@ -20,7 +20,6 @@ class AuthorController extends Controller
         $this->author = new Author();
     }
 
-    // index
     public function index(mixed $args): void
     {
         // данные
@@ -58,7 +57,6 @@ class AuthorController extends Controller
         );
     }
 
-    // store
     public function store($args)
     {
         [$name, $surname] = [$args['name'], $args['surname']];
@@ -73,7 +71,6 @@ class AuthorController extends Controller
         echo json_encode($response);
     }
 
-    // update
     public function update($args)
     {
         $new_name = $args['name'];
@@ -96,7 +93,6 @@ class AuthorController extends Controller
         echo json_encode($response);
     }
 
-    // destroy
     public function destroy($args)
     {
         [$name, $surname] = explode(' ', $args['author_name']);

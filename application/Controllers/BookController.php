@@ -29,7 +29,6 @@ class BookController extends Controller
         $this->auth_user = UserAuthService::getAuthUser();
     }
 
-    // список книг
     public function index(mixed $args): void
     {
         // кнопка Войти-Выйти, данные авториз.пользователя
@@ -47,8 +46,7 @@ class BookController extends Controller
         }
         // серверные данные
         $data['books'] = $this->book->get_all(false);
-        $userAuthService = new UserAuthService();
-        $data['is_admin'] = $userAuthService->isAuthAdmin();
+        $data['is_admin'] = UserAuthService::isAuthAdmin();
         // роуты
         $routes = [
             'book_show' => route('book_show'),
@@ -65,7 +63,6 @@ class BookController extends Controller
         );
     }
 
-    // страница книги
     public function show(mixed $args)
     {
         if (!empty($this->auth_user)) {
@@ -78,8 +75,7 @@ class BookController extends Controller
         }
         $data['auth_user_page'] = route('show');
 
-        $userAuthService = new UserAuthService();
-        $data['is_admin'] = $userAuthService->isAuthAdmin();
+        $data['is_admin'] = UserAuthService::isAuthAdmin();
 
         $id = $args['id'];
         $data['book'] = $this->book->get($id);
@@ -106,7 +102,6 @@ class BookController extends Controller
         );
     }
 
-    // форма добавления книги
     public function create(mixed $args)
     {
         $data['csrf'] = Controller::createCSRFToken();
@@ -129,19 +124,6 @@ class BookController extends Controller
         );
     }
 
-    // удаление книги
-    public function destroy(mixed $args)
-    {
-        $isRemoved = $this->book->remove($args['id']);
-        if ($isRemoved) {
-            header('Location: /');
-        } else {
-            $mainControl = new MainController();
-            $mainControl->error("Серверная ошибка удаления книги. $isRemove");
-        }
-    }
-
-    // сохранение новой книги
     public function store(mixed $args)
     {
         // поиск автора
@@ -174,5 +156,16 @@ class BookController extends Controller
             throw new \Exception('BookController->store(): ошибка сохранения книги');
         }
         self::show(['id' => $id]);
+    }
+
+    public function destroy(mixed $args)
+    {
+        $isRemoved = $this->book->remove($args['id']);
+        if ($isRemoved) {
+            header('Location: /');
+        } else {
+            $mainControl = new MainController();
+            $mainControl->error("Серверная ошибка удаления книги. $isRemove");
+        }
     }
 }
