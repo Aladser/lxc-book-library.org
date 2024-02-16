@@ -24,13 +24,6 @@ class GenreController extends Controller
 
     public function index(mixed $args): void
     {
-        // проверка прав администратора
-        $authUser = $this->authService->isAuthAdmin();
-        if (!$authUser) {
-            $mainControl = new MainController();
-            $mainControl->error('Доступ запрещен');
-        }
-
         // данные
         $data['header_button_url'] = route('logout');
         $data['header_button_name'] = 'Выйти';
@@ -50,7 +43,7 @@ class GenreController extends Controller
         $csrf_meta = "<meta name='csrf' content=$csrf>";
 
         $this->view->generate(
-            page_name: "{$this->site_name} - жанры",
+            page_name: 'Жанры',
             template_view: 'template_view.php',
             content_view: 'admin/genre_view.php',
             content_css: ['context_menu.css', 'table.css', 'form-add.css'],

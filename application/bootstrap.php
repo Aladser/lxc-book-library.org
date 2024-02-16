@@ -22,5 +22,7 @@ $specificRoutes = [
 
 // роуты, требующие аутентификации
 $authUserRoutes = ['/user/show', '/user/view', '/author/view', '/genre/view'];
+// контроллеры и действия для url администратора
+$adminActionArr = ['GenreController index', 'AuthorController index', 'UserController index'];
 
-Route::start($specificRoutes, $authUserRoutes);
+Route::start($specificRoutes, $authUserRoutes, $adminActionArr);

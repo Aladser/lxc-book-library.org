@@ -25,13 +25,6 @@ class AuthorController extends Controller
     // index
     public function index(mixed $args): void
     {
-        // проверка прав администратора
-        $authUser = $this->authService->isAuthAdmin();
-        if (!$authUser) {
-            $mainControl = new MainController();
-            $mainControl->error('Доступ запрещен');
-        }
-
         // данные
         $data['header_button_url'] = route('logout');
         $data['header_button_name'] = 'Выйти';
@@ -51,7 +44,7 @@ class AuthorController extends Controller
         $csrf_meta = "<meta name='csrf' content=$csrf>";
 
         $this->view->generate(
-            page_name: "{$this->site_name} - авторы",
+            page_name: 'Авторы',
             template_view: 'template_view.php',
             content_view: 'admin/author_view.php',
             content_css: ['context_menu.css', 'table.css', 'form-add.css'],

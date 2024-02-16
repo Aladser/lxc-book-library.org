@@ -7,7 +7,7 @@ use App\Services\UserAuthService;
 
 class Route
 {
-    public static function start($specificRoutes, $authUserRoutes)
+    public static function start($specificRoutes, $authUserRoutes, $adminActionArr)
     {
         session_start();
 
@@ -42,6 +42,7 @@ class Route
 
         $url = mb_substr($_SERVER['REQUEST_URI'], 1);
         $url = explode('?', $url)[0];
+
         // аргументы функции контроллера
         $funcArgs = null;
 
@@ -53,7 +54,7 @@ class Route
         }
 
         if (array_key_exists($url, $specificRoutes)) {
-            // проверка наличия аутентификации
+            // проверка специфичности роутера
             $controller_name = $specificRoutes[$url];
             $action = self::convertName($url);
         } else {
@@ -62,11 +63,7 @@ class Route
             // получение контроллера
             $controller_name = !empty($url) ? ucfirst($urlAsArray[0]) : 'book';
             // получение функции
-            if (count($urlAsArray) > 1) {
-                $action = self::convertName($urlAsArray[1]);
-            } else {
-                $action = 'index';
-            }
+            $action = count($urlAsArray) > 1 ? self::convertName($urlAsArray[1]) : 'index';
             // проверка наличия аргумента
             if (count($urlAsArray) == 3) {
                 $funcArgs['id'] = $urlAsArray[2];
@@ -79,8 +76,8 @@ class Route
         $controller_path = dirname(__DIR__, 1).DIRECTORY_SEPARATOR.'Controllers'.DIRECTORY_SEPARATOR.$controller_name.'.php';
         if (file_exists($controller_path)) {
             require_once $controller_path;
-            $controller_name = '\\App\\Controllers\\'.$controller_name;
-            $controller = new $controller_name();
+            $fullControllerName = '\\App\\Controllers\\'.$controller_name;
+            $controller = new $fullControllerName();
         } else {
             $controller = new MainController();
             $controller->error('Страница не существует');
@@ -102,6 +99,14 @@ class Route
             }
         }
 
+        // проверка страниц администратора
+        if (in_array("$controller_name $action", $adminActionArr)) {
+            if (!UserAuthService::isAuthAdmin()) {
+                $controller = new MainController();
+                $controller->error('Доступ запрещен');
+            }
+        }
+
         // вызов метода
         if (method_exists($controller, $action)) {
             $controller->$action($funcArgs);
@@ -111,6 +116,7 @@ class Route
         }
     }
 
+    // получить имя контроллера
     private static function convertName($name)
     {
         $name = str_replace('-', ' ', $name);

@@ -170,7 +170,7 @@ class UserAuthService
     }
 
     // проверка прав администратора
-    public function isAuthAdmin()
+    public static function isAuthAdmin()
     {
         $auth_user = self::getAuthUser();
 
@@ -181,7 +181,8 @@ class UserAuthService
         if ($auth_user['auth_type'] == 'google') {
             return false;
         } else {
-            $userData = $this->user->getDBUser($auth_user['login']);
+            $user = new User();
+            $userData = $user->getDBUser($auth_user['login']);
             if ($userData['is_admin'] == 0) {
                 return false;
             }
