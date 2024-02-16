@@ -39,8 +39,10 @@ class BookController extends Controller
             $data['header_button_name'] = 'Войти';
             $data['header_button_url'] = route('login');
         }
-        // серверные данные о книгах
+        // серверные данные
         $data['books'] = $this->book->get_all(false);
+        $userAuthService = new UserAuthService();
+        $data['is_admin'] = $userAuthService->isAuthAdmin();
         // роуты
         $routes = [
             'book_show' => route('book_show'),

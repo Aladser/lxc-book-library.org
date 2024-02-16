@@ -1,8 +1,11 @@
 <div class='container'>
     <?php if (!empty($data['books'])) {?>
-        <article class='theme-border theme-shadow section-mb p-4'>
+        <article class='theme-border theme-shadow theme-mb p-4'>
             <h4 class='text-center'>Библиография</h4>
-            <table class='book-table section-mb w-100'>
+            <?php if ($data['is_admin']) {?>
+                <a href="#" class="button-basic d-block float-end mb-2">Добавить книгу</a>
+            <?php } ?>
+            <table class='book-table theme-mb w-100'>
                 <?php foreach ($data['books'] as $book) { ?>
                     <tr class='book-table__row theme-border-bottom'>
                         <td class='book-table__author'>

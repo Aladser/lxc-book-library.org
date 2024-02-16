@@ -53,3 +53,9 @@ html {
 .theme-shadow {
   box-shadow: 2px 1px 4px var(--theme-darker-color);
 }
+
+
+/* нижний отступ */
+.theme-mb{
+  margin-bottom: 2rem;
+}

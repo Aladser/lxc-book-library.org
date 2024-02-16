@@ -1,10 +1,13 @@
 <div class='container'>
 
-    <div class='book theme-border theme-shadow section-mb'>
+    <div class='book theme-border theme-shadow theme-mb'>
         <!-- контейнер книги -->
         <div class='book__content'>
             <article class='image-block mx-auto'>
-                <img class='d-block mx-auto h-100 object-fit-cover' src="<?php echo 'http://'.$site_address.'/'.$data['book']['picture']; ?>" alt="<?php echo $data['book']['name']; ?>">
+                <img class='d-block mx-auto h-100 object-fit-cover' 
+                src="<?php echo 'http://'.$site_address.'/'.$data['book']['picture']; ?>" 
+                alt="<?php echo $data['book']['name']; ?>"
+                >
             </article>
             <div class='w-50'>
                 <p class='h3 theme-darker-color'><?php echo $data['book']['name']; ?></p>
@@ -21,9 +24,11 @@
         </div>
         <!-- кнопка удаления -->
         <?php if ($data['is_admin']) {?>
-            <a href="<?php echo $routes['book_delete'].$data['book']['id']; ?>" class="button-basic d-block">Удалить</a>
+            <div class='px-4 pt-3'>
+                <a href="<?php echo $routes['book_delete'].$data['book']['id']; ?>" class="button-basic d-block">Удалить</a>
+            </div>
         <?php } ?>
     </div>
 
-    <a href="<?php echo $routes['home']; ?>" class="button-basic button-wide d-block mx-auto">Назад</a>
+    <a href="<?php echo $routes['home']; ?>" class="button-basic button-wide d-block mx-auto">На главную</a>
 </div>

@@ -1,10 +1,10 @@
 <div class='container'>
     <p id='prg-error' class='prg-error'></p>
-    <section class='content-section section-mb'>
-        <h3 class='section-mb'>Пользователи с авторизацией на сайте</h3>
+    <section class='content-section theme-mb'>
+        <h3 class='theme-mb'>Пользователи с авторизацией на сайте</h3>
 
         <!-- форма добавления пользователя -->
-        <article class='section-mb'>
+        <article class='theme-mb'>
             <h5>Новый пользователь:</h5>
             <form id='form-add-user' class='form-add-user mb-1' method='post' action='<?php echo $routes['store']; ?>'>
                 <div class='form-add-user__row'>
@@ -30,7 +30,7 @@
         </article>
 
         <!-- пользователи -->
-        <div class='section-mb'>
+        <div class='theme-mb'>
             <h5>Пользователи:</h5>
             <table id='user-table' class='w-100'>
                 <tr>
@@ -53,5 +53,5 @@
         </div>
     </section>
 
-    <a href="<?php echo $routes['show']; ?>" class="d-block button-basic theme-border theme-border-radius mx-auto mb-2">Назад</a>
+    <a href="<?php echo $routes['show']; ?>" class="d-block button-basic theme-border theme-border-radius mx-auto mb-2">Страница администратора</a>
 </div>

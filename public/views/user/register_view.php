@@ -1,5 +1,5 @@
 <div class='container'>
-    <section class='content-section section-mb'>
+    <section class='content-section theme-mb'>
         <h3 class='mb-4 theme-grey-color'>Регистрация нового пользователя</h3>
 
         <form class='mx-auto mb-3' method="POST" action=<?php echo $routes['store']; ?>>
@@ -13,7 +13,8 @@
             class="d-block w-100 mb-2 p-3" placeholder="Подтвердите пароль" title="Подтвердите пароль" required>
 
             <input type="submit" value="Регистрация" class='button-basic d-block w-100 mb-2'>
-            <a href=<?php echo $routes['login']; ?> class='button-basic d-block w-100'>Назад</a>
+            <a href=<?php echo $routes['login']; ?> class='button-basic d-block w-100 mb-2'>Есть учетная запись?</a>
+            <a href="<?php echo $routes['home']; ?>" class="button-basic d-block w-100">На главную</a>
             <input type="hidden" name="CSRF" value=<?php echo $data['csrf']; ?>>  
         </form>
 

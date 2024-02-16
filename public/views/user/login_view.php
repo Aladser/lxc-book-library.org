@@ -1,5 +1,5 @@
 <div class='container'>
-    <section class='content-section section-mb'>
+    <section class='content-section theme-mb'>
         <h3>Авторизация</h3>
 
         <!-- логин-пароль -->
@@ -25,7 +25,7 @@
             </form>
         </div>
 
-        <a href="<?php echo $routes['home']; ?>" class="button-basic d-block w-100">Назад</a>
+        <a href="<?php echo $routes['home']; ?>" class="button-basic d-block w-100">На главную</a>
     </section>
 
 

@@ -1,11 +1,11 @@
 <div class='container'>
-    <section class='content-section section-mb'>
+    <section class='content-section theme-mb'>
         <p id='prg-error' class='prg-error'></p>
-        <h3 class='section-mb'>Жанры</h3>
+        <h3 class='theme-mb'>Жанры</h3>
 
         <article>
             <h5>Новый жанр:</h5>
-            <form id='form-add-genre' class='form-add section-mb'>
+            <form id='form-add-genre' class='form-add theme-mb'>
                 <input type="text" name="name" placeholder='название' class='form-add__input theme-border' required>
                 <input type="submit" value="Добавить" class='form-add__btn'>
                 <input type="hidden" name="CSRF" value="<?php echo $data['csrf']; ?>">
@@ -33,5 +33,5 @@
         </article>
     </section>
 
-    <a href="<?php echo $routes['show']; ?>" class="d-block button-basic theme-border theme-border-radius mx-auto mb-2">Назад</a>
+    <a href="<?php echo $routes['show']; ?>" class="d-block button-basic theme-border theme-border-radius mx-auto mb-2">Страница администратора</a>
 </div>

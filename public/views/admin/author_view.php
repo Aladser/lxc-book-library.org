@@ -1,12 +1,12 @@
 <div class='container'>
     <p id='prg-error' class='prg-error'></p>
-    <section class='content-section section-mb'>
-        <h3 class='section-mb'>Авторы книг</h3>
+    <section class='content-section theme-mb'>
+        <h3 class='theme-mb'>Авторы книг</h3>
 
         <!-- форма добавления автора -->
         <article>
             <h5>Новый автор:</h5>
-            <form id='form-add-author' class='section-mb'>
+            <form id='form-add-author' class='theme-mb'>
                 <input type="text" name="name" placeholder='имя' class='form-add__input theme-border' required>
                 <input type="text" name="surname" placeholder='фамилия' class='form-add__input theme-border' required>
                 <input type="submit" value="Добавить" class='form-add__btn'>
@@ -15,7 +15,7 @@
         </article>
 
         <!-- авторы -->
-        <article class='section-mb'>
+        <article class='theme-mb'>
             <h5>Авторы:</h5>
             <table id='author-table' class='w-100'>
                 <?php for ($i = 0; $i < count($data['authors']); ++$i) {
@@ -37,5 +37,5 @@
         </article>
     </section>
 
-    <a href="<?php echo $routes['show']; ?>" class="d-block button-basic theme-border theme-border-radius mx-auto mb-2">Назад</a>
+    <a href="<?php echo $routes['show']; ?>" class="d-block button-basic theme-border theme-border-radius mx-auto mb-2">Страница администратора</a>
 </div>
