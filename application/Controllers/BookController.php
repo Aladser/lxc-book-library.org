@@ -74,7 +74,6 @@ class BookController extends Controller
             $data['header_button_url'] = route('login');
         }
         $data['auth_user_page'] = route('show');
-
         $data['is_admin'] = UserAuthService::isAuthAdmin();
 
         $id = $args['id'];
@@ -93,7 +92,7 @@ class BookController extends Controller
         $csrf_meta = "<meta name='csrf' content=$csrf>";
 
         $this->view->generate(
-            page_name: $this->site_name,
+            page_name: $data['book']['author_name'].' - '.$data['book']['name'],
             template_view: 'template_view.php',
             content_view: 'book/show_view.php',
             content_css: ['book.css'],
