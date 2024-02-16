@@ -86,21 +86,22 @@ class Book extends Model
     }
 
     // добавить
-    public function add(string $name): int
+    public function add(array $fields): int
     {
-        $genre = R::dispense($this->tableName);
-        $genre->name = $name;
+        $book = R::dispense($this->tableName);
+        $book->name = $fields['name'];
+        $book->author_id = $fields['author_id'];
+        $book->genre_id = $fields['genre_id'];
+        $book->year = $fields['year'];
 
-        return R::store($genre);
+        return R::store($book);
     }
 
     // удалить
     public function remove(string $id): bool
     {
-        $condition = 'id = :id';
-        $args = ['id' => $id];
-        $genre = Model::find($this->tableName, $condition, $args);
+        $book = R::load($this->tableName, $id);
 
-        return R::trash($genre) > 0;
+        return R::trash($book) > 0;
     }
 }

@@ -31,6 +31,22 @@ class Author extends Model
         return R::load($this->tableName, $id);
     }
 
+    // получить id
+    public function get_id(string $name, string $surname)
+    {
+        $condition = 'name = :name and surname = :surname';
+        $args = ['name' => $name, 'surname' => $surname];
+        $rows = R::find($this->tableName, $condition, $args);
+
+        if (empty($rows)) {
+            return false;
+        }
+
+        foreach ($rows as $key => $value) {
+            return $key;
+        }
+    }
+
     // проверить существование
     public function exists(string $name, string $surname): bool
     {

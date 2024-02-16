@@ -141,8 +141,38 @@ class BookController extends Controller
         }
     }
 
+    // сохранение новой книги
     public function store(mixed $args)
     {
-        var_dump($args);
+        // поиск автора
+        [$name, $surname] = explode(' ', $args['author']);
+        $author_id = $this->author->get_id($name, $surname);
+        if (!$author_id) {
+            throw new \Exception('BookController->store(): не найден автор');
+        }
+        // поиск жанра
+        $genre_id = $this->genre->get_id($args['genre']);
+        if (!$genre_id) {
+            throw new \Exception('BookController->store(): не найден жанр');
+        }
+        // поля строки книги
+        $fields = [
+            'name' => $args['name'],
+            'author_id' => $author_id,
+            'genre_id' => $genre_id,
+            'year' => $args['year'],
+        ];
+        if (!empty($args['picture'])) {
+            $fields['picture'] = $args['picture'];
+        }
+        if (!empty($args['description'])) {
+            $fields['description'] = $args['description'];
+        }
+        // сохранение книги
+        $id = $this->book->add($fields);
+        if ($id <= 0) {
+            throw new \Exception('BookController->store(): ошибка сохранения книги');
+        }
+        self::show(['id' => $id]);
     }
 }

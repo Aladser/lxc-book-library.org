@@ -22,6 +22,22 @@ class Genre extends Model
         return $genres;
     }
 
+    // получить id
+    public function get_id(string $name)
+    {
+        $condition = 'name = :name';
+        $args = ['name' => $name];
+        $rows = R::find($this->tableName, $condition, $args);
+
+        if (empty($rows)) {
+            return false;
+        }
+
+        foreach ($rows as $key => $value) {
+            return $key;
+        }
+    }
+
     // проверить существование
     public function exists(string $name): bool
     {
