@@ -59,10 +59,13 @@ class BookController extends Controller
     // страница книги
     public function show(mixed $args)
     {
-        $data['header_button_name'] = 'Выйти';
-        $data['header_button_url'] = route('logout');
         if (!empty($this->auth_user)) {
+            $data['header_button_name'] = 'Выйти';
+            $data['header_button_url'] = route('logout');
             $data['auth_user_name'] = $this->auth_user['user_name'];
+        } else {
+            $data['header_button_name'] = 'Войти';
+            $data['header_button_url'] = route('login');
         }
         $data['auth_user_page'] = route('show');
 
@@ -97,13 +100,6 @@ class BookController extends Controller
     // удаление книги
     public function destroy(mixed $args)
     {
-        // проверка прав администратора
-        $authUser = $this->authService->isAuthAdmin();
-        if (!$authUser) {
-            $mainControl = new MainController();
-            $mainControl->error('Доступ запрещен');
-        }
-        // удаление
         $isRemoved = $this->book->remove($args['id']);
         if ($isRemoved) {
             header('Location: /');

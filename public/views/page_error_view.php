@@ -1,3 +1,4 @@
-<div class='container text-center vw-100 d-flex flex-column justify-content-center h-page404'>
-    <p class='text-c4c4c4 h2'><?php echo $data['error']; ?></p>
+<div class='container text-center'>
+    <h2 class='pb-4'><?php echo $data['error']; ?></h2>
+    <a href="<?php echo $routes['home']; ?>" class="button-basic d-block mx-auto">На главную</a>
 </div>

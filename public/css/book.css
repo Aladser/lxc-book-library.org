@@ -19,12 +19,10 @@
 
 .book {
     padding: 3rem;
-    margin-bottom: 3rem;
 }
 
 .book__content {
     display: flex;
-    margin-bottom: 1rem;
 }
 
 @media (max-width: 500px) {

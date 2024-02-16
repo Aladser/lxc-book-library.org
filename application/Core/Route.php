@@ -111,14 +111,14 @@ class Route
         }
 
         // --- проверка прав для страниц администратора ---
-        if (in_array("$controllerName $action", $adminActionArr)) {
+        if (in_array($controllerName.' '.strtolower($action), $adminActionArr)) {
             if (!UserAuthService::isAuthAdmin()) {
                 $controller = new MainController();
                 $controller->error('Доступ запрещен');
             }
         }
 
-        // вызов метода
+        // --- вызов метода ---
         if (method_exists($controller, $action)) {
             $controller->$action($funcArgs);
         } else {
