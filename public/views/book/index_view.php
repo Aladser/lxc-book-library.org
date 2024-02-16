@@ -3,7 +3,7 @@
         <article class='theme-border theme-shadow theme-mb p-4'>
             <h4 class='text-center'>Библиография</h4>
             <?php if ($data['is_admin']) {?>
-                <a href="#" class="button-basic d-block float-end mb-2">Добавить книгу</a>
+                <a href=<?php echo $routes['book_create']; ?> class="button-basic d-block float-end mb-2">Добавить книгу</a>
             <?php } ?>
             <table class='book-table theme-mb w-100'>
                 <?php foreach ($data['books'] as $book) { ?>

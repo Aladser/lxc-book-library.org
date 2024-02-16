@@ -46,6 +46,7 @@ class BookController extends Controller
         // роуты
         $routes = [
             'book_show' => route('book_show'),
+            'book_create' => route('book_create'),
         ];
 
         $this->view->generate(
@@ -96,6 +97,16 @@ class BookController extends Controller
             routes: $routes,
             data: $data,
             add_head: $csrf_meta,
+        );
+    }
+
+    // форма добавления книги
+    public function create(mixed $args)
+    {
+        $this->view->generate(
+            page_name: 'Добавление книги',
+            template_view: 'template_view.php',
+            content_view: 'book/create_view.php',
         );
     }
 

@@ -11,7 +11,7 @@ class Author extends Model
     private string $tableName = 'authors';
 
     // список всех авторов
-    public function get()
+    public function get_all()
     {
         $sql = "select name, surname from {$this->tableName} order by surname";
         $queryResult = R::getAll($sql);
@@ -24,6 +24,10 @@ class Author extends Model
         }
 
         return $authors;
+    }
+
+    public function get($id)
+    {
     }
 
     // проверить существование

@@ -3,7 +3,7 @@
 namespace App;
 
 // --- роуты ---
-function route($page_name)
+function route($param)
 {
     // --- [имя страницы => url] ---
     $urlPageList = [
@@ -21,13 +21,14 @@ function route($page_name)
         'genres' => '/genre',
         'book_show' => '/book/show/',
         'book_delete' => '/book/destroy/',
+        'book_create' => '/book/create',
     ];
 
     try {
-        if (array_key_exists($page_name, $urlPageList)) {
-            return $urlPageList[$page_name];
+        if (array_key_exists($param, $urlPageList)) {
+            return $urlPageList[$param];
         } else {
-            throw new \Exception("Страница $page_name не существует");
+            throw new \Exception("route($param): параметр $param не существует");
         }
     } catch (\Exception $ex) {
         exit($ex);

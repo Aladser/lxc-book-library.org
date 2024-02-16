@@ -33,7 +33,7 @@ class AuthorController extends Controller
 
         $csrf = Controller::createCSRFToken();
         $data['csrf'] = $csrf;
-        $data['authors'] = $this->author->get();
+        $data['authors'] = $this->author->get_all();
 
         // роуты
         $routes = [
