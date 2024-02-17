@@ -111,8 +111,15 @@ class Book extends Model
         return R::trash($book) > 0;
     }
 
-    // проверить существование
-    public function exists(string $name): bool
+    // обновить
+    public function update(int $id, array $fields): bool
     {
+        $book = R::load($this->tableName, $id);
+        $book->name = $fields['name'];
+        $book->author_id = $fields['author_id'];
+        $book->genre_id = $fields['genre_id'];
+        $book->year = $fields['year'];
+
+        return R::store($book) > 0;
     }
 }

@@ -129,30 +129,7 @@ class BookController extends Controller
 
     public function store(mixed $args)
     {
-        // поиск автора
-        [$name, $surname] = explode(' ', $args['author']);
-        $author_id = $this->author->get_id($name, $surname);
-        if (!$author_id) {
-            throw new \Exception('BookController->store(): не найден автор');
-        }
-        // поиск жанра
-        $genre_id = $this->genre->get_id($args['genre']);
-        if (!$genre_id) {
-            throw new \Exception('BookController->store(): не найден жанр');
-        }
-        // поля строки книги
-        $fields = [
-            'name' => $args['name'],
-            'author_id' => $author_id,
-            'genre_id' => $genre_id,
-            'year' => $args['year'],
-        ];
-        if (!empty($args['picture'])) {
-            $fields['picture'] = $args['picture'];
-        }
-        if (!empty($args['description'])) {
-            $fields['description'] = $args['description'];
-        }
+        $fields = self::parseForm($args);
         // сохранение книги
         $id = $this->book->add($fields);
         if ($id <= 0) {
@@ -200,6 +177,26 @@ class BookController extends Controller
 
     public function update(mixed $args)
     {
+        $fields = self::parseForm($args);
+        // поиск существования книги
+        $book_id = $this->book->get_id($fields['name'], $fields['author_id']);
+        if ($book_id) {
+            echo json_encode(['result' => 0, 'description' => 'Книга уже существует']);
+
+            return;
+        }
+        // обновление
+        $isUpdated = $this->book->update($args['id'], $fields);
+        $response['result'] = (int) $isUpdated;
+        if (!$isUpdated) {
+            $response['description'] = 'Серверная ошибка обновления книги';
+        }
+        echo json_encode($response);
+    }
+
+    // парсинг формы
+    private function parseForm($args): array
+    {
         // поиск автора
         [$name, $surname] = explode(' ', $args['author']);
         $author_id = $this->author->get_id($name, $surname);
@@ -211,13 +208,21 @@ class BookController extends Controller
         if (!$genre_id) {
             throw new \Exception('BookController->store(): не найден жанр');
         }
-        // поиск существования книги
-        $book_id = $this->book->get_id($args['name'], $author_id);
-        if ($book_id) {
-            echo json_encode(['result' => 0, 'description' => 'Книга уже существует']);
 
-            return;
+        // поля строки книги
+        $fields = [
+            'name' => $args['name'],
+            'author_id' => $author_id,
+            'genre_id' => $genre_id,
+            'year' => $args['year'],
+        ];
+        if (!empty($args['picture'])) {
+            $fields['picture'] = $args['picture'];
         }
-        echo json_encode(['result' => 1]);
+        if (!empty($args['description'])) {
+            $fields['description'] = $args['description'];
+        }
+
+        return $fields;
     }
 }
