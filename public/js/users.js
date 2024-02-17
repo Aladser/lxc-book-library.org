@@ -1,4 +1,3 @@
-/** URL методов*/
 const url = {
   store: "/user/store",
   destroy: "/user/destroy",
@@ -7,7 +6,6 @@ const url = {
 const errorPrg = document.querySelector("#prg-error");
 /** CSRF */
 const csrf = document.querySelector("meta[name='csrf']");
-
 /** таблица пользователей */
 const userTable = document.querySelector("#user-table").childNodes[1];
 /** форма добавления пользователя*/
@@ -16,10 +14,10 @@ const addUserForm = document.querySelector("#form-add-user");
 const editUserButtons = document.querySelectorAll(".user-table__btn-edit");
 /** кнопки удаления пользователя*/
 const removeUserButtons = document.querySelectorAll(".user-table__btn-remove");
-
 /** клиентский контроллер пользователей */
 const userClientController = new UserClientController(url, errorPrg);
 
+// --- DOMContentLoaded ---
 window.addEventListener("DOMContentLoaded", function () {
   // добавление пользователя
   addUserForm.onsubmit = (e) => {

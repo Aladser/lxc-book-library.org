@@ -1,4 +1,3 @@
-/** URL методов*/
 const url = {
   store: "/genre/store",
   destroy: "/genre/destroy",
@@ -15,10 +14,10 @@ const addGenreForm = document.querySelector("#form-add-genre");
 const removeGenreButtons = document.querySelectorAll(
   ".genre-table__btn-remove"
 );
-
 /** клиентский контроллер жанров */
 const genreClientController = new GenreClientController(url, errorPrg);
 
+// --- DOMContentLoaded ---
 window.addEventListener("DOMContentLoaded", function () {
   // добавление жанра
   addGenreForm.onsubmit = (e) => {

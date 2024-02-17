@@ -75,6 +75,9 @@ class BookController extends Controller
         }
         $data['auth_user_page'] = route('show');
         $data['is_admin'] = UserAuthService::isAuthAdmin();
+        if (isset($args['error'])) {
+            $data['error'] = $args['error'];
+        }
 
         $id = $args['id'];
         $data['book'] = $this->book->get($id);
@@ -189,6 +192,7 @@ class BookController extends Controller
             template_view: 'template_view.php',
             content_view: 'book/edit_view.php',
             content_css: ['form-add.css'],
+            content_js: ['Classes/ServerRequest.js', 'edit_book.js'],
             routes: $routes,
             data: $data,
         );
@@ -196,6 +200,24 @@ class BookController extends Controller
 
     public function update(mixed $args)
     {
-        var_dump($args);
+        // поиск автора
+        [$name, $surname] = explode(' ', $args['author']);
+        $author_id = $this->author->get_id($name, $surname);
+        if (!$author_id) {
+            throw new \Exception('BookController->store(): не найден автор');
+        }
+        // поиск жанра
+        $genre_id = $this->genre->get_id($args['genre']);
+        if (!$genre_id) {
+            throw new \Exception('BookController->store(): не найден жанр');
+        }
+        // поиск существования книги
+        $book_id = $this->book->get_id($args['name'], $author_id);
+        if ($book_id) {
+            echo json_encode(['result' => 0, 'description' => 'Книга уже существует']);
+
+            return;
+        }
+        echo json_encode(['result' => 1]);
     }
 }

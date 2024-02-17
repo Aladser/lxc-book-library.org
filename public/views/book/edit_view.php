@@ -1,8 +1,9 @@
 <div class='container'>
+        <p id='prg-error' class='prg-error'><?php isset($data['error']) ? $data['error'] : ''; ?></p>
         <!-- форма редактирования пользователя -->
         <article class='w-50 mx-auto mb-3'>
             <h5 class='text-center mb-3'>Редактирование пользователя</h5>
-            <form id='form-add-user' class='form-add-users' method='post' action='<?php echo $routes['book_update']; ?>'>
+            <form id='form-edit-user' class='form-add-users'>
                 <!-- Название -->
                 <div class='form-add-user__row'>
                     <label for="name">Название</label>

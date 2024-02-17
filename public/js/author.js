@@ -17,10 +17,10 @@ const editGenreButtons = document.querySelectorAll(".author-table__btn-edit");
 const removeGenreButtons = document.querySelectorAll(
   ".author-table__btn-remove"
 );
-
 /** клиентский контроллер авторов */
 const authorClientController = new AuthorClientController(url, errorPrg);
 
+// --- DOMContentLoaded ---
 window.addEventListener("DOMContentLoaded", function (e) {
   // добавление нового автора
   addAuthorForm.onsubmit = async (e) => {

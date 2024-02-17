@@ -76,6 +76,21 @@ class Book extends Model
         return $book;
     }
 
+    public function get_id(string $name, int $author_id)
+    {
+        $condition = 'name = :name and author_id = :author_id';
+        $args = ['name' => $name, 'author_id' => $author_id];
+        $rows = R::find($this->tableName, $condition, $args);
+
+        if (empty($rows)) {
+            return false;
+        }
+
+        foreach ($rows as $key => $value) {
+            return $key;
+        }
+    }
+
     // добавить
     public function add(array $fields): int
     {
