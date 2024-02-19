@@ -1,6 +1,11 @@
 .form-add-user, .form-add-user * {
   box-sizing: border-box;
 }
+.form-add-users {
+  width: 800px;
+  margin: 0 auto;
+  padding: 1rem;
+}
 
 .form-add__input, .form-add__btn{
   padding: 0.5em;
@@ -18,24 +23,36 @@
 }
 
 .form-add-user__row {
-    width: 100%;
     margin-bottom: 1rem;
 }
 .form-add-user__row label{
     width: 30%;
+}
+.form-add-user__row label{
+  width: 30%;
 }
 .form-add-user__row input, .form-add-user__row select{
     width: 69%;
     padding: 0.5em;
 }
 
+@media (max-width: 990px) {
+  .form-add-users{
+    width: 95%;
+  }
+}
+
 @media (max-width: 700px) {
   .form-add__input {
     display: block;
-    width: 50%;
-
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 0.25em;
+    margin: 0 auto 0.25em auto;
+  }
+  .form-add-user__row label{
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .form-add-user__row input, .form-add-user__row select {
+    width: 100%;
   }
 }
