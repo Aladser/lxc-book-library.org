@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use App\Core\Controller;
-use App\Services\UserAuthService;
 
 use function App\route;
 
@@ -12,18 +11,9 @@ class MainController extends Controller
 {
     public function error($errorName)
     {
+        $data = self::formHeaderData();
         $data = ['error' => $errorName];
-        $data['header_button_name'] = 'Выйти';
-        $data['header_button_url'] = route('logout');
 
-        $authService = new UserAuthService();
-        $auth_user = $authService->getAuthUser();
-        if (isset($data['auth_user_name'])) {
-            $data['auth_user_name'] = $auth_user['user_name'];
-        }
-        $data['auth_user_page'] = route('show');
-
-        // роуты
         $routes = [
             'home' => route('home'),
         ];

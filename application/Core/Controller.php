@@ -2,7 +2,10 @@
 
 namespace App\Core;
 
+use App\Services\UserAuthService;
+
 use function App\config;
+use function App\route;
 
 abstract class Controller
 {
@@ -24,5 +27,22 @@ abstract class Controller
         $_SESSION['CSRF'] = $csrfToken;
 
         return $csrfToken;
+    }
+
+    //  сформировать данные шапки сайта
+    public function formHeaderData()
+    {
+        $auth_user = UserAuthService::getAuthUser();
+        if (!empty($auth_user)) {
+            $data['header_button_name'] = 'Выйти';
+            $data['header_button_url'] = route('logout');
+            $data['auth_user_name'] = $auth_user['user_name'];
+            $data['auth_user_page'] = route('show');
+        } else {
+            $data['header_button_name'] = 'Войти';
+            $data['header_button_url'] = route('login');
+        }
+
+        return $data;
     }
 }

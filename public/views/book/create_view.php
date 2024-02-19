@@ -1,7 +1,7 @@
 <div class='container'>
-        <!-- форма добавления пользователя -->
+        <!-- форма добавления книги -->
         <article class='w-50 mx-auto mb-3'>
-            <h5 class='text-center mb-3'>Новый пользователь</h5>
+            <h5 class='text-center mb-3'>Новая книга</h5>
             <form id='form-add-user' class='form-add-users' method='post' action='<?php echo $routes['book_store']; ?>'>
                 <!-- Название -->
                 <div class='form-add-user__row'>

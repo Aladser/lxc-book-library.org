@@ -31,19 +31,8 @@ class BookController extends Controller
 
     public function index(mixed $args): void
     {
-        // кнопка Войти-Выйти, данные авториз.пользователя
-        if (!empty($this->auth_user)) {
-            $data['header_button_name'] = 'Выйти';
-            $data['header_button_url'] = route('logout');
-            $data['auth_user_name'] = $this->auth_user['user_name'];
-            $data['auth_user_page'] = route('show');
-            if (isset($this->auth_user['user_photo'])) {
-                $data['auth_user_photo'] = $this->auth_user['user_photo'];
-            }
-        } else {
-            $data['header_button_name'] = 'Войти';
-            $data['header_button_url'] = route('login');
-        }
+        // данные шапки
+        $data = self::formHeaderData();
         // серверные данные
         $data['books'] = $this->book->get_all(false);
         $data['is_admin'] = UserAuthService::isAuthAdmin();
@@ -65,15 +54,9 @@ class BookController extends Controller
 
     public function show(mixed $args)
     {
-        if (!empty($this->auth_user)) {
-            $data['header_button_name'] = 'Выйти';
-            $data['header_button_url'] = route('logout');
-            $data['auth_user_name'] = $this->auth_user['user_name'];
-        } else {
-            $data['header_button_name'] = 'Войти';
-            $data['header_button_url'] = route('login');
-        }
-        $data['auth_user_page'] = route('show');
+        // данные шапки
+        $data = self::formHeaderData();
+
         $data['is_admin'] = UserAuthService::isAuthAdmin();
         if (isset($args['error'])) {
             $data['error'] = $args['error'];
@@ -107,6 +90,9 @@ class BookController extends Controller
 
     public function create(mixed $args)
     {
+        // данные шапки
+        $data = self::formHeaderData();
+
         $data['csrf'] = Controller::createCSRFToken();
         $data['authors'] = $this->author->get_all();
         $data['genres'] = $this->genre->get_all();
@@ -151,6 +137,9 @@ class BookController extends Controller
 
     public function edit(mixed $args)
     {
+        // данные шапки
+        $data = self::formHeaderData();
+
         $data['csrf'] = Controller::createCSRFToken();
         $data['authors'] = $this->author->get_all();
         $data['genres'] = $this->genre->get_all();

@@ -22,11 +22,8 @@ class GenreController extends Controller
 
     public function index(mixed $args): void
     {
-        // данные
-        $data['header_button_url'] = route('logout');
-        $data['header_button_name'] = 'Выйти';
-        $data['auth_user_name'] = $this->auth_user['user_name'];
-        $data['auth_user_page'] = route('show');
+        // данные шапки
+        $data = self::formHeaderData();
 
         $csrf = Controller::createCSRFToken();
         $data['csrf'] = $csrf;
