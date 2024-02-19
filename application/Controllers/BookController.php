@@ -17,7 +17,7 @@ class BookController extends Controller
     private Author $author;
     private Genre $genre;
 
-    private mixed $auth_user;
+    private array $auth_user;
 
     public function __construct()
     {

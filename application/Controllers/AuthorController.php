@@ -10,7 +10,7 @@ use function App\route;
 
 class AuthorController extends Controller
 {
-    private mixed $auth_user;
+    private array $auth_user;
     private Author $author;
 
     public function __construct()

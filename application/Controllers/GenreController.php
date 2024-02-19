@@ -10,7 +10,7 @@ use function App\route;
 
 class GenreController extends Controller
 {
-    private mixed $auth_user;
+    private array $auth_user;
     private Genre $genre;
 
     public function __construct()
