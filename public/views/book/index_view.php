@@ -9,7 +9,7 @@
                 <?php foreach ($data['books'] as $book) { ?>
                     <tr class='book-table__row theme-border-bottom'>
                         <td class='book-table__author'>
-                            <a href="<?php echo $routes['book_show'].$book['id']; ?>"><?php echo $book['author_name'].' - '.$book['name']; ?></a>
+                            <a href="<?php echo $routes['book_show'].$book['id']; ?>" class='d-inline-block p-2'><?php echo $book['author_name'].' - '.$book['name']; ?></a>
                         </td>
                         <td><?php echo $book['genre']; ?></td>
                     </tr>

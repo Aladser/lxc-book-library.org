@@ -13,11 +13,10 @@ use function App\route;
 
 class BookController extends Controller
 {
+    private $auth_user;
     private Book $book;
     private Author $author;
     private Genre $genre;
-
-    private array $auth_user;
 
     public function __construct()
     {

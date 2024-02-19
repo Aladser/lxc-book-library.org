@@ -7,7 +7,6 @@
 /* строка таблицы */
 .book-table__author {
     cursor: pointer;
-    padding: 1em;
 }
 .book-table__author a {
     color: var(--theme-darker-color);
