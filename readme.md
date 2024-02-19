@@ -19,24 +19,35 @@
 
 ## Авторизация
 
-![Авторизация](/storage/readme/login.png)
+![Авторизация](/storage/readme/user/login.png)
 
 ## Регистрация пользователя
 
-![Регистрация пользователя](/storage/readme/register.png)
+![Регистрация пользователя](/storage/readme/user/register.png)
 
 ## Главная страница
 
-![Главная страница](/storage/readme/main.png)
+![Главная страница](/storage/readme/book/all.png)
 
 ## Панель администратора
-![Главная страница](/storage/readme/admin.png)
+![Главная страница](/storage/readme/admin/panel.png)
 
-## Панель администратора - пользователи
-![Главная страница](/storage/readme/admin_users.png)
+### Панель администратора - пользователи
+![Главная страница](/storage/readme/user/all.png)
 
-## Панель администратора - авторы
-![Главная страница](/storage/readme/admin_authors.png)
+### Панель администратора - авторы
+![Главная страница](/storage/readme/admin/authors.png)
 
-## Панель администратора - жанры
-![Главная страница](/storage/readme/admion_genres.png)
+### Панель администратора - жанры
+![Главная страница](/storage/readme/admin/genres.png)
+
+## Книги
+
+### Книги - страница книги
+![Главная страница](/storage/readme/book/show.png)
+
+### Книги - добавить новую
+![Главная страница](/storage/readme/book/new.png)
+
+### Книги - редактировать книгу
+![Главная страница](/storage/readme/book/edit.png)
