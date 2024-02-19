@@ -1,0 +1,63 @@
+/* контент книги*/
+.book__container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+
+/* контейнер изображения */
+.book__image {
+    height: 30rem;
+    width: 50%;
+    margin-bottom: 1rem;
+}
+/* атрибуты книги */
+.book__description {
+    width: 50%;
+}
+/* строка таблицы */
+.book-table__author {
+    cursor: pointer;
+}
+.book-table__author a {
+    color: var(--theme-darker-color);
+    text-decoration: underline;
+}
+.book-table__author:hover{
+    text-shadow: var(--theme-text-shadow);
+}
+
+.book {
+    padding: 3rem;
+}
+
+@media (max-width: 1000px) {
+    .book__container {
+        display: block;
+    }
+    .book__container *{
+        margin: 0 auto 0 auto;
+    }
+    .book__image {
+        margin-bottom: 1rem;
+        width: 100%;
+    }
+    .book__description {
+        width: 100%;
+        text-align: center;
+    }
+    .book_content {
+        text-align: center;   
+    }
+}
+
+@media (max-width: 500px) {
+    .book__image {
+        height: 18rem;
+        width: 100%;
+        margin-bottom: 1.5rem;
+    }
+    .book__description {
+        margin-bottom: 1rem;
+    }
+}

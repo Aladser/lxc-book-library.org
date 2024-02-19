@@ -47,12 +47,6 @@ button {
 .button-wide {
   width: 20rem;
 }
-@media(max-width:700px) {
-  .button-wide{
-    width: 100%;
-  }
-}
-
 .button-small {
   display: inline-block;
   border: 1px solid var(--theme-color);
@@ -80,4 +74,10 @@ button {
   font-weight: bolder;
   word-break: break-word;
   padding: 0.5rem;
+}
+
+@media(max-width:700px) {
+  .button-wide{
+    width: 100%;
+  }
 }

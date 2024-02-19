@@ -50,6 +50,7 @@
     </div>
 </header>
 
-<?php include $content_view; ?>
+<div class='container'><?php include $content_view; ?></div>
+
 </body>
 </html>
