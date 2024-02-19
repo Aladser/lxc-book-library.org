@@ -1,5 +1,5 @@
 `<!-- форма добавления книги -->
-<article class='mx-auto'>
+<secton class='mx-auto'>
     <h5 class='text-center mb-3'>Новая книга</h5>
     <form id='form-add-user' class='form-add-users' method='post' action='<?php echo $routes['book_store']; ?>'>
     <!-- Название -->
@@ -47,5 +47,5 @@
     <a href="<?php echo $routes['home']; ?>" class="button-basic button-wide d-block mx-auto">На главную</a>
     <input type="hidden" name="CSRF" value="<?php echo $data['csrf']; ?>">
     </form>
-</article>
+</secton>
 `

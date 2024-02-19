@@ -1,6 +1,6 @@
 <p id='prg-error' class='prg-error'><?php isset($data['error']) ? $data['error'] : ''; ?></p>
 <!-- форма редактирования пользователя -->
-<article class='w-50 mx-auto mb-3'>
+<article class='mx-auto'>
     <h5 class='text-center mb-3'>Редактирование пользователя</h5>
     <form id='form-edit-user' class='form-add-users'>
         <!-- Название -->
@@ -50,9 +50,8 @@
             <textarea name="description" class='form-add__input theme-border w-100' rows="10"><?php echo $data['book']['description']; ?></textarea>
         </div>
 
-        <input type="submit" value="Сохранить" class='button-basic button-wide d-block mx-auto'>
+        <input type="submit" value="Сохранить" class='button-basic button-wide d-block mx-auto mb-3'>
+        <a href="<?php echo $routes['home']; ?>" class="button-basic button-wide d-block mx-auto">На главную</a>
         <input type="hidden" name="CSRF" value="<?php echo $data['csrf']; ?>">
     </form>
 </article>
-
-<a href="<?php echo $routes['home']; ?>" class="button-basic button-wide d-block mx-auto">На главную</a>

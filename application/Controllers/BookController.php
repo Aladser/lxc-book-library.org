@@ -45,7 +45,7 @@ class BookController extends Controller
             page_name: $this->site_name,
             template_view: 'template_view.php',
             content_view: 'book/index_view.php',
-            content_css: ['book/book.css', 'index.css'],
+            content_css: ['book.css', 'index.css'],
             routes: $routes,
             data: $data,
         );
@@ -80,7 +80,7 @@ class BookController extends Controller
             page_name: $data['book']['author_name'].' - '.$data['book']['name'],
             template_view: 'template_view.php',
             content_view: 'book/show_view.php',
-            content_css: ['book/book.css', 'book/show.css'],
+            content_css: ['book.css'],
             routes: $routes,
             data: $data,
             add_head: $csrf_meta,

@@ -61,3 +61,22 @@
         margin-bottom: 1rem;
     }
 }
+
+.content-container{
+    padding: 1.5rem;
+}
+
+.book_content {
+    margin-bottom: 1rem;   
+}
+@media (max-width: 1000px) {
+    .book_content {
+        text-align: center;   
+    }
+    .book_btn-block {
+        text-align: center;
+    }
+    .book__description {
+        margin-bottom: 1rem;
+    }
+}
