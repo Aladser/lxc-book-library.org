@@ -14,7 +14,7 @@ function config($param)
         'HOST_DB' => 'localhost',
         'NAME_DB' => $site_name,
         'USER_DB' => 'admin',
-        'PASS_DB' => '@admin@',
+        'PASS_DB' => 'Database_1821',
         // базовый адрес страницы
         'SITE_ADDRESS' => $site_address,
         'SITE_NAME' => 'Книжная библиотека',
