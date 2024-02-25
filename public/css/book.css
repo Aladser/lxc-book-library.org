@@ -1,82 +1,93 @@
+@charset "UTF-8";
 /* контент книги*/
 .book__container {
-    display: flex;
-    flex-wrap: wrap;
+  display: flex;
+  flex-wrap: wrap;
 }
-
+@media (max-width: 1000px) {
+  .book__container {
+    display: block;
+  }
+}
+@media (max-width: 1000px) {
+  .book__container * {
+    margin: 0 auto 0 auto;
+  }
+}
 
 /* контейнер изображения */
 .book__image {
-    height: 30rem;
-    width: 50%;
-    margin-bottom: 1rem;
+  height: 30rem;
+  width: 50%;
+  margin-bottom: 1rem;
 }
+@media (max-width: 1000px) {
+  .book__image {
+    margin-bottom: 1rem;
+    width: 100%;
+  }
+}
+@media (max-width: 500px) {
+  .book__image {
+    height: 18rem;
+    width: 100%;
+    margin-bottom: 1.5rem;
+  }
+}
+
 /* атрибуты книги */
 .book__description {
-    width: 50%;
+  width: 50%;
 }
+@media (max-width: 1000px) {
+  .book__description {
+    width: 100%;
+    text-align: center;
+  }
+}
+@media (max-width: 500px) {
+  .book__description {
+    margin-bottom: 1rem;
+  }
+}
+
 /* строка таблицы */
 .book-table__author {
-    cursor: pointer;
+  cursor: pointer;
 }
 .book-table__author a {
-    color: var(--theme-darker-color);
-    text-decoration: underline;
+  color: var(--theme-darker-color);
+  text-decoration: underline;
 }
-.book-table__author:hover{
-    text-shadow: var(--theme-text-shadow);
+.book-table__author:hover {
+  text-shadow: var(--theme-text-shadow);
 }
 
 .book {
-    padding: 3rem;
+  padding: 3rem;
 }
 
-@media (max-width: 1000px) {
-    .book__container {
-        display: block;
-    }
-    .book__container *{
-        margin: 0 auto 0 auto;
-    }
-    .book__image {
-        margin-bottom: 1rem;
-        width: 100%;
-    }
-    .book__description {
-        width: 100%;
-        text-align: center;
-    }
-    .book_content {
-        text-align: center;   
-    }
-}
-
-@media (max-width: 500px) {
-    .book__image {
-        height: 18rem;
-        width: 100%;
-        margin-bottom: 1.5rem;
-    }
-    .book__description {
-        margin-bottom: 1rem;
-    }
-}
-
-.content-container{
-    padding: 1.5rem;
+.content-container {
+  padding: 1.5rem;
 }
 
 .book_content {
-    margin-bottom: 1rem;   
+  margin-bottom: 1rem;
 }
 @media (max-width: 1000px) {
-    .book_content {
-        text-align: center;   
-    }
-    .book_btn-block {
-        text-align: center;
-    }
-    .book__description {
-        margin-bottom: 1rem;
-    }
+  .book_content {
+    text-align: center;
+  }
 }
+
+@media (max-width: 1000px) {
+  .book_btn-block {
+    text-align: center;
+  }
+}
+
+@media (max-width: 1000px) {
+  .book__description {
+    margin-bottom: 1rem;
+  }
+}/*# sourceMappingURL=book.css.map */

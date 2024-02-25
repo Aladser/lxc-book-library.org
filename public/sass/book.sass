@@ -1,0 +1,58 @@
+/* контент книги*/
+.book__container
+    display: flex
+    flex-wrap: wrap
+    @media (max-width: 1000px)
+        display: block
+    & *
+        @media (max-width: 1000px)
+            margin: 0 auto 0 auto
+
+/* контейнер изображения */
+.book__image
+    height: 30rem
+    width: 50%
+    margin-bottom: 1rem
+    @media (max-width: 1000px)
+        margin-bottom: 1rem
+        width: 100%
+    @media (max-width: 500px)
+        height: 18rem
+        width: 100%
+        margin-bottom: 1.5rem
+
+/* атрибуты книги */
+.book__description
+    width: 50%
+    @media (max-width: 1000px)
+        width: 100%
+        text-align: center
+    @media (max-width: 500px)
+        margin-bottom: 1rem
+
+/* строка таблицы */
+.book-table__author
+    cursor: pointer
+    & a
+        color: var(--theme-darker-color)
+        text-decoration: underline
+    &:hover
+        text-shadow: var(--theme-text-shadow)
+
+.book
+    padding: 3rem
+
+.content-container
+    padding: 1.5rem
+
+.book_content
+    margin-bottom: 1rem
+    @media (max-width: 1000px)
+        text-align: center
+.book_btn-block
+    @media (max-width: 1000px)
+        text-align: center
+
+.book__description
+    @media (max-width: 1000px)
+        margin-bottom: 1rem
