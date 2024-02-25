@@ -66,28 +66,25 @@
 .book {
   padding: 3rem;
 }
-
-.content-container {
-  padding: 1.5rem;
-}
-
-.book_content {
+.book__content {
   margin-bottom: 1rem;
 }
 @media (max-width: 1000px) {
-  .book_content {
+  .book__content {
     text-align: center;
   }
 }
-
 @media (max-width: 1000px) {
-  .book_btn-block {
+  .book {
     text-align: center;
   }
 }
-
 @media (max-width: 1000px) {
-  .book__description {
+  .book {
     margin-bottom: 1rem;
   }
+}
+
+.content-container {
+  padding: 1.5rem;
 }/*# sourceMappingURL=book.css.map */

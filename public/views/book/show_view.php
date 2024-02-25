@@ -13,7 +13,7 @@
             <p><?php echo $data['book']['genre']; ?></p>
             <p class="fst-italic"><?php echo $data['book']['year']; ?> год</p>
         </article>
-        <div class='book_content'>
+        <div class='book__content'>
         НА ЧТО ТЫ ГОТОВ РАДИ ВЕЧНОЙ ЖИЗНИ? Уже при нашей жизни будут сделаны открытия, которые позволят людям оставаться вечно молодыми. 
         Смерти больше нет. Наши дети не умрут никогда. Добро пожаловать в будущее. В мир, населенный вечно юными, совершенно здоровыми, счастливыми людьми. 
         Но будут ли они такими же, как мы? Нужны ли дети, если за них придется пожертвовать бессмертием? Нужна ли семья тем, кто не может завести детей? 
@@ -22,7 +22,7 @@
 
         <!-- кнопка редактирования и удаления -->
         <?php if ($data['is_admin']) {?>
-        <div class='book_btn-block'>
+        <div class='book__btn-block'>
             <a href="<?php echo $routes['book_edit'].$data['book']['id']; ?>" class="button-basic d-inline-block">Редактировать</a>
             <a href="<?php echo $routes['book_delete'].$data['book']['id']; ?>" class="button-basic d-inline-block">Удалить</a>
         </div>
