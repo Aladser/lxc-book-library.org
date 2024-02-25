@@ -1,3 +1,5 @@
+@import theme
+
 .form-add-users
   width: 800px
   margin: 0 auto
@@ -10,7 +12,7 @@
 
 .form-add__btn
   padding: 0.5em 1.5em
-  color: var(--theme-darker-color)
+  color: $theme-darker-color
 .form-add-user, .form-add-user *
   box-sizing: border-box
 
@@ -18,19 +20,26 @@
   width: 800px
   margin: 0 auto
   padding: 1rem
+  @media (max-width: 1120px)
+    width: 95%
 
 .form-add__input, .form-add__btn
   padding: 0.5em
   background-color: white
   border-radius: 0.35em
 
+.form-add__input
+  @media (max-width: 700px)
+    display: block
+    margin: 0 auto 0.25em auto
+
 .form-add__btn
   padding: 0.5em 1.5em
-  color: var(--theme-darker-color)
-  border: var(--theme-border)
+  color: $theme-darker-color
+  border: $theme-border
 
   &:hover
-    text-shadow: 0.04em 0.02em 0.06em var(--theme-darker-color)
+    text-shadow: 0.04em 0.02em 0.06em $theme-darker-color
 
 .form-add-user__row
   margin-bottom: 1rem
@@ -40,24 +49,13 @@
 
   & label
     width: 30%
+    @media (max-width: 700px)
+      display: block
+      margin: 0 auto
+      text-align: center
 
   & input, & select
     width: 69%
     padding: 0.5em
-
-@media (max-width: 1120px)
-  .form-add-users
-    width: 95%
-
-@media (max-width: 700px)
-  .form-add__input
-    display: block
-    margin: 0 auto 0.25em auto
-
-  .form-add-user__row label
-    display: block
-    margin: 0 auto
-    text-align: center
-
-  .form-add-user__row input, .form-add-user__row select
+  @media (max-width: 700px)
     width: 100%

@@ -1,3 +1,5 @@
+@import theme
+
 /* контент книги*/
 .book__container
     display: flex
@@ -34,10 +36,10 @@
 .book-table__author
     cursor: pointer
     & a
-        color: var(--theme-darker-color)
+        color: $theme-darker-color
         text-decoration: underline
     &:hover
-        text-shadow: var(--theme-text-shadow)
+        text-shadow: $theme-text-shadow
 
 .book
     padding: 3rem

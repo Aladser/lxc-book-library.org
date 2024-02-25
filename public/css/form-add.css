@@ -1,3 +1,67 @@
+@charset "UTF-8";
+/* --- цвет шрифта ---*/
+.theme-color {
+  color: rgba(0, 150, 255, 0.7);
+}
+
+.theme-darker-color {
+  color: rgba(0, 120, 206, 0.7);
+}
+
+.theme-red-color {
+  color: rgb(202, 0, 0);
+}
+
+/* --- цвет фона ---*/
+.theme-bg-сolor {
+  background-color: rgba(0, 150, 255, 0.7);
+}
+
+.theme-grey-bgcolor {
+  background-color: rgb(252, 252, 252);
+}
+
+/* --- границы ---*/
+.theme-border {
+  border: 1.5px solid rgba(0, 150, 255, 0.7);
+  outline: none;
+}
+
+.theme-border-start {
+  border-left: 1.5px solid rgba(0, 150, 255, 0.7);
+}
+
+.theme-border-top {
+  border-top: 1.5px solid rgba(0, 150, 255, 0.7);
+}
+
+.theme-border-end {
+  border-right: 1.5px solid rgba(0, 150, 255, 0.7);
+}
+
+.theme-border-bottom {
+  border-bottom: 1.5px solid rgba(0, 150, 255, 0.7);
+}
+
+/* круглые границы */
+.theme-border-radius {
+  border-radius: 0.35em;
+}
+
+/* --- тень ---*/
+.theme-shadow {
+  box-shadow: 2px 1px 4px rgba(0, 120, 206, 0.7);
+}
+
+/* нижний отступ */
+.theme-mb {
+  margin-bottom: 2rem;
+}
+
+.theme-mb {
+  margin-bottom: 1rem;
+}
+
 .form-add-users {
   width: 800px;
   margin: 0 auto;
@@ -12,7 +76,7 @@
 
 .form-add__btn {
   padding: 0.5em 1.5em;
-  color: var(--theme-darker-color);
+  color: rgba(0, 120, 206, 0.7);
 }
 
 .form-add-user, .form-add-user * {
@@ -24,6 +88,11 @@
   margin: 0 auto;
   padding: 1rem;
 }
+@media (max-width: 1120px) {
+  .form-add-users {
+    width: 95%;
+  }
+}
 
 .form-add__input, .form-add__btn {
   padding: 0.5em;
@@ -31,13 +100,20 @@
   border-radius: 0.35em;
 }
 
+@media (max-width: 700px) {
+  .form-add__input {
+    display: block;
+    margin: 0 auto 0.25em auto;
+  }
+}
+
 .form-add__btn {
   padding: 0.5em 1.5em;
-  color: var(--theme-darker-color);
-  border: var(--theme-border);
+  color: rgba(0, 120, 206, 0.7);
+  border: 1.5px solid rgba(0, 150, 255, 0.7);
 }
 .form-add__btn:hover {
-  text-shadow: 0.04em 0.02em 0.06em var(--theme-darker-color);
+  text-shadow: 0.04em 0.02em 0.06em rgba(0, 120, 206, 0.7);
 }
 
 .form-add-user__row {
@@ -49,27 +125,19 @@
 .form-add-user__row label {
   width: 30%;
 }
-.form-add-user__row input, .form-add-user__row select {
-  width: 69%;
-  padding: 0.5em;
-}
-
-@media (max-width: 1120px) {
-  .form-add-users {
-    width: 95%;
-  }
-}
 @media (max-width: 700px) {
-  .form-add__input {
-    display: block;
-    margin: 0 auto 0.25em auto;
-  }
   .form-add-user__row label {
     display: block;
     margin: 0 auto;
     text-align: center;
   }
-  .form-add-user__row input, .form-add-user__row select {
+}
+.form-add-user__row input, .form-add-user__row select {
+  width: 69%;
+  padding: 0.5em;
+}
+@media (max-width: 700px) {
+  .form-add-user__row {
     width: 100%;
   }
 }/*# sourceMappingURL=form-add.css.map */

@@ -11,7 +11,6 @@
     <title><?php echo $page_name; ?></title>
     <link href="<?php echo $boostrap_url; ?>" rel="stylesheet" integrity="<?php echo $boostrap_integrity; ?>" crossorigin="anonymous">
     <link rel="icon" href="http://<?php echo $site_address; ?>/public/images/favicon.ico">
-    <link rel="stylesheet" href="http://<?php echo $site_address; ?>/public/css/theme.css">
     <link rel="stylesheet" href="http://<?php echo $site_address; ?>/public/css/template.css">
     <!-- css -->
     <?php if (!empty($content_css)) { ?>
