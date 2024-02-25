@@ -1,62 +1,141 @@
+@charset "UTF-8";
+/* --- цвет шрифта ---*/
+.theme-color {
+  color: rgba(0, 150, 255, 0.7);
+}
+
+.theme-darker-color {
+  color: rgba(0, 120, 206, 0.7);
+}
+
+.theme-red-color {
+  color: rgb(202, 0, 0);
+}
+
+/* --- цвет фона ---*/
+.theme-bg-сolor {
+  background-color: rgba(0, 150, 255, 0.7);
+}
+
+.theme-grey-bgcolor {
+  background-color: rgb(252, 252, 252);
+}
+
+/* --- границы ---*/
+.theme-border {
+  border: 1.5px solid rgba(0, 150, 255, 0.7);
+  outline: none;
+}
+
+.theme-border-start {
+  border-left: 1.5px solid rgba(0, 150, 255, 0.7);
+}
+
+.theme-border-top {
+  border-top: 1.5px solid rgba(0, 150, 255, 0.7);
+}
+
+.theme-border-end {
+  border-right: 1.5px solid rgba(0, 150, 255, 0.7);
+}
+
+.theme-border-bottom {
+  border-bottom: 1.5px solid rgba(0, 150, 255, 0.7);
+}
+
+/* круглые границы */
+.theme-border-radius {
+  border-radius: 0.35em;
+}
+
+/* --- тень ---*/
+.theme-shadow {
+  box-shadow: 2px 1px 4px rgba(0, 120, 206, 0.7);
+}
+
+/* нижний отступ */
+.theme-mb {
+  margin-bottom: 2rem;
+}
+
+.theme-mb {
+  margin-bottom: 1rem;
+}
+
 html {
   font-size: 15px;
   margin: 0;
   padding: 0;
-  background-color: var(--theme-grey-color);
+  background-color: rgb(252, 252, 252);
 }
 
-body {background-color: transparent;}
-textarea {resize: none;}
-a {text-decoration: none;}
-input {outline: none;}
+body {
+  background-color: transparent;
+}
+
+textarea {
+  resize: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+input {
+  outline: none;
+}
 
 button {
   border: none;
   background-color: white;
 }
 
-.cursor-pointer {cursor: pointer;}
-
+.cursor-pointer {
+  cursor: pointer;
+}
 
 /* --- секция контента --- */
 .content-section {
   width: 95%;
   max-width: 600px;
-
   margin-left: auto;
   margin-right: auto;
   text-align: center;
 }
-
 
 /* --- кнопки --- */
 .button-basic {
   padding: 0.75rem;
   width: 10rem;
   text-align: center;
-  color: var(--theme-color);
+  color: rgba(0, 150, 255, 0.7);
   background-color: white;
-  border: var(--theme-border);
+  border: 1.5px solid rgba(0, 150, 255, 0.7);
   border-radius: 0.35em;
 }
-.button-basic:hover, .header-nav-btn:hover {
-  text-shadow: var(--theme-text-shadow);
-}
 
+.button-basic:hover, .header-nav-btn:hover {
+  text-shadow: 0.1em 0.08em 0.08em rgba(0, 120, 206, 0.7);
+}
 
 .button-wide {
   width: 20rem;
 }
+@media (max-width: 700px) {
+  .button-wide {
+    width: 100%;
+  }
+}
+
 .button-small {
   display: inline-block;
-  border: 1px solid var(--theme-color);
-  color: var(--theme-color);
+  border: 1px solid rgba(0, 150, 255, 0.7);
+  color: rgba(0, 150, 255, 0.7);
   font-size: 2rem;
   padding-left: 0.5em;
   padding-right: 0.5em;
   border-radius: 0.25em;
 }
-
 
 /* --- header --- */
 .header-nav-btn {
@@ -69,15 +148,8 @@ button {
   top: 5.5rem;
   left: 1rem;
   width: 15vw;
-
-  color: var(--theme-red-color);
+  color: rgb(202, 0, 0);
   font-weight: bolder;
   word-break: break-word;
   padding: 0.5rem;
-}
-
-@media(max-width:700px) {
-  .button-wide{
-    width: 100%;
-  }
-}
+}/*# sourceMappingURL=template.css.map */

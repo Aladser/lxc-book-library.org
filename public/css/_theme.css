@@ -1,0 +1,72 @@
+html {
+  --theme-color: rgba(0, 150, 255, 0.7);
+  --theme-lighter-color: rgba(43, 166, 255, 0.7);
+  --theme-darker-color: rgba(0, 120, 206, 0.7);
+  --theme-red-color: rgb(202, 0, 0);
+  --theme-grey-color: rgb(252, 252, 252);
+  --theme-border: 1.5px solid var(--theme-color);
+  --theme-text-shadow: 0.1em 0.08em 0.08em var(--theme-darker-color);
+}
+
+
+/* --- цвет шрифта ---*/
+.theme-color {
+  color: var(--theme-color);
+}
+.theme-darker-color {
+  color: var(--theme-darker-color);
+}
+.theme-red-color {
+  color: var(--theme-red-color);
+}
+
+
+/* --- цвет фона ---*/
+.theme-bg-сolor {
+  background-color: var(--theme-color);
+}
+.theme-grey-bgcolor {
+  background-color: var(--theme-grey-bgcolor);
+}
+
+
+/* --- границы ---*/
+.theme-border {
+  border: var(--theme-border);
+  outline: none;
+}
+.theme-border-start {
+  border-left: var(--theme-border);
+}
+.theme-border-top {
+  border-top: var(--theme-border);
+}
+.theme-border-end {
+  border-right: var(--theme-border);
+}
+.theme-border-bottom {
+  border-bottom: var(--theme-border);
+}
+
+
+/* круглые границы */
+.theme-border-radius {
+  border-radius: 0.35em;
+}
+
+
+/* --- тень ---*/
+.theme-shadow {
+  box-shadow: 2px 1px 4px var(--theme-darker-color);
+}
+
+
+/* нижний отступ */
+.theme-mb{
+  margin-bottom: 2rem;
+}
+@media(max-width:1000px) {
+  .theme-mb{
+    margin-bottom: 1rem;
+  }
+}
