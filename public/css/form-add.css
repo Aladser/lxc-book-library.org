@@ -79,7 +79,10 @@
   color: rgba(0, 120, 206, 0.7);
 }
 
-.form-add-user, .form-add-user * {
+.form-add-user {
+  box-sizing: border-box;
+}
+.form-add-user * {
   box-sizing: border-box;
 }
 
