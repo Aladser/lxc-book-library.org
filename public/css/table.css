@@ -1,9 +1,10 @@
+@charset "UTF-8";
 /* поля ввода таблицы */
-.table-row td{
+.table-row td {
   padding: 1em 0;
 }
 
-.table-row:hover{
+.table-row:hover {
   background-color: var(--theme-lighter-color);
 }
 
@@ -21,8 +22,9 @@
   visibility: hidden;
   padding: 0;
 }
+
 .table-row:hover .genre-table__btn-remove,
-.table-row:hover .author-table__btn, 
+.table-row:hover .author-table__btn,
 .table-row:hover .user-table__btn {
   visibility: visible;
-}
+}/*# sourceMappingURL=table.css.map */

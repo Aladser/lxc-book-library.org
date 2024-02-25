@@ -1,0 +1,24 @@
+/* поля ввода таблицы */
+.table-row td
+    padding: 1em 0
+
+.table-row:hover
+    background-color: var(--theme-lighter-color)
+
+/* кнопки таблицы */
+.table-row__btn
+    padding-left: 0.5rem
+
+/* кнопки удаления */
+.genre-table__btn-remove,
+.author-table__btn,
+.user-table__btn
+    background-color: transparent
+    font-size: 0.9em
+    visibility: hidden
+    padding: 0
+
+.table-row:hover .genre-table__btn-remove,
+.table-row:hover .author-table__btn,
+.table-row:hover .user-table__btn
+    visibility: visible
