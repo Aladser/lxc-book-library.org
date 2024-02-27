@@ -40,17 +40,12 @@ class BookController extends Controller
             'book_show' => route('book_show'),
             'book_create' => route('book_create'),
         ];
-        // css
-        $css_arr = [
-            'book.css',
-            'index.css',
-        ];
 
         $this->view->generate(
             page_name: $this->site_name,
             template_view: 'template_view.php',
             content_view: 'views/book/index_view.php',
-            content_css: $css_arr,
+            content_css: ['book.css', 'index.css'],
             routes: $routes,
             data: $data,
         );

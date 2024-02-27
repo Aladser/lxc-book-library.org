@@ -15,7 +15,7 @@
     <!-- css -->
     <?php if (!empty($content_css)) { ?>
             <?php foreach ($content_css as $css) { ?>
-                <link rel="stylesheet" href="<?php echo dirname(__DIR__, 1).'/public/css/'.$css; ?>">
+                <link rel="stylesheet" href="<?php echo '/public/css/'.$css; ?>">
             <?php }?>
     <?php } ?>
     <!-- js -->
@@ -53,10 +53,3 @@
 
 </body>
 </html>
-
-<?php
-    foreach ($content_css as $css) {
-        echo dirname(__DIR__, 1).'/public/css/'.$css;
-        echo '<br>';
-    }
-    ?>
