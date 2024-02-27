@@ -21,7 +21,7 @@ class MainController extends Controller
         $this->view->generate(
             page_name: 'Ошибка',
             template_view: 'template_view.php',
-            content_view: 'page_error_view.php',
+            content_view: 'views/page_error_view.php',
             routes: $routes,
             data: $data
         );

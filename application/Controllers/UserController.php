@@ -54,7 +54,7 @@ class UserController extends Controller
         $this->view->generate(
             page_name: 'Пользователи',
             template_view: 'template_view.php',
-            content_view: 'admin/users_view.php',
+            content_view: 'views/admin/users_view.php',
             content_css: ['table.css', 'form-add.css'],
             content_js: [
                 'Classes/ServerRequest.js',
@@ -96,7 +96,7 @@ class UserController extends Controller
         $this->view->generate(
             page_name: "{$this->site_name} - авторизация",
             template_view: 'template_view.php',
-            content_view: 'user/login_view.php',
+            content_view: 'views/user/login_view.php',
             data: $args,
             routes: $routes,
         );
@@ -195,7 +195,7 @@ class UserController extends Controller
         $this->view->generate(
             page_name: "{$this->site_name} - регистрация",
             template_view: 'template_view.php',
-            content_view: 'user/register_view.php',
+            content_view: 'views/user/register_view.php',
             data: $args,
             routes: $routes
         );
@@ -284,12 +284,12 @@ class UserController extends Controller
         // контент страницы
         if ($isAdmin) {
             $page_name = "{$this->site_name} - администрирование";
-            $content_view = 'admin/admin_view.php';
+            $content_view = 'views/admin/admin_view.php';
             $content_css = ['admin_page.css'];
         } else {
             $page_name = 'Пользователь ';
             $page_name .= $authUser['auth_type'] === 'vk' ? $data['user_name'] : $login;
-            $content_view = 'user/show_view.php';
+            $content_view = 'views/user/show_view.php';
             $content_css = null;
         }
 

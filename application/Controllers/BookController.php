@@ -40,12 +40,17 @@ class BookController extends Controller
             'book_show' => route('book_show'),
             'book_create' => route('book_create'),
         ];
+        // css
+        $css_arr = [
+            dirname(__DIR__, 1).'/book.css',
+            dirname(__DIR__, 1).'/index.css',
+        ];
 
         $this->view->generate(
             page_name: $this->site_name,
             template_view: 'template_view.php',
-            content_view: 'book/index_view.php',
-            content_css: ['book.css', 'index.css'],
+            content_view: 'views/book/index_view.php',
+            content_css: $css_arr,
             routes: $routes,
             data: $data,
         );
@@ -79,7 +84,7 @@ class BookController extends Controller
         $this->view->generate(
             page_name: $data['book']['author_name'].' - '.$data['book']['name'],
             template_view: 'template_view.php',
-            content_view: 'book/show_view.php',
+            content_view: 'views/book/show_view.php',
             content_css: ['book.css'],
             routes: $routes,
             data: $data,
@@ -105,7 +110,7 @@ class BookController extends Controller
         $this->view->generate(
             page_name: 'Добавление книги',
             template_view: 'template_view.php',
-            content_view: 'book/create_view.php',
+            content_view: 'views/book/create_view.php',
             content_css: ['form-add.css'],
             routes: $routes,
             data: $data,
@@ -155,7 +160,7 @@ class BookController extends Controller
         $this->view->generate(
             page_name: 'Редактирование книги',
             template_view: 'template_view.php',
-            content_view: 'book/edit_view.php',
+            content_view: 'views/book/edit_view.php',
             content_css: ['form-add.css'],
             content_js: ['Classes/ServerRequest.js', 'edit_book.js'],
             routes: $routes,

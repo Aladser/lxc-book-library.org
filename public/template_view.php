@@ -15,7 +15,7 @@
     <!-- css -->
     <?php if (!empty($content_css)) { ?>
         <?php foreach ($content_css as $css) {?>
-            <link rel="stylesheet" href="http://<?php echo $site_address; ?>/public/css/<?php echo $css; ?>">
+            <link rel="stylesheet" href="<?php echo $css; ?>">
         <?php }?>
     <?php } ?>
     <!-- js -->
