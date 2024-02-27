@@ -42,8 +42,8 @@ class BookController extends Controller
         ];
         // css
         $css_arr = [
-            dirname(__DIR__, 1).'/book.css',
-            dirname(__DIR__, 1).'/index.css',
+            dirname(__DIR__, 2).'/public/css/book.css',
+            dirname(__DIR__, 2).'/public/css/index.css',
         ];
 
         $this->view->generate(

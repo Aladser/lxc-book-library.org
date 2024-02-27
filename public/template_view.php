@@ -14,9 +14,13 @@
     <link rel="stylesheet" href="http://<?php echo $site_address; ?>/public/css/template.css">
     <!-- css -->
     <?php if (!empty($content_css)) { ?>
-        <?php foreach ($content_css as $css) {?>
-            <link rel="stylesheet" href="<?php echo $css; ?>">
-        <?php }?>
+        <style>
+            <?php
+            foreach ($content_css as $css) {
+                echo file_get_contents($css);
+            }
+        ?>
+        </style>
     <?php } ?>
     <!-- js -->
     <?php if (!empty($content_js)) { ?>
