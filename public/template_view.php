@@ -14,13 +14,9 @@
     <link rel="stylesheet" href="http://<?php echo $site_address; ?>/public/css/template.css">
     <!-- css -->
     <?php if (!empty($content_css)) { ?>
-        <style>
-            <?php
-            foreach ($content_css as $css) {
-                echo file_get_contents($css);
-            }
-        ?>
-        </style>
+            <?php foreach ($content_css as $css) { ?>
+                <link rel="stylesheet" href="<?php echo dirname(__DIR__, 1).'/public/css/'.$css; ?>">
+            <?php }?>
     <?php } ?>
     <!-- js -->
     <?php if (!empty($content_js)) { ?>
@@ -57,3 +53,10 @@
 
 </body>
 </html>
+
+<?php
+    foreach ($content_css as $css) {
+        echo dirname(__DIR__, 1).'/public/css/'.$css;
+        echo '<br>';
+    }
+    ?>
