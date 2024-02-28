@@ -12,6 +12,7 @@
     <link href="<?php echo $boostrap_url; ?>" rel="stylesheet" integrity="<?php echo $boostrap_integrity; ?>" crossorigin="anonymous">
     <link rel="icon" href="/public/images/favicon.ico">
     <!-- css -->
+    <link rel="stylesheet" href="/public/css/theme.css">
     <link rel="stylesheet" href="/public/css/template.css">
     <?php if (!empty($content_css)) { ?>
             <?php foreach ($content_css as $css) { ?>
