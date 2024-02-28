@@ -6,8 +6,6 @@ namespace App;
 function config($param)
 {
     $site_name = 'lxc-book-library';
-    $site_address = $site_name.'.org';
-    // $site_name = 'd420-213-87-102-205.ngrok-free.app';
     // --- список глобальных параметров ---
     $paramList = [
         // подключение к БД
