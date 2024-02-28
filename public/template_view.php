@@ -15,9 +15,9 @@
     <link rel="stylesheet" href="/public/css/theme.css">
     <link rel="stylesheet" href="/public/css/template.css">
     <?php if (!empty($content_css)) { ?>
-            <?php foreach ($content_css as $css) { ?>
-                <link rel="stylesheet" href='<?php echo "/public/css/$css"; ?>'>
-            <?php }?>
+        <?php foreach ($content_css as $css) { ?>
+            <link rel="stylesheet" href='<?php echo "/public/css/$css"; ?>'>
+        <?php }?>
     <?php } ?>
     <!-- js -->
     <?php if (!empty($content_js)) { ?>
@@ -50,7 +50,9 @@
     </div>
 </header>
 
-<div class='container'><?php include $content_view; ?></div>
+<div class='container'>
+    <?php include $content_view; ?>
+</div>
 
 </body>
 </html>
