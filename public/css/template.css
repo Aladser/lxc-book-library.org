@@ -46,7 +46,7 @@ button {
   width: 10rem;
   text-align: center;
   color: rgba(0, 150, 255, 0.7);
-  background-color: white;
+  background-color: rgb(252, 252, 252);
   border: 1.5px solid rgba(0, 150, 255, 0.7);
   border-radius: 0.35em;
 }
