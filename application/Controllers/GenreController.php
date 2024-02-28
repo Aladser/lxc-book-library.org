@@ -41,7 +41,7 @@ class GenreController extends Controller
             page_name: 'Жанры',
             template_view: 'template_view.php',
             content_view: 'views/admin/genre_view.php',
-            content_css: ['context_menu.css', 'table.css', 'form-add.css'],
+            content_css: ['table.css', 'form-add.css'],
             content_js: [
                 'Classes/ServerRequest.js',
                 'Classes/ContextMenu.js',

@@ -285,12 +285,10 @@ class UserController extends Controller
         if ($isAdmin) {
             $page_name = "{$this->site_name} - администрирование";
             $content_view = 'views/admin/admin_view.php';
-            $content_css = ['admin_page.css'];
         } else {
             $page_name = 'Пользователь ';
             $page_name .= $authUser['auth_type'] === 'vk' ? $data['user_name'] : $login;
             $content_view = 'views/user/show_view.php';
-            $content_css = null;
         }
 
         $this->view->generate(
@@ -299,7 +297,6 @@ class UserController extends Controller
             content_view: $content_view,
             data: $data,
             routes: $routes,
-            content_css: $content_css
         );
     }
 
